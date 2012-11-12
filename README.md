@@ -11,5 +11,5 @@ in a special context to get parsing &c. for free is the same.
 
 
 
-[1] http://pythonwise.blogspot.com/2012/06/python-based-assembler.html
+[1]: http://pythonwise.blogspot.com/2012/06/python-based-assembler.html
 
