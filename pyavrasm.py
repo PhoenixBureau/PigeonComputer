@@ -3,7 +3,6 @@ from collections import defaultdict
 from struct import pack
 from myhdl import intbv
 from instructions import ops, InstructionsMixin
-from m328P_def import defs as G
 from util import (
   update,
   int2addr,
@@ -18,9 +17,6 @@ from util import (
 class AVRAssembly(InstructionsMixin, object):
 
   def __init__(self, initial_context=None):
-    if initial_context is None:
-      initial_context = G.copy()
-
     self.context = defaultdict(lambda: int2addr(0))
     self.context.update(self._instruction_namespace())
     self.context.update((f.__name__, f) for f in (
@@ -34,7 +30,8 @@ class AVRAssembly(InstructionsMixin, object):
         )
       )
     self.context['range'] = xrange
-    self.context.update(initial_context)
+    if initial_context is not None:
+      self.context.update(initial_context)
 
     self.here = int2addr(0)
     self.data = {}
@@ -152,7 +149,8 @@ class AVRAssembly(InstructionsMixin, object):
 
 
 if __name__ == '__main__':
-  aa = AVRAssembly()
+  import m328P_def
+  aa = AVRAssembly(m328P_def.defs)
   aa.assemble_file('asm.py')
 
 ##  print ; print ; print
