@@ -332,7 +332,7 @@ def mul(Rd, Rr):
   '''
 
 
-ops = dict(
+_ops = dict(
   (name, func)
   for name, func in locals().iteritems()
   if name not in _mark
@@ -340,6 +340,8 @@ ops = dict(
 
 
 class InstructionsMixin(object):
+
+  ops = _ops
 
   @instr
   def jmp(self, address):

@@ -2,7 +2,7 @@ import pprint
 from collections import defaultdict
 from struct import pack
 from myhdl import intbv
-from instructions import ops, InstructionsMixin
+from instructions import InstructionsMixin
 from util import (
   update,
   int2addr,
@@ -97,7 +97,7 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
       if op in ('rcall', 'rjmp', 'brne', 'breq'):
         args = self._adjust(op, args, ibv(int(addr, 16)))
 
-      opf = ops.get(op, lambda *args: (0, args))
+      opf = self.ops.get(op, lambda *args: (0, args))
       n, data = opf(*args)
 
       if n <= 0:
