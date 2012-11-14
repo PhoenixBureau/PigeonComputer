@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 #
 # Pigeon Assembler documentation build configuration file, created by
-# sphinx-quickstart on Wed Nov 14 14:45:55 2012.
+# sphinx-quickstart on Wed Nov 14 10:25:41 2012.
 #
 # This file is execfile()d with the current directory set to its containing dir.
 #
@@ -28,7 +28,7 @@ import sys, os
 extensions = ['sphinx.ext.autodoc', 'sphinx.ext.intersphinx', 'sphinx.ext.ifconfig', 'sphinx.ext.viewcode']
 
 # Add any paths that contain templates here, relative to this directory.
-templates_path = ['utemplates']
+templates_path = ['_templates']
 
 # The suffix of source filenames.
 source_suffix = '.rst'
@@ -64,7 +64,7 @@ release = '0.1'
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
-exclude_patterns = ['ubuild']
+exclude_patterns = ['docs/_build']
 
 # The reST default role (used for this markup: `text`) to use for all documents.
 #default_role = None
@@ -120,7 +120,7 @@ html_theme = 'haiku'
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
-html_static_path = ['ustatic']
+html_static_path = ['_static']
 
 # If not '', a 'Last updated on:' timestamp is inserted at every page bottom,
 # using the given strftime format.
