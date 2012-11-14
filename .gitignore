@@ -5,4 +5,4 @@
 pip-log.txt
 
 virt-env
-docs/ubuild/
+docs/_build/
