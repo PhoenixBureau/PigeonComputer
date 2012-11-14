@@ -14,29 +14,7 @@ from util import (
   )
 
 
-class AVRAssembly(InstructionsMixin, object):
-
-  def __init__(self, initial_context=None):
-    self.context = defaultdict(lambda: int2addr(0))
-    self.context.update(self._instruction_namespace())
-    self.context.update((f.__name__, f) for f in (
-        self.define,
-        self.org,
-        self.label,
-        self.dw,
-        self.db,
-        low,
-        high,
-        )
-      )
-    self.context['range'] = xrange
-    if initial_context is not None:
-      self.context.update(initial_context)
-
-    self.here = int2addr(0)
-    self.data = {}
-
-  # Directives
+class DirectivesMixin(object):
 
   def define(self, **defs):
     for k, v in defs.iteritems():
@@ -76,7 +54,30 @@ class AVRAssembly(InstructionsMixin, object):
     self.data[addr] = ('db', values, data)
     self.here += nbytes
 
-  # Assembler proper
+  def _directives(self):
+    for n in dir(DirectivesMixin):
+      if n.startswith('_'):
+        continue
+      yield n, getattr(self, n)
+
+
+class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
+
+  def __init__(self, initial_context=None):
+    self.context = defaultdict(lambda: int2addr(0))
+    self.context.update(self._instruction_namespace())
+    self.context.update(self._directives())
+    self.context.update((f.__name__, f) for f in (
+        low,
+        high,
+        )
+      )
+    self.context['range'] = xrange
+    if initial_context is not None:
+      self.context.update(initial_context)
+
+    self.here = int2addr(0)
+    self.data = {}
 
   def assemble(self, text):
     exec text in self.context
@@ -96,10 +97,10 @@ class AVRAssembly(InstructionsMixin, object):
       if op in ('rcall', 'rjmp', 'brne', 'breq'):
         args = self._adjust(op, args, ibv(int(addr, 16)))
 
-      opf = ops.get(op, lambda *args: args)
+      opf = ops.get(op, lambda *args: (0, args))
       n, data = opf(*args)
 
-      if n == -1:
+      if n <= 0:
         bindata = data
       elif n == 16:
         bindata = pack('H', data)
