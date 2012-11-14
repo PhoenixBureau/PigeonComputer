@@ -1,0 +1,596 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Supported Assembly Instructions &mdash; Pigeon Assembler 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Assembler 0.1 documentation" href="index.html" />
+    <link rel="next" title="Pigeon Assembler" href="pyavrasm.html" />
+    <link rel="prev" title="ATmega328P Definitions" href="m328P.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Pigeon Assembler 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>Supported Assembly Instructions</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="m328P.html">ATmega328P Definitions</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="pyavrasm.html">Pigeon Assembler</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="supported-assembly-instructions">
+<h1>Supported Assembly Instructions<a class="headerlink" href="#supported-assembly-instructions" title="Permalink to this headline">¶</a></h1>
+<p>Currently forty-three instructions are implemented.</p>
+<p>It&#8217;s not hard to add the rest, it&#8217;s just those are the ones I needed
+to get the firmware running.</p>
+<span class="target" id="module-instructions"></span><dl class="class">
+<dt id="instructions.InstructionsMixin">
+<em class="property">class </em><tt class="descclassname">instructions.</tt><tt class="descname">InstructionsMixin</tt><a class="reference internal" href="_modules/instructions.html#InstructionsMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dl class="method">
+<dt id="instructions.InstructionsMixin.add">
+<tt class="descname">add</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.add" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.adiw">
+<tt class="descname">adiw</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.adiw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.adiw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.andi">
+<tt class="descname">andi</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.andi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.andi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.brcc">
+<tt class="descname">brcc</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.brcc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.brcc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.breq">
+<tt class="descname">breq</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.breq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.breq" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.brlo">
+<tt class="descname">brlo</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.brlo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.brlo" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.brne">
+<tt class="descname">brne</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.brne"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.brne" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.brsh">
+<tt class="descname">brsh</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.brsh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.brsh" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.cli">
+<tt class="descname">cli</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.cli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.cli" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.clr">
+<tt class="descname">clr</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.clr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.clr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.cp">
+<tt class="descname">cp</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.cp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.cp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.cpc">
+<tt class="descname">cpc</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.cpc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.cpc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.cpi">
+<tt class="descname">cpi</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.cpi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.cpi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.cpse">
+<tt class="descname">cpse</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.cpse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.cpse" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.dec">
+<tt class="descname">dec</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.dec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.dec" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.ijmp">
+<tt class="descname">ijmp</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.ijmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.ijmp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.inc">
+<tt class="descname">inc</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.inc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.inc" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.jmp">
+<tt class="descname">jmp</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.jmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.jmp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.ld_post_incr">
+<tt class="descname">ld_post_incr</tt><big>(</big><em>ptr</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.ld_post_incr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.ld_post_incr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.ld_pre_decr">
+<tt class="descname">ld_pre_decr</tt><big>(</big><em>ptr</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.ld_pre_decr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.ld_pre_decr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.ldi">
+<tt class="descname">ldi</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.ldi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.ldi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.lds">
+<tt class="descname">lds</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.lds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.lds" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.lpm">
+<tt class="descname">lpm</tt><big>(</big><em>target</em>, <em>source</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.lpm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.lpm" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.lpm_post_incr">
+<tt class="descname">lpm_post_incr</tt><big>(</big><em>ptr</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.lpm_post_incr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.lpm_post_incr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.lsl">
+<tt class="descname">lsl</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.lsl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.lsl" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.lsr">
+<tt class="descname">lsr</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.lsr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.lsr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.mov">
+<tt class="descname">mov</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.mov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.mov" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.movw">
+<tt class="descname">movw</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.movw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.movw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.mul">
+<tt class="descname">mul</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.mul"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.mul" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="instructions.InstructionsMixin.ops">
+<tt class="descname">ops</tt><em class="property"> = {'brsh': &lt;function brsh at 0x3167b18&gt;, 'rcall': &lt;function rcall at 0x3164e60&gt;, 'cpse': &lt;function cpse at 0x3167938&gt;, 'lsl': &lt;function lsl at 0x3167320&gt;, 'pop': &lt;function pop at 0x3198140&gt;, 'lds': &lt;function lds at 0x3165398&gt;, 'lsr': &lt;function lsr at 0x3167230&gt;, 'ijmp': &lt;function ijmp at 0x3167758&gt;, 'movw': &lt;function movw at 0x3167c08&gt;, 'cp': &lt;function cp at 0x3167848&gt;, 'dec': &lt;function dec at 0x31676e0&gt;, 'ld_pre_decr_Z': &lt;function ld_pre_decr_Z at 0x3165b18&gt;, 'sei': &lt;function sei at 0x3165140&gt;, 'out': &lt;function out at 0x3164d70&gt;, 'andi': &lt;function andi at 0x3167cf8&gt;, 'cli': &lt;function cli at 0x3164b90&gt;, 'st_post_incr_Z': &lt;function st_post_incr_Z at 0x3165758&gt;, 'ret': &lt;function ret at 0x31651b8&gt;, 'add': &lt;function add at 0x3167410&gt;, 'ld_pre_decr_Y': &lt;function ld_pre_decr_Y at 0x3165848&gt;, 'mul': &lt;function mul at 0x31986e0&gt;, 'inc': &lt;function inc at 0x31675f0&gt;, 'ldi': &lt;function ldi at 0x3164c80&gt;, 'clr': &lt;function clr at 0x3167ed8&gt;, 'rjmp': &lt;function rjmp at 0x31652a8&gt;, 'swap': &lt;function swap at 0x3198320&gt;, 'adiw': &lt;function adiw at 0x3198410&gt;, 'jmp': &lt;function jmp at 0x3164b18&gt;, 'db': &lt;function db at 0x3165578&gt;, 'mov': &lt;function mov at 0x31650c8&gt;, 'lpm_post_incr_Z': &lt;function lpm_post_incr_Z at 0x3165cf8&gt;, 'ld_post_incr_X': &lt;function ld_post_incr_X at 0x3165938&gt;, 'ld_post_incr_Z': &lt;function ld_post_incr_Z at 0x3165a28&gt;, 'brne': &lt;function brne at 0x3165ed8&gt;, 'dw': &lt;function dw at 0x3165500&gt;, 'brlo': &lt;function brlo at 0x3167140&gt;, 'subi': &lt;function subi at 0x31985f0&gt;, 'or_': &lt;function or_ at 0x3198230&gt;, 'cpi': &lt;function cpi at 0x3165de8&gt;, 'cpc': &lt;function cpc at 0x3167a28&gt;, 'st_post_incr_Y': &lt;function st_post_incr_Y at 0x3165668&gt;, 'lpm': &lt;function lpm at 0x3165c08&gt;, 'sbrs': &lt;function sbrs at 0x3165488&gt;, 'sts': &lt;function sts at 0x3164f50&gt;, 'push': &lt;function push at 0x3198050&gt;, 'brcc': &lt;function brcc at 0x3167500&gt;, 'sbiw': &lt;function sbiw at 0x3198500&gt;, 'breq': &lt;function breq at 0x3167050&gt;, 'sbis': &lt;function sbis at 0x3167de8&gt;}</em><a class="headerlink" href="#instructions.InstructionsMixin.ops" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.or_">
+<tt class="descname">or_</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.or_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.or_" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.out">
+<tt class="descname">out</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.out" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.pop">
+<tt class="descname">pop</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.pop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.pop" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.push">
+<tt class="descname">push</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.push"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.push" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.rcall">
+<tt class="descname">rcall</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.rcall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.rcall" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.ret">
+<tt class="descname">ret</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.ret"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.ret" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.rjmp">
+<tt class="descname">rjmp</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.rjmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.rjmp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.sbiw">
+<tt class="descname">sbiw</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.sbiw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.sbiw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.sbrs">
+<tt class="descname">sbrs</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.sbrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.sbrs" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.sei">
+<tt class="descname">sei</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.sei"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.sei" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.st_post_incr">
+<tt class="descname">st_post_incr</tt><big>(</big><em>ptr</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.st_post_incr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.st_post_incr" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.sts">
+<tt class="descname">sts</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.sts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.sts" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.subi">
+<tt class="descname">subi</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.subi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.subi" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="instructions.InstructionsMixin.swap">
+<tt class="descname">swap</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.swap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.swap" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.add">
+<tt class="descclassname">instructions.</tt><tt class="descname">add</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>0000 11rd dddd rrrr</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.adiw">
+<tt class="descclassname">instructions.</tt><tt class="descname">adiw</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#adiw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.adiw" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 0110 KKdd KKKK</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.andi">
+<tt class="descclassname">instructions.</tt><tt class="descname">andi</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#andi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.andi" title="Permalink to this definition">¶</a></dt>
+<dd><p>0111 KKKK dddd KKKK</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.brcc">
+<tt class="descclassname">instructions.</tt><tt class="descname">brcc</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#brcc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.brcc" title="Permalink to this definition">¶</a></dt>
+<dd><p>1111 01kk kkkk k000</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.breq">
+<tt class="descclassname">instructions.</tt><tt class="descname">breq</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#breq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.breq" title="Permalink to this definition">¶</a></dt>
+<dd><p>1111 00kk kkkk k001</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.brlo">
+<tt class="descclassname">instructions.</tt><tt class="descname">brlo</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#brlo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.brlo" title="Permalink to this definition">¶</a></dt>
+<dd><p>1111 00kk kkkk k000</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.brne">
+<tt class="descclassname">instructions.</tt><tt class="descname">brne</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#brne"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.brne" title="Permalink to this definition">¶</a></dt>
+<dd><p>1111 01kk kkkk k001</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.brsh">
+<tt class="descclassname">instructions.</tt><tt class="descname">brsh</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#brsh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.brsh" title="Permalink to this definition">¶</a></dt>
+<dd><p>1111 01kk kkkk k000</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.cli">
+<tt class="descclassname">instructions.</tt><tt class="descname">cli</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/instructions.html#cli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.cli" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="instructions.clr">
+<tt class="descclassname">instructions.</tt><tt class="descname">clr</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#clr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.clr" title="Permalink to this definition">¶</a></dt>
+<dd><p>0010 01dd dddd dddd</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.cp">
+<tt class="descclassname">instructions.</tt><tt class="descname">cp</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#cp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.cp" title="Permalink to this definition">¶</a></dt>
+<dd><p>0001 01rd dddd rrrr</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.cpc">
+<tt class="descclassname">instructions.</tt><tt class="descname">cpc</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#cpc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.cpc" title="Permalink to this definition">¶</a></dt>
+<dd><p>0000 01rd dddd rrrr</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.cpi">
+<tt class="descclassname">instructions.</tt><tt class="descname">cpi</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#cpi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.cpi" title="Permalink to this definition">¶</a></dt>
+<dd><p>0011 KKKK dddd KKKK</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.cpse">
+<tt class="descclassname">instructions.</tt><tt class="descname">cpse</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#cpse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.cpse" title="Permalink to this definition">¶</a></dt>
+<dd><p>0001 00rd dddd rrrr</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.db">
+<tt class="descclassname">instructions.</tt><tt class="descname">db</tt><big>(</big><em>values</em>, <em>data</em><big>)</big><a class="reference internal" href="_modules/instructions.html#db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.db" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="instructions.dec">
+<tt class="descclassname">instructions.</tt><tt class="descname">dec</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#dec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.dec" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 010d dddd 1010</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.dw">
+<tt class="descclassname">instructions.</tt><tt class="descname">dw</tt><big>(</big><em>values</em>, <em>data</em><big>)</big><a class="reference internal" href="_modules/instructions.html#dw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.dw" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="instructions.ijmp">
+<tt class="descclassname">instructions.</tt><tt class="descname">ijmp</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/instructions.html#ijmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ijmp" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="instructions.inc">
+<tt class="descclassname">instructions.</tt><tt class="descname">inc</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#inc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.inc" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 010d dddd 0011</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.jmp">
+<tt class="descclassname">instructions.</tt><tt class="descname">jmp</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#jmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.jmp" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 010k kkkk 110k
+kkkk kkkk kkkk kkkk</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.ld_post_incr_X">
+<tt class="descclassname">instructions.</tt><tt class="descname">ld_post_incr_X</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#ld_post_incr_X"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ld_post_incr_X" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 000d dddd 1101</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.ld_post_incr_Z">
+<tt class="descclassname">instructions.</tt><tt class="descname">ld_post_incr_Z</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#ld_post_incr_Z"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ld_post_incr_Z" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 000d dddd 0001</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.ld_pre_decr_Y">
+<tt class="descclassname">instructions.</tt><tt class="descname">ld_pre_decr_Y</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#ld_pre_decr_Y"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ld_pre_decr_Y" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 000d dddd 1010</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.ld_pre_decr_Z">
+<tt class="descclassname">instructions.</tt><tt class="descname">ld_pre_decr_Z</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#ld_pre_decr_Z"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ld_pre_decr_Z" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 000d dddd 0010</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.ldi">
+<tt class="descclassname">instructions.</tt><tt class="descname">ldi</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#ldi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ldi" title="Permalink to this definition">¶</a></dt>
+<dd><p>1110 KKKK dddd KKKK</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.lds">
+<tt class="descclassname">instructions.</tt><tt class="descname">lds</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#lds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.lds" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 000d dddd 0000
+kkkk kkkk kkkk kkkk</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.lpm">
+<tt class="descclassname">instructions.</tt><tt class="descname">lpm</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#lpm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.lpm" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 000d dddd 0100</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.lpm_post_incr_Z">
+<tt class="descclassname">instructions.</tt><tt class="descname">lpm_post_incr_Z</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#lpm_post_incr_Z"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.lpm_post_incr_Z" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 000d dddd 0101</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.lsl">
+<tt class="descclassname">instructions.</tt><tt class="descname">lsl</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#lsl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.lsl" title="Permalink to this definition">¶</a></dt>
+<dd><p>0000 11dd dddd dddd</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.lsr">
+<tt class="descclassname">instructions.</tt><tt class="descname">lsr</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#lsr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.lsr" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 010d dddd 0110</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.mov">
+<tt class="descclassname">instructions.</tt><tt class="descname">mov</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#mov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.mov" title="Permalink to this definition">¶</a></dt>
+<dd><p>0010 11rd dddd rrrr</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.movw">
+<tt class="descclassname">instructions.</tt><tt class="descname">movw</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#movw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.movw" title="Permalink to this definition">¶</a></dt>
+<dd><p>0000 0001 dddd rrrr</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.mul">
+<tt class="descclassname">instructions.</tt><tt class="descname">mul</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#mul"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.mul" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 11rd dddd rrrr</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.or_">
+<tt class="descclassname">instructions.</tt><tt class="descname">or_</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#or_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.or_" title="Permalink to this definition">¶</a></dt>
+<dd><p>0010 10rd dddd rrrr</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.out">
+<tt class="descclassname">instructions.</tt><tt class="descname">out</tt><big>(</big><em>io_port</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/instructions.html#out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.out" title="Permalink to this definition">¶</a></dt>
+<dd><p>1011 1AAr rrrr AAAA</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.pop">
+<tt class="descclassname">instructions.</tt><tt class="descname">pop</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#pop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 000d dddd 1111</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.push">
+<tt class="descclassname">instructions.</tt><tt class="descname">push</tt><big>(</big><em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#push"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.push" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 001r rrrr 1111</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.rcall">
+<tt class="descclassname">instructions.</tt><tt class="descname">rcall</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#rcall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.rcall" title="Permalink to this definition">¶</a></dt>
+<dd><p>1101 kkkk kkkk kkkk</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.ret">
+<tt class="descclassname">instructions.</tt><tt class="descname">ret</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/instructions.html#ret"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ret" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="instructions.rjmp">
+<tt class="descclassname">instructions.</tt><tt class="descname">rjmp</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#rjmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.rjmp" title="Permalink to this definition">¶</a></dt>
+<dd><p>1100 kkkk kkkk kkkk</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.sbis">
+<tt class="descclassname">instructions.</tt><tt class="descname">sbis</tt><big>(</big><em>register</em>, <em>bit</em><big>)</big><a class="reference internal" href="_modules/instructions.html#sbis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.sbis" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 1011 AAAA Abbb</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.sbiw">
+<tt class="descclassname">instructions.</tt><tt class="descname">sbiw</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#sbiw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.sbiw" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 0111 KKdd KKKK</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.sbrs">
+<tt class="descclassname">instructions.</tt><tt class="descname">sbrs</tt><big>(</big><em>Rr</em>, <em>bit</em><big>)</big><a class="reference internal" href="_modules/instructions.html#sbrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.sbrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>1111 111r rrrr 0bbb</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.sei">
+<tt class="descclassname">instructions.</tt><tt class="descname">sei</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/instructions.html#sei"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.sei" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="instructions.st_post_incr_Y">
+<tt class="descclassname">instructions.</tt><tt class="descname">st_post_incr_Y</tt><big>(</big><em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#st_post_incr_Y"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.st_post_incr_Y" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 001r rrrr 1001</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.st_post_incr_Z">
+<tt class="descclassname">instructions.</tt><tt class="descname">st_post_incr_Z</tt><big>(</big><em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#st_post_incr_Z"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.st_post_incr_Z" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 001r rrrr 0001</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.sts">
+<tt class="descclassname">instructions.</tt><tt class="descname">sts</tt><big>(</big><em>address</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/instructions.html#sts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.sts" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 001d dddd 0000
+kkkk kkkk kkkk kkkk</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.subi">
+<tt class="descclassname">instructions.</tt><tt class="descname">subi</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#subi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.subi" title="Permalink to this definition">¶</a></dt>
+<dd><p>0101 KKKK dddd KKKK</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="instructions.swap">
+<tt class="descclassname">instructions.</tt><tt class="descname">swap</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#swap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.swap" title="Permalink to this definition">¶</a></dt>
+<dd><p>1001 010d dddd 0010</p>
+</dd></dl>
+
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="m328P.html">ATmega328P Definitions</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="pyavrasm.html">Pigeon Assembler</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Simon Forman.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

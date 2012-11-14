@@ -11,8 +11,12 @@ Contents:
 .. toctree::
    :maxdepth: 2
 
-
-
+   basic_usage
+   reading
+   writing
+   m328P
+   instructions
+   pyavrasm
 
 
 Indices and tables

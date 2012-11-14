@@ -1,0 +1,609 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>instructions &mdash; Pigeon Assembler 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Assembler 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>Pigeon Assembler 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>instructions</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for instructions</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">util</span> <span class="kn">import</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">B_reversed</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">instr</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">spec_reversed</span>
+
+
+<span class="n">_mark</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">dir</span><span class="p">())</span> <span class="p">;</span> <span class="n">_mark</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">&#39;_mark&#39;</span><span class="p">)</span>
+
+
+<span class="nd">@A</span>
+<div class="viewcode-block" id="jmp"><a class="viewcode-back" href="../instructions.html#instructions.jmp">[docs]</a><span class="k">def</span> <span class="nf">jmp</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 010k kkkk 110k</span>
+<span class="sd">  kkkk kkkk kkkk kkkk</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<div class="viewcode-block" id="cli"><a class="viewcode-back" href="../instructions.html#instructions.cli">[docs]</a><span class="k">def</span> <span class="nf">cli</span><span class="p">():</span>
+  <span class="k">return</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="n">b1001010011111000</span>
+
+</div>
+<span class="nd">@B</span>
+<div class="viewcode-block" id="ldi"><a class="viewcode-back" href="../instructions.html#instructions.ldi">[docs]</a><span class="k">def</span> <span class="nf">ldi</span><span class="p">(</span><span class="n">register</span><span class="p">,</span> <span class="n">immediate</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1110 KKKK dddd KKKK</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@C</span>
+<div class="viewcode-block" id="out"><a class="viewcode-back" href="../instructions.html#instructions.out">[docs]</a><span class="k">def</span> <span class="nf">out</span><span class="p">(</span><span class="n">io_port</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1011 1AAr rrrr AAAA</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@A</span>
+<div class="viewcode-block" id="rcall"><a class="viewcode-back" href="../instructions.html#instructions.rcall">[docs]</a><span class="k">def</span> <span class="nf">rcall</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1101 kkkk kkkk kkkk</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@B_reversed</span>
+<div class="viewcode-block" id="sts"><a class="viewcode-back" href="../instructions.html#instructions.sts">[docs]</a><span class="k">def</span> <span class="nf">sts</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 001d dddd 0000</span>
+<span class="sd">  kkkk kkkk kkkk kkkk</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@D</span>
+<div class="viewcode-block" id="mov"><a class="viewcode-back" href="../instructions.html#instructions.mov">[docs]</a><span class="k">def</span> <span class="nf">mov</span><span class="p">(</span><span class="n">Rd</span><span class="p">,</span> <span class="n">Rr</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  0010 11rd dddd rrrr</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<div class="viewcode-block" id="sei"><a class="viewcode-back" href="../instructions.html#instructions.sei">[docs]</a><span class="k">def</span> <span class="nf">sei</span><span class="p">():</span>
+  <span class="k">return</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="n">b1001010001111000</span>
+
+</div>
+<div class="viewcode-block" id="ret"><a class="viewcode-back" href="../instructions.html#instructions.ret">[docs]</a><span class="k">def</span> <span class="nf">ret</span><span class="p">():</span>
+  <span class="k">return</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="n">b1001010100001000</span>
+
+</div>
+<span class="nd">@A</span>
+<div class="viewcode-block" id="rjmp"><a class="viewcode-back" href="../instructions.html#instructions.rjmp">[docs]</a><span class="k">def</span> <span class="nf">rjmp</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1100 kkkk kkkk kkkk</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@B</span>
+<div class="viewcode-block" id="lds"><a class="viewcode-back" href="../instructions.html#instructions.lds">[docs]</a><span class="k">def</span> <span class="nf">lds</span><span class="p">(</span><span class="n">register</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 000d dddd 0000</span>
+<span class="sd">  kkkk kkkk kkkk kkkk</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@E</span>
+<div class="viewcode-block" id="sbrs"><a class="viewcode-back" href="../instructions.html#instructions.sbrs">[docs]</a><span class="k">def</span> <span class="nf">sbrs</span><span class="p">(</span><span class="n">register</span><span class="p">,</span> <span class="n">bit</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1111 111r rrrr 0bbb</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<div class="viewcode-block" id="dw"><a class="viewcode-back" href="../instructions.html#instructions.dw">[docs]</a><span class="k">def</span> <span class="nf">dw</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+  <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">data</span>
+
+</div>
+<div class="viewcode-block" id="db"><a class="viewcode-back" href="../instructions.html#instructions.db">[docs]</a><span class="k">def</span> <span class="nf">db</span><span class="p">(</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+  <span class="k">return</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">data</span>
+
+</div>
+<span class="nd">@F</span>
+<div class="viewcode-block" id="st_post_incr_Y"><a class="viewcode-back" href="../instructions.html#instructions.st_post_incr_Y">[docs]</a><span class="k">def</span> <span class="nf">st_post_incr_Y</span><span class="p">(</span><span class="n">Rr</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 001r rrrr 1001</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@F</span>
+<div class="viewcode-block" id="st_post_incr_Z"><a class="viewcode-back" href="../instructions.html#instructions.st_post_incr_Z">[docs]</a><span class="k">def</span> <span class="nf">st_post_incr_Z</span><span class="p">(</span><span class="n">Rr</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 001r rrrr 0001</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@G</span>
+<div class="viewcode-block" id="ld_pre_decr_Y"><a class="viewcode-back" href="../instructions.html#instructions.ld_pre_decr_Y">[docs]</a><span class="k">def</span> <span class="nf">ld_pre_decr_Y</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 000d dddd 1010</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@G</span>
+<div class="viewcode-block" id="ld_post_incr_X"><a class="viewcode-back" href="../instructions.html#instructions.ld_post_incr_X">[docs]</a><span class="k">def</span> <span class="nf">ld_post_incr_X</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 000d dddd 1101</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@G</span>
+<div class="viewcode-block" id="ld_post_incr_Z"><a class="viewcode-back" href="../instructions.html#instructions.ld_post_incr_Z">[docs]</a><span class="k">def</span> <span class="nf">ld_post_incr_Z</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 000d dddd 0001</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@G</span>
+<div class="viewcode-block" id="ld_pre_decr_Z"><a class="viewcode-back" href="../instructions.html#instructions.ld_pre_decr_Z">[docs]</a><span class="k">def</span> <span class="nf">ld_pre_decr_Z</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 000d dddd 0010</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@G</span>
+<div class="viewcode-block" id="lpm"><a class="viewcode-back" href="../instructions.html#instructions.lpm">[docs]</a><span class="k">def</span> <span class="nf">lpm</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 000d dddd 0100</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@G</span>
+<div class="viewcode-block" id="lpm_post_incr_Z"><a class="viewcode-back" href="../instructions.html#instructions.lpm_post_incr_Z">[docs]</a><span class="k">def</span> <span class="nf">lpm_post_incr_Z</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 000d dddd 0101</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@B</span>
+<div class="viewcode-block" id="cpi"><a class="viewcode-back" href="../instructions.html#instructions.cpi">[docs]</a><span class="k">def</span> <span class="nf">cpi</span><span class="p">(</span><span class="n">register</span><span class="p">,</span> <span class="n">immediate</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  0011 KKKK dddd KKKK</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@A</span>
+<div class="viewcode-block" id="brne"><a class="viewcode-back" href="../instructions.html#instructions.brne">[docs]</a><span class="k">def</span> <span class="nf">brne</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1111 01kk kkkk k001</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@A</span>
+<div class="viewcode-block" id="breq"><a class="viewcode-back" href="../instructions.html#instructions.breq">[docs]</a><span class="k">def</span> <span class="nf">breq</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1111 00kk kkkk k001</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@A</span>
+<div class="viewcode-block" id="brlo"><a class="viewcode-back" href="../instructions.html#instructions.brlo">[docs]</a><span class="k">def</span> <span class="nf">brlo</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1111 00kk kkkk k000</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@G</span>
+<div class="viewcode-block" id="lsr"><a class="viewcode-back" href="../instructions.html#instructions.lsr">[docs]</a><span class="k">def</span> <span class="nf">lsr</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 010d dddd 0110</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@G</span>
+<div class="viewcode-block" id="lsl"><a class="viewcode-back" href="../instructions.html#instructions.lsl">[docs]</a><span class="k">def</span> <span class="nf">lsl</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  0000 11dd dddd dddd</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@D</span>
+<div class="viewcode-block" id="add"><a class="viewcode-back" href="../instructions.html#instructions.add">[docs]</a><span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">Rd</span><span class="p">,</span> <span class="n">Rr</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  0000 11rd dddd rrrr</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@A</span>
+<div class="viewcode-block" id="brcc"><a class="viewcode-back" href="../instructions.html#instructions.brcc">[docs]</a><span class="k">def</span> <span class="nf">brcc</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1111 01kk kkkk k000</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@G</span>
+<div class="viewcode-block" id="inc"><a class="viewcode-back" href="../instructions.html#instructions.inc">[docs]</a><span class="k">def</span> <span class="nf">inc</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 010d dddd 0011</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@G</span>
+<div class="viewcode-block" id="dec"><a class="viewcode-back" href="../instructions.html#instructions.dec">[docs]</a><span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 010d dddd 1010</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<div class="viewcode-block" id="ijmp"><a class="viewcode-back" href="../instructions.html#instructions.ijmp">[docs]</a><span class="k">def</span> <span class="nf">ijmp</span><span class="p">():</span>
+  <span class="k">return</span> <span class="mi">16</span><span class="p">,</span> <span class="mi">0</span><span class="n">b1001010000001001</span>
+
+</div>
+<span class="nd">@D</span>
+<div class="viewcode-block" id="cp"><a class="viewcode-back" href="../instructions.html#instructions.cp">[docs]</a><span class="k">def</span> <span class="nf">cp</span><span class="p">(</span><span class="n">Rd</span><span class="p">,</span> <span class="n">Rr</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  0001 01rd dddd rrrr</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@D</span>
+<div class="viewcode-block" id="cpse"><a class="viewcode-back" href="../instructions.html#instructions.cpse">[docs]</a><span class="k">def</span> <span class="nf">cpse</span><span class="p">(</span><span class="n">Rd</span><span class="p">,</span> <span class="n">Rr</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  0001 00rd dddd rrrr</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@D</span>
+<div class="viewcode-block" id="cpc"><a class="viewcode-back" href="../instructions.html#instructions.cpc">[docs]</a><span class="k">def</span> <span class="nf">cpc</span><span class="p">(</span><span class="n">Rd</span><span class="p">,</span> <span class="n">Rr</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  0000 01rd dddd rrrr</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@A</span>
+<div class="viewcode-block" id="brsh"><a class="viewcode-back" href="../instructions.html#instructions.brsh">[docs]</a><span class="k">def</span> <span class="nf">brsh</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1111 01kk kkkk k000</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@D</span>
+<div class="viewcode-block" id="movw"><a class="viewcode-back" href="../instructions.html#instructions.movw">[docs]</a><span class="k">def</span> <span class="nf">movw</span><span class="p">(</span><span class="n">Rd</span><span class="p">,</span> <span class="n">Rr</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  0000 0001 dddd rrrr</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@B</span>
+<div class="viewcode-block" id="andi"><a class="viewcode-back" href="../instructions.html#instructions.andi">[docs]</a><span class="k">def</span> <span class="nf">andi</span><span class="p">(</span><span class="n">register</span><span class="p">,</span> <span class="n">immediate</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  0111 KKKK dddd KKKK</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@H</span>
+<div class="viewcode-block" id="sbis"><a class="viewcode-back" href="../instructions.html#instructions.sbis">[docs]</a><span class="k">def</span> <span class="nf">sbis</span><span class="p">(</span><span class="n">register</span><span class="p">,</span> <span class="n">bit</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 1011 AAAA Abbb</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@G</span>
+<div class="viewcode-block" id="clr"><a class="viewcode-back" href="../instructions.html#instructions.clr">[docs]</a><span class="k">def</span> <span class="nf">clr</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  0010 01dd dddd dddd</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@F</span>
+<div class="viewcode-block" id="push"><a class="viewcode-back" href="../instructions.html#instructions.push">[docs]</a><span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="n">Rr</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 001r rrrr 1111</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@G</span>
+<div class="viewcode-block" id="pop"><a class="viewcode-back" href="../instructions.html#instructions.pop">[docs]</a><span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 000d dddd 1111</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@D</span>
+<div class="viewcode-block" id="or_"><a class="viewcode-back" href="../instructions.html#instructions.or_">[docs]</a><span class="k">def</span> <span class="nf">or_</span><span class="p">(</span><span class="n">Rd</span><span class="p">,</span> <span class="n">Rr</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  0010 10rd dddd rrrr</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@G</span>
+<div class="viewcode-block" id="swap"><a class="viewcode-back" href="../instructions.html#instructions.swap">[docs]</a><span class="k">def</span> <span class="nf">swap</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 010d dddd 0010</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@B</span>
+<div class="viewcode-block" id="adiw"><a class="viewcode-back" href="../instructions.html#instructions.adiw">[docs]</a><span class="k">def</span> <span class="nf">adiw</span><span class="p">(</span><span class="n">register</span><span class="p">,</span> <span class="n">immediate</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 0110 KKdd KKKK</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@B</span>
+<div class="viewcode-block" id="sbiw"><a class="viewcode-back" href="../instructions.html#instructions.sbiw">[docs]</a><span class="k">def</span> <span class="nf">sbiw</span><span class="p">(</span><span class="n">register</span><span class="p">,</span> <span class="n">immediate</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 0111 KKdd KKKK</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@B</span>
+<div class="viewcode-block" id="subi"><a class="viewcode-back" href="../instructions.html#instructions.subi">[docs]</a><span class="k">def</span> <span class="nf">subi</span><span class="p">(</span><span class="n">register</span><span class="p">,</span> <span class="n">immediate</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  0101 KKKK dddd KKKK</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="nd">@D</span>
+<div class="viewcode-block" id="mul"><a class="viewcode-back" href="../instructions.html#instructions.mul">[docs]</a><span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="n">Rd</span><span class="p">,</span> <span class="n">Rr</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  1001 11rd dddd rrrr</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+
+</div>
+<span class="n">_ops</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span>
+  <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+  <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">func</span> <span class="ow">in</span> <span class="nb">locals</span><span class="p">()</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span>
+  <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">_mark</span>
+  <span class="p">)</span>
+
+
+<div class="viewcode-block" id="InstructionsMixin"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin">[docs]</a><span class="k">class</span> <span class="nc">InstructionsMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+  <span class="n">ops</span> <span class="o">=</span> <span class="n">_ops</span>
+
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.jmp"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.jmp">[docs]</a>  <span class="k">def</span> <span class="nf">jmp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">here</span> <span class="o">+=</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.rjmp"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.rjmp">[docs]</a>  <span class="k">def</span> <span class="nf">rjmp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.rcall"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.rcall">[docs]</a>  <span class="k">def</span> <span class="nf">rcall</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.cli"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.cli">[docs]</a>  <span class="k">def</span> <span class="nf">cli</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.sei"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.sei">[docs]</a>  <span class="k">def</span> <span class="nf">sei</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.ret"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.ret">[docs]</a>  <span class="k">def</span> <span class="nf">ret</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.ldi"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.ldi">[docs]</a>  <span class="k">def</span> <span class="nf">ldi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+      <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">address</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+      <span class="n">address</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">address</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.out"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.out">[docs]</a>  <span class="k">def</span> <span class="nf">out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.sts"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.sts">[docs]</a>  <span class="k">def</span> <span class="nf">sts</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">here</span> <span class="o">+=</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">address</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">register</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.mov"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.mov">[docs]</a>  <span class="k">def</span> <span class="nf">mov</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.lds"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.lds">[docs]</a>  <span class="k">def</span> <span class="nf">lds</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">here</span> <span class="o">+=</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">address</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.sbrs"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.sbrs">[docs]</a>  <span class="k">def</span> <span class="nf">sbrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">address</span>
+</div>
+  <span class="nd">@spec</span>
+<div class="viewcode-block" id="InstructionsMixin.st_post_incr"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.st_post_incr">[docs]</a>  <span class="k">def</span> <span class="nf">st_post_incr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+    <span class="k">pass</span>
+</div>
+  <span class="nd">@spec_reversed</span>
+<div class="viewcode-block" id="InstructionsMixin.ld_post_incr"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.ld_post_incr">[docs]</a>  <span class="k">def</span> <span class="nf">ld_post_incr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">ptr</span><span class="p">):</span>
+    <span class="k">pass</span>
+</div>
+  <span class="nd">@spec_reversed</span>
+<div class="viewcode-block" id="InstructionsMixin.ld_pre_decr"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.ld_pre_decr">[docs]</a>  <span class="k">def</span> <span class="nf">ld_pre_decr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">ptr</span><span class="p">):</span>
+    <span class="k">pass</span>
+</div>
+  <span class="nd">@spec_reversed</span>
+<div class="viewcode-block" id="InstructionsMixin.lpm_post_incr"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.lpm_post_incr">[docs]</a>  <span class="k">def</span> <span class="nf">lpm_post_incr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">ptr</span><span class="p">):</span>
+    <span class="k">pass</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.cpi"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.cpi">[docs]</a>  <span class="k">def</span> <span class="nf">cpi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">immediate</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">immediate</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+      <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">immediate</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">immediate</span><span class="p">)</span>
+      <span class="n">immediate</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">immediate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">immediate</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.brne"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.brne">[docs]</a>  <span class="k">def</span> <span class="nf">brne</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.breq"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.breq">[docs]</a>  <span class="k">def</span> <span class="nf">breq</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.inc"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.inc">[docs]</a>  <span class="k">def</span> <span class="nf">inc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.mul"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.mul">[docs]</a>  <span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.brlo"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.brlo">[docs]</a>  <span class="k">def</span> <span class="nf">brlo</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.subi"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.subi">[docs]</a>  <span class="k">def</span> <span class="nf">subi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.add"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.add">[docs]</a>  <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.dec"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.dec">[docs]</a>  <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.clr"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.clr">[docs]</a>  <span class="k">def</span> <span class="nf">clr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.lsl"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.lsl">[docs]</a>  <span class="k">def</span> <span class="nf">lsl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.brcc"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.brcc">[docs]</a>  <span class="k">def</span> <span class="nf">brcc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.or_"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.or_">[docs]</a>  <span class="k">def</span> <span class="nf">or_</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.push"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.push">[docs]</a>  <span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.swap"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.swap">[docs]</a>  <span class="k">def</span> <span class="nf">swap</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.pop"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.pop">[docs]</a>  <span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.movw"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.movw">[docs]</a>  <span class="k">def</span> <span class="nf">movw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.andi"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.andi">[docs]</a>  <span class="k">def</span> <span class="nf">andi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.adiw"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.adiw">[docs]</a>  <span class="k">def</span> <span class="nf">adiw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+</div>
+<div class="viewcode-block" id="InstructionsMixin.lpm"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.lpm">[docs]</a>  <span class="k">def</span> <span class="nf">lpm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">source</span> <span class="o">==</span> <span class="mi">30</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="c"># Must be Z</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_one</span><span class="p">(</span><span class="s">&#39;lpm&#39;</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.cp"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.cp">[docs]</a>  <span class="k">def</span> <span class="nf">cp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.cpc"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.cpc">[docs]</a>  <span class="k">def</span> <span class="nf">cpc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.brsh"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.brsh">[docs]</a>  <span class="k">def</span> <span class="nf">brsh</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.cpse"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.cpse">[docs]</a>  <span class="k">def</span> <span class="nf">cpse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.sbiw"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.sbiw">[docs]</a>  <span class="k">def</span> <span class="nf">sbiw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.lsr"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.lsr">[docs]</a>  <span class="k">def</span> <span class="nf">lsr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">address</span>
+</div>
+  <span class="nd">@instr</span>
+<div class="viewcode-block" id="InstructionsMixin.ijmp"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.ijmp">[docs]</a>  <span class="k">def</span> <span class="nf">ijmp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+</div>
+  <span class="k">def</span> <span class="nf">_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="n">name</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_or_addr</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_here</span><span class="p">()</span>
+    <span class="k">print</span> <span class="s">&#39;assembling </span><span class="si">%s</span><span class="s"> instruction at </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">here</span> <span class="o">+=</span> <span class="mi">2</span>
+
+  <span class="k">def</span> <span class="nf">_instruction_namespace</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">InstructionsMixin</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">n</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;_&#39;</span><span class="p">):</span>
+        <span class="k">continue</span>
+      <span class="k">yield</span> <span class="n">n</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="kn">import</span> <span class="nn">pprint</span>
+  <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">ops</span><span class="p">)</span>
+  <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">InstructionsMixin</span><span class="p">()</span><span class="o">.</span><span class="n">_instruction_namespace</span><span class="p">()))</span>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Simon Forman.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

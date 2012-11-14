@@ -1,0 +1,259 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>util &mdash; Pigeon Assembler 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Assembler 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>Pigeon Assembler 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>util</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for util</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">pack</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">myhdl</span> <span class="kn">import</span> <span class="n">intbv</span><span class="p">,</span> <span class="n">concat</span>
+
+
+<span class="n">ADDRESS_MAX</span> <span class="o">=</span> <span class="mh">0x3fff</span>
+
+
+<div class="viewcode-block" id="update"><a class="viewcode-back" href="../writing.html#util.update">[docs]</a><span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  In-place update of an intbv with the value of another one.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
+  <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">a</span><span class="p">)):</span>
+    <span class="n">a</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">n</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="int2addr"><a class="viewcode-back" href="../writing.html#util.int2addr">[docs]</a><span class="k">def</span> <span class="nf">int2addr</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+  <span class="k">return</span> <span class="n">intbv</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="nb">min</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="nb">max</span><span class="o">=</span><span class="n">ADDRESS_MAX</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="low"><a class="viewcode-back" href="../writing.html#util.low">[docs]</a><span class="k">def</span> <span class="nf">low</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+  <span class="n">i</span> <span class="o">=</span> <span class="n">ibv</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">i</span><span class="p">[</span><span class="mi">8</span><span class="p">:]</span>
+
+</div>
+<div class="viewcode-block" id="high"><a class="viewcode-back" href="../writing.html#util.high">[docs]</a><span class="k">def</span> <span class="nf">high</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+  <span class="n">i</span> <span class="o">=</span> <span class="n">ibv</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">i</span><span class="p">[</span><span class="mi">16</span><span class="p">:</span><span class="mi">8</span><span class="p">]</span>
+
+</div>
+<div class="viewcode-block" id="ibv"><a class="viewcode-back" href="../writing.html#util.ibv">[docs]</a><span class="k">def</span> <span class="nf">ibv</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+  <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="nb">long</span><span class="p">)):</span>
+    <span class="k">return</span> <span class="n">intbv</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+  <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">intbv</span><span class="p">):</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span>
+  <span class="k">return</span> <span class="n">i</span>
+
+</div>
+<div class="viewcode-block" id="compute_dw"><a class="viewcode-back" href="../writing.html#util.compute_dw">[docs]</a><span class="k">def</span> <span class="nf">compute_dw</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+  <span class="n">accumulator</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+    <span class="n">accumulator</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pack</span><span class="p">(</span><span class="s">&#39;H&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+  <span class="k">return</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">accumulator</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="compute_db"><a class="viewcode-back" href="../writing.html#util.compute_db">[docs]</a><span class="k">def</span> <span class="nf">compute_db</span><span class="p">(</span><span class="n">values</span><span class="p">):</span>
+  <span class="n">accumulator</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">values</span><span class="p">:</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+      <span class="n">accumulator</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+      <span class="n">accumulator</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pack</span><span class="p">(</span><span class="s">&#39;B&#39;</span><span class="p">,</span> <span class="n">value</span><span class="p">))</span>
+  <span class="n">data</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">accumulator</span><span class="p">)</span>
+  <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">%</span> <span class="mi">2</span><span class="p">:</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">data</span> <span class="o">+</span> <span class="s">&#39;</span><span class="se">\0</span><span class="s">&#39;</span>
+  <span class="k">return</span> <span class="n">data</span>
+
+</div>
+<div class="viewcode-block" id="instr"><a class="viewcode-back" href="../writing.html#util.instr">[docs]</a><span class="k">def</span> <span class="nf">instr</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+  <span class="n">op</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">__name__</span>
+
+  <span class="nd">@wraps</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg0</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">arg1</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_here</span><span class="p">()</span>
+
+    <span class="k">if</span> <span class="n">arg0</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+      <span class="k">assert</span> <span class="n">arg1</span> <span class="ow">is</span> <span class="bp">None</span>
+      <span class="k">print</span> <span class="s">&#39;assembling </span><span class="si">%s</span><span class="s"> instruction at </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+      <span class="n">instruction</span> <span class="o">=</span> <span class="p">(</span><span class="n">op</span><span class="p">,)</span>
+      <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">arg1</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+      <span class="n">arg0</span><span class="p">,</span> <span class="n">arg1</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg0</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
+      <span class="n">tname</span><span class="p">,</span> <span class="n">taddress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_or_addr</span><span class="p">(</span><span class="n">arg0</span><span class="p">)</span>
+      <span class="n">name</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_or_addr</span><span class="p">(</span><span class="n">arg1</span><span class="p">)</span>
+      <span class="k">print</span> <span class="s">&#39;assembling </span><span class="si">%s</span><span class="s"> instruction at </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> &lt;- </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">tname</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+      <span class="n">instruction</span> <span class="o">=</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">taddress</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+      <span class="n">arg0</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg0</span><span class="p">)</span>
+      <span class="n">name</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_or_addr</span><span class="p">(</span><span class="n">arg0</span><span class="p">)</span>
+      <span class="k">print</span> <span class="s">&#39;assembling </span><span class="si">%s</span><span class="s"> instruction at </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+      <span class="n">instruction</span> <span class="o">=</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
+
+    <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="n">instruction</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">here</span> <span class="o">+=</span> <span class="mi">2</span>
+
+  <span class="k">return</span> <span class="n">inner</span>
+
+</div>
+<div class="viewcode-block" id="spec"><a class="viewcode-back" href="../writing.html#util.spec">[docs]</a><span class="k">def</span> <span class="nf">spec</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+  <span class="nd">@wraps</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+    <span class="n">op</span> <span class="o">=</span> <span class="n">method</span><span class="o">.</span><span class="n">__name__</span>
+    <span class="k">if</span> <span class="n">ptr</span> <span class="o">==</span> <span class="mi">26</span><span class="p">:</span>
+      <span class="n">op</span> <span class="o">=</span> <span class="n">op</span> <span class="o">+</span> <span class="s">&#39;_X&#39;</span>
+    <span class="k">elif</span> <span class="n">ptr</span> <span class="o">==</span> <span class="mi">28</span><span class="p">:</span>
+      <span class="n">op</span> <span class="o">=</span> <span class="n">op</span> <span class="o">+</span> <span class="s">&#39;_Y&#39;</span>
+    <span class="k">elif</span> <span class="n">ptr</span> <span class="o">==</span> <span class="mi">30</span><span class="p">:</span>
+      <span class="n">op</span> <span class="o">=</span> <span class="n">op</span> <span class="o">+</span> <span class="s">&#39;_Z&#39;</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s">&quot;Invalid target for </span><span class="si">%s</span><span class="s">: </span><span class="si">%#x</span><span class="s">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">ptr</span><span class="p">,))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_one</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">register</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">inner</span>
+
+</div>
+<div class="viewcode-block" id="spec_reversed"><a class="viewcode-back" href="../writing.html#util.spec_reversed">[docs]</a><span class="k">def</span> <span class="nf">spec_reversed</span><span class="p">(</span><span class="n">method</span><span class="p">):</span>
+  <span class="n">method</span> <span class="o">=</span> <span class="n">spec</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+  <span class="nd">@wraps</span><span class="p">(</span><span class="n">method</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ptr</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">ptr</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">inner</span>
+
+</div>
+<div class="viewcode-block" id="A"><a class="viewcode-back" href="../writing.html#util.A">[docs]</a><span class="k">def</span> <span class="nf">A</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+  <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">K</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__doc__</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">address</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">inner</span>
+
+</div>
+<div class="viewcode-block" id="B"><a class="viewcode-back" href="../writing.html#util.B">[docs]</a><span class="k">def</span> <span class="nf">B</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+  <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">register</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">K</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__doc__</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">register</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">address</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">inner</span>
+
+</div>
+<div class="viewcode-block" id="B_reversed"><a class="viewcode-back" href="../writing.html#util.B_reversed">[docs]</a><span class="k">def</span> <span class="nf">B_reversed</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+  <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">K</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__doc__</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">register</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">address</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">inner</span>
+
+</div>
+<div class="viewcode-block" id="C"><a class="viewcode-back" href="../writing.html#util.C">[docs]</a><span class="k">def</span> <span class="nf">C</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+  <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">io_port</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">K</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__doc__</span><span class="p">,</span> <span class="n">a</span><span class="o">=</span><span class="n">io_port</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">register</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">inner</span>
+
+</div>
+<div class="viewcode-block" id="D"><a class="viewcode-back" href="../writing.html#util.D">[docs]</a><span class="k">def</span> <span class="nf">D</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+  <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">Rd</span><span class="p">,</span> <span class="n">Rr</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">K</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__doc__</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">Rd</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">Rr</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">inner</span>
+
+</div>
+<div class="viewcode-block" id="E"><a class="viewcode-back" href="../writing.html#util.E">[docs]</a><span class="k">def</span> <span class="nf">E</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+  <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">Rr</span><span class="p">,</span> <span class="n">bit</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">K</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__doc__</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">Rr</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">bit</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">inner</span>
+
+</div>
+<div class="viewcode-block" id="F"><a class="viewcode-back" href="../writing.html#util.F">[docs]</a><span class="k">def</span> <span class="nf">F</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+  <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">Rr</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">K</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__doc__</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="n">Rr</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">inner</span>
+
+</div>
+<div class="viewcode-block" id="G"><a class="viewcode-back" href="../writing.html#util.G">[docs]</a><span class="k">def</span> <span class="nf">G</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+  <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">K</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__doc__</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="n">Rd</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">inner</span>
+
+</div>
+<div class="viewcode-block" id="H"><a class="viewcode-back" href="../writing.html#util.H">[docs]</a><span class="k">def</span> <span class="nf">H</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+  <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+  <span class="k">def</span> <span class="nf">inner</span><span class="p">(</span><span class="n">register</span><span class="p">,</span> <span class="n">bit</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">K</span><span class="p">(</span><span class="n">func</span><span class="o">.</span><span class="n">__doc__</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="n">register</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="n">bit</span><span class="p">)</span>
+  <span class="k">return</span> <span class="n">inner</span>
+
+</div>
+<div class="viewcode-block" id="K"><a class="viewcode-back" href="../writing.html#util.K">[docs]</a><span class="k">def</span> <span class="nf">K</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span><span class="p">):</span>
+  <span class="n">counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">variable_letter</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">variable_letter</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span>
+  <span class="n">p</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pattern</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+  <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+  <span class="k">assert</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">32</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="n">pattern</span><span class="p">)</span>
+  <span class="n">accumulator</span> <span class="o">=</span> <span class="p">[]</span>
+  <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">bit</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">p</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">bit</span> <span class="ow">in</span> <span class="s">&#39;10&#39;</span><span class="p">:</span>
+      <span class="n">accumulator</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">bool</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">bit</span><span class="p">)))</span>
+      <span class="k">continue</span>
+    <span class="k">assert</span> <span class="n">bit</span> <span class="ow">in</span> <span class="n">values</span><span class="p">,</span> <span class="nb">repr</span><span class="p">((</span><span class="n">i</span><span class="p">,</span> <span class="n">bit</span><span class="p">,</span> <span class="n">values</span><span class="p">))</span>
+    <span class="n">index</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">counts</span><span class="p">[</span><span class="n">bit</span><span class="p">],</span> <span class="n">values</span><span class="p">[</span><span class="n">bit</span><span class="p">]</span>
+    <span class="n">counts</span><span class="p">[</span><span class="n">bit</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">bit</span> <span class="o">=</span> <span class="n">value</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+    <span class="n">accumulator</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">bit</span><span class="p">)</span>
+  <span class="n">data</span> <span class="o">=</span> <span class="n">concat</span><span class="p">(</span><span class="o">*</span><span class="nb">reversed</span><span class="p">(</span><span class="n">accumulator</span><span class="p">))</span>
+  <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">data</span></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Simon Forman.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
