@@ -15,6 +15,9 @@ from util import (
 
 
 class DirectivesMixin(object):
+  '''
+  I am a docstring!
+  '''
 
   def define(self, **defs):
     for k, v in defs.iteritems():
