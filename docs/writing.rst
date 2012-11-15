@@ -9,3 +9,5 @@ Bit Pattern Generator
 .. autofunction:: util.K
 
 
+Output Formats
+---------------------
