@@ -5,6 +5,11 @@ define(TOSL=r26)
 define(Working=r16)
 define(word_counter=r17)
 define(Base=r8)
+define(number_pointer=r9)
+define(find_buffer_char=r10)
+define(find_name_char=r11)
+
+
 
 org(SRAM_START)
 buffer_length = 0x40

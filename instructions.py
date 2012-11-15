@@ -441,8 +441,11 @@ class InstructionsMixin(object):
     return address
 
   @instr
-  def subi(self, target, source):
-    return target, source
+  def subi(self, register, immediate):
+    if isinstance(immediate, str):
+      assert len(immediate) == 1, repr(immediate)
+      immediate = ord(immediate)
+    return register, immediate << 1
 
   @instr
   def add(self, target, source):

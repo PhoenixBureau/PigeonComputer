@@ -97,7 +97,7 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
       op, args = instruction[0], instruction[1:]
 
       # Adjust addresses for relative ops.
-      if op in ('rcall', 'rjmp', 'brne', 'breq'):
+      if op in ('rcall', 'rjmp', 'brne', 'breq', 'brlo'):
         args = self._adjust(op, args, ibv(int(addr, 16)))
 
       opf = self.ops.get(op, lambda *args: (0, args))
@@ -174,5 +174,5 @@ if __name__ == '__main__':
       ih.puts(addr, val)
     else:
       print 'non-str', addr, repr(val)
-##  ih.dump(tofile=open('pavr.hex', 'w'))
-  ih.dump()
+  ih.dump(tofile=open('pavr.hex', 'w'))
+##  ih.dump()
