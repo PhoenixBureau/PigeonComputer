@@ -429,8 +429,8 @@ class InstructionsMixin(object):
     return address
 
   @instr
-  def inc(self, address):
-    return address
+  def inc(self, register):
+    return register
 
   @instr
   def mul(self, target, source):
@@ -540,5 +540,5 @@ class InstructionsMixin(object):
 
 if __name__ == '__main__':
   import pprint
-  pprint.pprint(ops)
+  pprint.pprint(_ops)
   pprint.pprint(dict(InstructionsMixin()._instruction_namespace()))

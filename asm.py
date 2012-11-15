@@ -3,6 +3,7 @@
 define(TOS=r27)
 define(TOSL=r26)
 define(Working=r16)
+define(word_counter=r17)
 define(Base=r8)
 
 org(SRAM_START)
