@@ -369,11 +369,11 @@ class InstructionsMixin(object):
     pass
 
   @instr
-  def ldi(self, target, address):
-    if isinstance(address, str):
-      assert len(address) == 1, repr(address)
-      address = ord(address)
-    return target, address << 1
+  def ldi(self, target, immediate):
+    if isinstance(immediate, str):
+      assert len(immediate) == 1, repr(immediate)
+      immediate = ord(immediate)
+    return target, immediate << 1
 
   @instr
   def out(self, target, address):
@@ -485,7 +485,7 @@ class InstructionsMixin(object):
 
   @instr
   def movw(self, target, source):
-    return target, source
+    return target >> 1, source >> 1
 
   @instr
   def andi(self, target, source):

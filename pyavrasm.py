@@ -97,7 +97,7 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
       op, args = instruction[0], instruction[1:]
 
       # Adjust addresses for relative ops.
-      if op in ('rcall', 'rjmp', 'brne', 'breq', 'brlo'):
+      if op in ('rcall', 'rjmp', 'brne', 'breq', 'brlo', 'brcc'):
         args = self._adjust(op, args, ibv(int(addr, 16)))
 
       # see instruction in Amtel manual.
