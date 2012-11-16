@@ -100,6 +100,10 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
       if op in ('rcall', 'rjmp', 'brne', 'breq', 'brlo'):
         args = self._adjust(op, args, ibv(int(addr, 16)))
 
+      # see instruction in Amtel manual.
+      elif op == 'clr':
+        args = args + args
+
       opf = self.ops.get(op, lambda *args: (0, args))
       n, data = opf(*args)
 

@@ -269,10 +269,10 @@ def sbis(register, bit):
   '''
 
 
-@G
-def clr(Rd):
+@D
+def clr(Rd, Rr): # See Amtel manual! This instruction only takes one register.
   '''
-  0010 01dd dddd dddd
+  0010 01rd dddd rrrr
   '''
 
 
@@ -456,8 +456,8 @@ class InstructionsMixin(object):
     return address
 
   @instr
-  def clr(self, address):
-    return address
+  def clr(self, register):
+    return register
 
   @instr
   def lsl(self, address):
