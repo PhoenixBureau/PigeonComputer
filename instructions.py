@@ -181,10 +181,10 @@ def lsr(Rd):
   '''
 
 
-@G
-def lsl(Rd):
+@D
+def lsl(Rd, Rr): # See Amtel manual! This instruction only takes one register.
   '''
-  0000 11dd dddd dddd
+  0000 11rd dddd rrrr
   '''
 
 

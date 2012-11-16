@@ -101,7 +101,7 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
         args = self._adjust(op, args, ibv(int(addr, 16)))
 
       # see instruction in Amtel manual.
-      elif op == 'clr':
+      elif op in ('clr', 'lsl'):
         args = args + args
 
       opf = self.ops.get(op, lambda *args: (0, args))
