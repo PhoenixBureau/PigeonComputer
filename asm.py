@@ -321,8 +321,8 @@ label(FIND_PFA)
 
 mov(word_counter, TOS)
 st_post_incr(Y, TOSL)
-ldi(TOSL, low(READ_IMU))
-ldi(TOS, high(READ_IMU))
+ldi(TOSL, low(INTERPRET))
+ldi(TOS, high(INTERPRET))
 
 label(_look_up_word)
 cpi(TOSL, 0x00)

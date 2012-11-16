@@ -488,12 +488,13 @@ class InstructionsMixin(object):
     return target >> 1, source >> 1
 
   @instr
-  def andi(self, target, source):
-    return target, source
+  def andi(self, register, immediate):
+    return register, immediate << 1
 
   @instr
-  def adiw(self, target, source):
-    return target, source
+  def adiw(self, register, immediate):
+    assert register in (24, 26, 28, 30), repr(register)
+    return register >> 1, immediate << 1
 
   def lpm(self, target, source):
     assert source == 30, repr(source) # Must be Z
