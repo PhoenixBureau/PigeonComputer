@@ -6,6 +6,10 @@
 Pigeon Assembler
 ============================================
 
+The Pigeon Assembler is a simple assembler targetting the popular
+ATmega328P microcontroller.  It is designed to be easy to read and
+understand and the main code is just a few pages of Python.
+
 Contents:
 
 .. toctree::
@@ -18,6 +22,11 @@ Contents:
    instructions
    pyavrasm
 
+
+Written to support the General Course of Skool to give visibility into
+the process of programming computers.
+
+Based on the ideas of that one guy.
 
 Indices and tables
 ==================

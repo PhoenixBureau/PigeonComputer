@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
     <link rel="top" title="Pigeon Assembler 0.1 documentation" href="index.html" />
-    <link rel="next" title="Pigeon Assembler" href="pyavrasm.html" />
+    <link rel="next" title="Writing out Binary Data" href="writing.html" />
     <link rel="prev" title="Basic Usage" href="basic_usage.html" /> 
   </head>
   <body>
@@ -43,7 +43,7 @@
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="pyavrasm.html">Pigeon Assembler</a>&#160;&#160;»
+        <a href="writing.html">Writing out Binary Data</a>&#160;&#160;»
         </p>
 
       </div>
@@ -52,9 +52,82 @@
         
   <div class="section" id="reading-a-source-file">
 <h1>Reading a Source File<a class="headerlink" href="#reading-a-source-file" title="Permalink to this headline">¶</a></h1>
-<p>Mention dude&#8217;s awesome assembler what gave me the idea for this one.</p>
+<p>The Pigeon Assembler uses its own format for assembly source files. It&#8217;s
+basically a Python file that gets executed within a special context.</p>
+<div class="section" id="miki-tebeka-s-clever-idea">
+<h2>Miki Tebeka&#8217;s Clever Idea<a class="headerlink" href="#miki-tebeka-s-clever-idea" title="Permalink to this headline">¶</a></h2>
+<p>When I was researching assemblers written in Python I came across
+<a class="reference external" href="http://pythonwise.blogspot.com/2012/06/python-based-assembler.html">a fascinating blog post</a>
+describing a very clever trick for implementing an assembler in Python.
+Miki Tebeka realized that he could lean on Python itself for the usual
+tasks of parsing and lexing and he managed to create a custom assembler
+in just two days.</p>
+<p>He used one class per instruction whereas I have a method and a function
+for each instruction.  The assembler uses two passes and the method is
+for the first while the function is for the second.
+See <a class="reference internal" href="pyavrasm.html#assembler-structure"><em>the internals discussion</em></a> for more
+information.</p>
+<p>The basic trick is to define callables that mimic the names of
+assembler instructions and directives and then <tt class="docutils literal"><span class="pre">execfile()</span></tt> the
+&#8220;assembler&#8221; source file within a context that includes them.  The
+callables then create the appropriate binary output.</p>
+</div>
+<div class="section" id="source-format">
+<h2>Source Format<a class="headerlink" href="#source-format" title="Permalink to this headline">¶</a></h2>
+<p>The source format is pure Python and can contain pretty much any code
+you want.  (As one side-effect of this, no special macro facility is
+needed, instead you can simply define Python functions in your
+&#8220;assembler&#8221; source and call them normally to use them.)</p>
+<p>Here&#8217;s a sample of the source format for Pigeon.  It&#8217;s a simple routine
+to initialize the UART perhipheral of the ATmega328P:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">UART_INIT</span><span class="p">)</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">r16</span><span class="p">,</span> <span class="n">high</span><span class="p">(</span><span class="mi">520</span><span class="p">))</span> <span class="c"># 2400 baud w/ 20Mhz osc</span>
+<span class="n">sts</span><span class="p">(</span><span class="n">UBRR0H</span><span class="p">,</span> <span class="n">r16</span><span class="p">)</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">r16</span><span class="p">,</span> <span class="n">low</span><span class="p">(</span><span class="mi">520</span><span class="p">))</span>  <span class="c"># See Datasheet</span>
+<span class="n">sts</span><span class="p">(</span><span class="n">UBRR0L</span><span class="p">,</span> <span class="n">r16</span><span class="p">)</span>
+<span class="c"># The chip defaults to 8N1 so we won&#39;t</span>
+<span class="c"># set it here even though we should.</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">r16</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">TXEN0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">RXEN0</span><span class="p">))</span> <span class="c"># Enable transmit/receive</span>
+<span class="n">sts</span><span class="p">(</span><span class="n">UCSR0B</span><span class="p">,</span> <span class="n">r16</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>As you can see, it&#8217;s Python code yet it closely mimics assembly.  As each
+function is executed it adds a description of the instruction to be
+assembled to a datastructure maintained by the
+<a class="reference internal" href="pyavrasm.html#pyavrasm.AVRAssembly" title="pyavrasm.AVRAssembly"><tt class="xref py py-class docutils literal"><span class="pre">pyavrasm.AVRAssembly</span></tt></a> object managing the assembly process.</p>
+<p>As an example of the pythonic nature of the assembler source code
+consider the following &#8220;macro-ized&#8221; version of the above code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">stsi</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">immediate</span><span class="p">):</span>
+    <span class="n">ldi</span><span class="p">(</span><span class="n">r16</span><span class="p">,</span> <span class="n">immediate</span><span class="p">)</span>
+    <span class="n">sts</span><span class="p">(</span><span class="n">target</span><span class="p">,</span> <span class="n">r16</span><span class="p">)</span>
+
+<span class="n">label</span><span class="p">(</span><span class="n">UART_INIT</span><span class="p">)</span>
+<span class="n">stsi</span><span class="p">(</span><span class="n">UBRR0H</span><span class="p">,</span> <span class="n">high</span><span class="p">(</span><span class="mi">520</span><span class="p">))</span> <span class="c"># 2400 baud w/ 20Mhz osc</span>
+<span class="n">stsi</span><span class="p">(</span><span class="n">UBRR0L</span><span class="p">,</span> <span class="n">low</span><span class="p">(</span><span class="mi">520</span><span class="p">))</span>  <span class="c"># See Datasheet</span>
+<span class="c"># The chip defaults to 8N1 so we won&#39;t</span>
+<span class="c"># set it here even though we should.</span>
+<span class="n">stsi</span><span class="p">(</span><span class="n">UCSR0B</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">TXEN0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">RXEN0</span><span class="p">))</span> <span class="c"># Enable transmit/receive</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>You can see that the &#8220;macro&#8221; is just a Python function.  The resulting
+binary code would be the same.</p>
+<ul class="simple">
+<li><ul class="first">
+<li><ul class="first">
+<li><ul class="first">
+<li></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
 <p>Show off a comparison of Pigeon Assembler&#8217;s source format,
 the Amtel ASM format, and gcc <tt class="docutils literal"><span class="pre">as</span></tt> format.</p>
+</div>
 </div>
 
 
@@ -66,7 +139,7 @@ the Amtel ASM format, and gcc <tt class="docutils literal"><span class="pre">as<
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="pyavrasm.html">Pigeon Assembler</a>&#160;&#160;»
+        <a href="writing.html">Writing out Binary Data</a>&#160;&#160;»
         </p>
 
       </div>

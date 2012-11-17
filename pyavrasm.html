@@ -28,7 +28,7 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
     <link rel="top" title="Pigeon Assembler 0.1 documentation" href="index.html" />
-    <link rel="prev" title="Pigeon Assembler" href="index.html" /> 
+    <link rel="prev" title="Supported Assembly Instructions" href="instructions.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
@@ -38,7 +38,7 @@
       <div class="topnav">
       
         <p>
-        «&#160;&#160;<a href="index.html">Pigeon Assembler</a>
+        «&#160;&#160;<a href="instructions.html">Supported Assembly Instructions</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         </p>
@@ -47,12 +47,20 @@
       <div class="content">
         
         
-  <div class="section" id="module-pyavrasm">
-<span id="pigeon-assembler"></span><h1>Pigeon Assembler<a class="headerlink" href="#module-pyavrasm" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pigeon-assembler">
+<span id="assembler-structure"></span><h1>Pigeon Assembler<a class="headerlink" href="#pigeon-assembler" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="first-pass">
+<h2>First Pass<a class="headerlink" href="#first-pass" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="intermediate-representations">
+<h2>Intermediate Representations<a class="headerlink" href="#intermediate-representations" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="module-pyavrasm">
+<span id="second-pass"></span><h2>Second Pass<a class="headerlink" href="#module-pyavrasm" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="pyavrasm.AVRAssembly">
 <em class="property">class </em><tt class="descclassname">pyavrasm.</tt><tt class="descname">AVRAssembly</tt><big>(</big><em>initial_context=None</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#AVRAssembly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.AVRAssembly" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">instructions.InstructionsMixin</span></tt>, <a class="reference internal" href="#pyavrasm.DirectivesMixin" title="pyavrasm.DirectivesMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyavrasm.DirectivesMixin</span></tt></a>, <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dd><p>Bases: <a class="reference internal" href="instructions.html#instructions.InstructionsMixin" title="instructions.InstructionsMixin"><tt class="xref py py-class docutils literal"><span class="pre">instructions.InstructionsMixin</span></tt></a>, <a class="reference internal" href="#pyavrasm.DirectivesMixin" title="pyavrasm.DirectivesMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyavrasm.DirectivesMixin</span></tt></a>, <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <dl class="method">
 <dt id="pyavrasm.AVRAssembly.assemble">
 <tt class="descname">assemble</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#AVRAssembly.assemble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.AVRAssembly.assemble" title="Permalink to this definition">¶</a></dt>
@@ -103,13 +111,14 @@
 </dd></dl>
 
 </div>
+</div>
 
 
       </div>
       <div class="bottomnav">
       
         <p>
-        «&#160;&#160;<a href="index.html">Pigeon Assembler</a>
+        «&#160;&#160;<a href="instructions.html">Supported Assembly Instructions</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
         </p>
