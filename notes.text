@@ -15,3 +15,22 @@ To set up the working environment start in the toplevel directory and...
 Then run with:
 
     python pyavrasm.py
+
+
+
+
+export CHIP=atmega328p
+export FREQ=20000000
+export SIMAVR_BASE=/home/sforman/Desktop/AVR-et-al/simulators/simavr/simavr
+export HEX_FILE=/home/sforman/Desktop/AVRVM/target.hex
+
+$SIMAVR_BASE/run_avr -g -m $CHIP -f $FREQ -ff $HEX_FILE
+
+
+
+avr-gdb -x AVR-et-al/AVRV/avr-gdb-init.text 
+target remote localhost:1234
+display /9i $pc
+
+avr-gdb --eval-command="target remote localhost:1234"
+

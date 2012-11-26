@@ -155,7 +155,9 @@ PINB	= 0x03,
 
 # ***** USART0 ***********************
 # UDR0 - USART I/O Data Register
-UDR0_0	= 0,	# USART I/O Data Register bit 0
+
+#: USART I/O Data Register bit 0
+UDR0_0	= 0,	
 UDR0_1	= 1,	# USART I/O Data Register bit 1
 UDR0_2	= 2,	# USART I/O Data Register bit 2
 UDR0_3	= 3,	# USART I/O Data Register bit 3
