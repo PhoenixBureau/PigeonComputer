@@ -5,10 +5,8 @@ OUT1 = '*1' .OUT('GN1') /
        '*' .OUT('CI') /
        .STRING .OUT('CL '*) .,
 
-OUTPUT = (
-          '.OUT' '(' $ OUT1 ')' /
-          '.LABEL' .OUT('LB') OUT1
-         )
+OUTPUT = ('.OUT' '(' $ OUT1 ')' /
+          '.LABEL' .OUT('LB') OUT1)
          .OUT('OUT') .,
 
 EX3 = .ID .OUT('CLL '*) /

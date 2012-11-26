@@ -1,8 +1,8 @@
+#!/usr/bin/env python
 '''
-Python implementation of the Meta II compiler
+Python implementation of Val Shorre's Meta II metacompiler.
 '''
 from StringIO import StringIO
-from pprint import pformat
 
 
 class MetaII(object):
@@ -21,9 +21,9 @@ class MetaII(object):
         label = line.strip()
         self.labels[label] = len(self.program)
       
-  def assemble_line(self, op, arg=''):
+  def assemble_line(self, op, arg=None):
     f = getattr(self, op)
-    arg = (arg,) if arg else ()
+    arg = (arg,) if arg is not None else ()
     self.program.append((f, arg))
 
   def compile(self, input_text):
@@ -41,6 +41,9 @@ class MetaII(object):
       op(*args)
       self.PC += 1
     return self.output.getvalue()
+
+  # These are the "order codes" (assembly instructions) for the Meta II
+  # metacompiler machine.
 
   def ADR(self, ident):
     self.PC = self.labels[ident] - 1
@@ -98,12 +101,11 @@ class MetaII(object):
       self.switch = False
 
   def CLL(self, addr):
-    addr = self.labels[addr]
-    push_call_frame(self.stack, self.PC)
-    self.PC = addr - 1
+    self._push_call_frame()
+    self.PC = self.labels[addr] - 1
 
   def R(self):
-    self.PC = pop_call_frame(self.stack)
+    self.PC = self._pop_call_frame()
     if self.PC == -1:
       self.end = True
 
@@ -153,19 +155,34 @@ class MetaII(object):
   def END(self):
     pass
 
+  # Those are the order codes. The rest of these are support methods.
+
   def _left_trim_input(self):
     self.input = self.input.lstrip()
 
   def _out(self, s):
     self.output_buffer += s
 
-  def _get_first_word(self, default=''):
-    i = self.input.split(None, 1)
-    if len(i) == 1:
-      return i[0], default
-    return i
+  def _push_call_frame(self):
+    blank_already = self.stack[-2] is self.stack[-1] is None
+    if blank_already:
+      self.stack.append(None)
+    else:
+      self.stack.extend((None, None, None))
+    self.stack[-3] = blank_already, self.PC
+
+  def _pop_call_frame(self):
+    were_blank, return_address = self.stack[-3]
+    if were_blank:
+      self.stack[-3:] = [None, None]
+    else:
+      del self.stack[-3:]
+    return return_address
+
+  # Some debugging/introspection methods.  (Not strictly needed.)
 
   def info(self):
+    from pprint import pformat
     print 'Stack:', pformat(self.stack)
     print 'last:', repr(self.last), 'switch:', self.switch
     print 'input:', repr(self.input[:20])
@@ -184,28 +201,7 @@ class MetaII(object):
       print '    %3i %3s %r' % (n, f.__name__, a)
 
   def _labels_for_address(self, addr):
-    return ' '.join(
-      k for k, v in self.labels.iteritems()
-      if v == addr
-      )
-
-
-def push_call_frame(stack, addr):
-  blank_already = stack[-2] is stack[-1] is None
-  if blank_already:
-    stack.append(None)
-  else:
-    stack.extend((None, None, None))
-  stack[-3] = blank_already, addr
-
-
-def pop_call_frame(stack):
-  were_blank, return_address = stack[-3]
-  if were_blank:
-    stack[-3:] = [None, None]
-  else:
-    del stack[-3:]
-  return return_address
+    return ' '.join(k for k, v in self.labels.iteritems() if v == addr)
 
 
 def label_generator():
@@ -216,9 +212,12 @@ def label_generator():
 
 
 if __name__ == '__main__':
-  metaii_source = open('metaii.asm').read()
+  metaii_asm = open('metaii.asm').read()
   metaii_description = open('metaii.metaii').read()
   m2 = MetaII()
-  m2.assemble(metaii_source)
-  new_source = m2.compile(metaii_description)
-  print new_source
+  m2.assemble(metaii_asm)
+  new_asm = m2.compile(metaii_description)
+  print new_asm
+  if m2.error:
+    m2.info()
+#  print new_asm.rstrip() == metaii_asm.rstrip()
