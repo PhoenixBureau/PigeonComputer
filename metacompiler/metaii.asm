@@ -153,7 +153,7 @@ EX1
 	CLL EX2
 	BF L30
 L31
-	TST '/'
+	TST '|'
 	BF L32
 	CL 'BT '
 	GN1
@@ -181,7 +181,7 @@ ST
 	BE
 	CLL EX1
 	BE
-	TST '.,'
+	TST ';'
 	BE
 	CL 'R'
 	OUT
