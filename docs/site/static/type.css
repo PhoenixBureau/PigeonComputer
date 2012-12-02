@@ -1,0 +1,34 @@
+/* Toast Framework - type.css */
+body {
+	font-family: 'Oxygen', serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Cutive', sans-serif;
+  font-weight: normal;
+}
+
+p, ul, ol, dl, blockquote {
+    margin-bottom: 1.5em;
+}
+
+
+header {
+  background-image: url('pigeon-jaunty-1.png');
+  background-repeat: no-repeat;
+  background-size: contain;
+  min-height: 333px;
+}
+
+#header-content {
+  background-image: url('mist.png');
+}
+
+h1.title {
+  margin-top: 3em;
+}
+
+p.blurb {
+  background-image: url('mist.png');
+}
+
