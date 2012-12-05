@@ -18,27 +18,176 @@
  <header role="banner">
  <div class="wrap" id="header-content">
   <h1 class="title">Pigeon Computer</h1>
-  <h3 class="tagline">A Simple Homebrew Computer</h3>
+  <h3 class="tagline">Simple, cheap, ubiquitious, and can fly...</h3>
    <hr>
-   <p class="blurb">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+   <p class="blurb">The Pigeon Computer is a simple, cheap, open, 
+    educational system built around the popular <a href="http://www.atmel.com/devices/atmega328p.aspx">ATmega328P</a> micro-chip (used
+    in the <a href="http://en.wikipedia.org/wiki/Arduino">Arduino Uno</a>, for example) and
+    a <a href="https://github.com/PhoenixBureau/PigeonComputer">set of software tools</a> that make
+    programming it straightforward and easy to understand at a very deep
+    level.
  </div>
  </header>
 
 <div class="wrap">
  <div class="grids">
-  <div class="grid-two-thirds">
-   <h2>A Title About Some Stuff</h2>
-   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-   <h2>A Title About Some Stuff</h2>
-   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-   <h2>A Title About Some Stuff</h2>
-   <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+  <div id="content" class="grid-two-thirds">
+
+  <h2><a name="huh">What is a Computer Anyway?</a></h2>
+
+  <p>My name is Simon Forman and I've been a computer programmer and
+  enthusiast since childhood.  I wanted to create a way for regular,
+  every-day people who aren't computer geeks like me, which includes most
+  of my friends and family, to understand the fundamental phenomenon of
+  machine logic.
+
+  <p>The concepts involved are not actually very complex.  Deep 
+  and elegant, yes, but any child who can solve a Sudoku puzzle already has
+  the mental development to grasp the core of computing.
+
+  <p>I suspect that most of the trouble teaching
+  computers to normal people stems directly from the immense leaps
+  of abstraction unwittingly made by teachers already intimately
+  familiar with the ground being abridged.
+
+  <p>There are conceptual acres to cross before
+  confronting Joe or Jane Normal with something like "a = 23".
+
+  <p>Compound that with the hash of interfaces
+  that confront the casual user just to use their computer, let
+  alone program it, and you have a sort of perfect storm of
+  abstraction-haze to confound and confuse the helpless normal
+  despite the inherent simplicity and elegance of the concept(s) of
+  the computer.
+
+  <h2><a name="basics">The Basics</a></h2>
+
+  <p>With the above in mind, here's a draft overview
+  of a curriculum for teaching anybody programming (and
+  thus the deep philosophical and scientific underpinnings
+  too.)
+
+  <h3><a name="one-bit">One-bit memory.</a></h3>
+
+  <p>Lesson One: Make a One-bit memory.
+
+  <p>I'm seriously here, your first lesson is
+  to make a device, no matter how simple, that stores one bit. It
+  can be:
+
+  <ul class="c12" start="1">
+    <li>A coin, flip heads for 1, tails for
+    0.
+
+    <li>A match, horizontal or vertical, head up
+    or head down...
+
+    <li>A short length of string, knotted for 0,
+    untied for 1.
+
+    <li>A rubber-band, knotted for 1, unknotted
+    for 0.
+
+    <li>A business card, horiz. v. vert., front v.
+    back, bent v. straightened.
+
+    <li>Even a light switch from a hardware
+    store.
+  </ul>
+
+  <p>Literally <span class=
+  "c7">any</span><span> binary "storage" scheme could be accepted,
+  as long as the student truly</span> <span class=
+  "c7">gets</span><span> the arbitrary mapping from a physical
+  phenomenon to a binary digit. I am convinced that doing this
+  physically, with real world objects, is crucial. Take your time
+  here, don't rush.  The binary digit is a deep sucker, it just
+  seems so plain on first brush. (Hint: What is the least "stuff"
+  you need to make a bit? Sample rate and resolution...  What the
+  heck "is" a bit anyway? You can't carry it, but you can transmit
+  it, what's up with that? And you can duplicate it? Huh?)</span>
+
+  <h3><a name="mkbyte">Line up eight of them. Make a
+  byte.</a></h3>
+
+  <p>Once you've made a bit-store, the next
+  lesson involves lining them up and flipping them on and off. 
+  Count the states, number them, talk about n-to-the-power-of-two,
+  Grey Codes, I Ching, distinguishable states, Boolean logic, all
+  the deep meanings already present in more-than-one-bit-ness.
+  (Twenty Questions!)
+
+  <p>
+
+  <p>Make concrete the Octet, aka Byte, mention
+  ASCII, signed and unsigned "short" ints, Unicode and encodings
+  (to bytes) and thence sixteen-bit and larger words.
+
+  <h3>Stack up a bunch of bytes. Make RAM.</h3>
+
+  <p>Take some bytes, at least a dozen, and
+  stack them in a column. Count the bytes, introduce the count as
+  naming or indexing the bytes, call it RAM. Show how a few
+  consecutive bytes of RAM can store a string of ASCII codes. Do a
+  couple of math problems using two adjacent bytes as (binary)
+  operands and another byte to store the result. Move a couple of
+  bytes from one area in the RAM to another.
+
+  <h3>Addresses, numbers, operations, naming. (microcode)</h3>
+
+  <p>Wonder at the beauty and greatness of what
+  we've done so far.  We mapped binary digits (bits) to real world
+  phenomenon. We used a simple coding system, algebra in base two,
+  to encode the integers into bit patterns. We created a "strip" or
+  "column" of bits, organized in eight-bit-wide words called bytes
+  or octets, and then numbered those, counted them to name them,
+  and began to use this abacus-like crude machine of ours to
+  perform simple operations like math, logic, and "string"
+  manipulation.
+
+  <h4>The Power of Naming</h4>
+
+  <p>Start to make concrete the steps used to
+  perform these operations.  Use index cards or something and list
+  out the various steps you take in performing a few simple
+  math/logic problems and stuff. Do the counting-to-name-things
+  trick yet again to enumerate the "microcode" you've developed,
+  and lay in a simple program using it.  Act out the Fetch-Execute
+  cycle and let people get used to the idea of how simple it is.
+  Maybe even assign each instruction of microcode to a different
+  person and have the class cooperatively act out the solving of a
+  simple math problem or two according to an in-memory machine
+  language program. (That will prove viscerally that you don't need
+  a brain or mind to "be" a computer. Put another way, some classes
+  of mental operation can be <span class=
+  "c7">automated</span>, carried out by machine.)
+
+  <p>(You would also introduce the idea that
+  RAM can be a lot larger than just a dozen bytes or so, and likely
+  mention registers too.)
+
+  <h3>Parsing, Grammar, Compiling.</h3>
+
+  <p>Ahem, some about that.
+
   </div>
   <div class="grid-4">
-   <ul>
-    <li>Foo
-    <li>Bar
-    <li>Baz
+   <ul class="toc">
+    <li><a href="#huh">What is a Computer Anyway?</a>
+    <li><a href="#basics">The Basics</a>
+       <ul class="toc">
+        <li><a href="#one-bit">One-bit memory.</a>
+        <li><a href="#mkbyte">Make a byte.</a>
+        <li><a href="#mkram">Make RAM.</a>
+        <li><a href="#mkram">The Power of Naming.</a>
+        <li><a href="#metaii">Parsing, Grammar, Compiling.</a>
+       </ul>
+    <li><a href="#">The Embellishments</a>
+    <li><a href="#">Constructing Programs to Solve Problems</a>
+    <li><a href="#">The Assembler</a>
+    <li><a href="#">The Meta-Compiler</a>
+    <li><a href="#">The Simulator Suite</a>
+    <li><a href="#"></a>
    </ul>
   </div>
  </div>
