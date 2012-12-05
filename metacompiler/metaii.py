@@ -16,7 +16,7 @@ class MetaII(object):
       if not line or line.isspace():
         continue
       if line[0].isspace():
-        self.assemble_line(*line.split(None, 1))
+        self.program.append(self.assemble_line(*line.split(None, 1)))
       else:
         label = line.strip()
         self.labels[label] = len(self.program)
@@ -24,7 +24,7 @@ class MetaII(object):
   def assemble_line(self, op, arg=None):
     f = getattr(self, op)
     arg = (arg,) if arg is not None else ()
-    self.program.append((f, arg))
+    return f, arg
 
   def compile(self, input_text):
     self.switch = False
