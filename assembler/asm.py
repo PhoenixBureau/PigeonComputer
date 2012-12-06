@@ -8,6 +8,7 @@ define(Base=r8)
 define(number_pointer=r9)
 define(find_buffer_char=r10)
 define(find_name_char=r11)
+define(temp_length=r12)
 
 
 
@@ -321,8 +322,14 @@ label(FIND_PFA)
 
 mov(word_counter, TOS)
 st_post_incr(Y, TOSL)
-ldi(TOSL, low(INTERPRET))
-ldi(TOS, high(INTERPRET))
+
+# Define this "manually" here to compensate for the fact that high() and
+# low() below will compute and return their results immediately rather
+# than during pass 2  Should FIXME in the future.
+DICTIONARY_START = 0x2a0
+
+ldi(TOSL, low(DICTIONARY_START))
+ldi(TOS, high(DICTIONARY_START))
 
 label(_look_up_word)
 cpi(TOSL, 0x00)
@@ -391,6 +398,7 @@ brcc(_done_adding)
 inc(TOS)           # Account for the carry bit if set.
 label(_done_adding)
 ret()
+
 
 word_header(INTERPRET, "interpret") # = - - - - - - - - - - - -
 label(INTERPRET_PFA)
