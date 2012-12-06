@@ -20,7 +20,7 @@ class MetaII(object):
       else:
         label = line.strip()
         self.labels[label] = len(self.program)
-      
+
   def assemble_line(self, op, arg=None):
     f = getattr(self, op)
     arg = (arg,) if arg is not None else ()
@@ -138,7 +138,7 @@ class MetaII(object):
     if not cell:
       cell = self.stack[-1] = self.q()
     self._out(cell)
-    
+
   def GN2(self):
     cell = self.stack[-2]
     if not cell:
