@@ -517,8 +517,8 @@ class InstructionsMixin(object):
     return target, source
 
   @instr
-  def sbiw(self, target, source):
-    return target >> 1, source
+  def sbiw(self, target, immediate):
+    return target >> 1, immediate << 1
 
   @instr
   def lsr(self, address):
