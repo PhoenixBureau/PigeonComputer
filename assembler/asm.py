@@ -1,42 +1,43 @@
 
-
 define(TOS=r27)
 define(TOSL=r26)
+
 define(Working=r16)
+
 define(word_counter=r17)
+
 define(Base=r8)
+
 define(number_pointer=r9)
+
 define(find_buffer_char=r10)
 define(find_name_char=r11)
+
 define(temp_length=r12)
 
-
-
 org(SRAM_START)
+
 buffer_length = 0x40
 label(buffer, reserves=buffer_length)
-label(data_stack)
 
+label(data_stack)
 
 # Macros.
 
-
 def popup():
   ld_pre_decr(TOSL, Y)
-
 
 def pushdownw():
   st_post_incr(Y, TOSL)
   st_post_incr(Y, TOS)
 
-
 def popupw():
   ld_pre_decr(TOS, Y)
   ld_pre_decr(TOSL, Y)
 
-
 org(0x0000)
 jmp(RESET)
+
 for _ in range(25):   # There are 25 interrupt vectors.
   jmp(BAD_INTERUPT)
 
@@ -81,7 +82,6 @@ ldi(r16, (1 << TXEN0) | (1 << RXEN0)) # Enable transmit/receive
 sts(UCSR0B, r16)
 ret()
 
-
 _last_defined_word = 0x0000
 def word_header(label_, name):
   global _last_defined_word
@@ -90,8 +90,8 @@ def word_header(label_, name):
   db(len(name), name)
   _last_defined_word = label_
 
-
 word_header(KEY, "key") # = - - - - - - - - - - - -
+
 label(KEY_PFA)
 lds(Working, UCSR0A)
 sbrs(Working, RXC0)
@@ -116,6 +116,7 @@ rcall(DROP_PFA)
 ret()
 
 word_header(ECHO, "echo") # = - - - - - - - - - - - -
+
 label(ECHO_PFA)
 lds(Working, UCSR0A)
 sbrs(Working, UDRE0)
@@ -132,6 +133,7 @@ ret()
 
 word_header(WORD, "word") # = - - - - - - - - - - - -
 label(WORD_PFA)
+
 rcall(KEY_PFA)
 
 cpi(TOS, ' ')
@@ -318,6 +320,7 @@ rcall(ECHO_PFA)
 rjmp(_inny)
 
 word_header(FIND, "find") # = - - - - - - - - - - - -
+
 label(FIND_PFA)
 
 mov(word_counter, TOS)
@@ -399,7 +402,6 @@ inc(TOS)           # Account for the carry bit if set.
 label(_done_adding)
 ret()
 
-
 word_header(INTERPRET, "interpret") # = - - - - - - - - - - - -
 label(INTERPRET_PFA)
 
@@ -433,4 +435,3 @@ rcall(TPFA_PFA)
 movw(Z, X)
 popupw()
 ijmp()
-
