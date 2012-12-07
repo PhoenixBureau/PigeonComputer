@@ -1,2 +1,4 @@
 intelhex==1.4
 pexpect==2.3
+BeautifulSoup==3.2.1
+Sphinx==1.1.3

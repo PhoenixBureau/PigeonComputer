@@ -17,6 +17,13 @@ Then run with:
     python pyavrasm.py
 
 
+To generate the asm.py file from the pigeon_firmware.rst file:
+
+    cd assembler
+    ./rest2asm.py ../docs/pigeon_firmware.rst > asm.py 
+
+=============================================================================
+Miscellaneous notes:
 
 
 export CHIP=atmega328p
