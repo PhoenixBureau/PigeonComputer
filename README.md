@@ -31,5 +31,5 @@ control on the simulator.  Neat..
 
 [1]: http://www.atmel.com/devices/atmega328p.aspx
 
-[1]: http://pythonwise.blogspot.com/2012/06/python-based-assembler.html
+[2]: http://pythonwise.blogspot.com/2012/06/python-based-assembler.html
 
