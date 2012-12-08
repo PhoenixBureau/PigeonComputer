@@ -5,7 +5,7 @@ Pigeon Assembler
 ============================================
 
 The Pigeon Assembler is a simple assembler targetting the popular
-ATmega328P microcontroller.  It is designed to be easy to read and
+`ATmega328P`_ microcontroller.  It is designed to be easy to read and
 understand and the main code is just a few pages of Python.
 
 Contents:
@@ -19,4 +19,8 @@ Contents:
    m328P
    instructions
    pyavrasm
+
+
+.. _ATmega328P: http://www.atmel.com/devices/atmega328p.aspx
+
 

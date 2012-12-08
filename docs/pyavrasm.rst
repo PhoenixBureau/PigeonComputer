@@ -1,7 +1,7 @@
 .. _assembler-structure:
 
-Pigeon Assembler
-============================================
+Pigeon Assembler Internals
+==========================
 
 
 First Pass

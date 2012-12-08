@@ -18,7 +18,7 @@ Pigeon Firmware
 Introduction
 ------------
 
-This is a simple Forth-like firmware for ATmega328P micro-controllers.
+This is a simple Forth-like firmware for `ATmega328P`_ micro-controllers.
 
 The system in general probably won't make much sense unless you're
 already at least a little familiar with Forth. Two helpful sources are
@@ -30,6 +30,8 @@ noodling around and creating the easiest version of whatever seems like it
 will work.  It's also my first attempt at writing assembly code in over
 a decade, and the first time using AVR assembly, so there are certainly
 going to be some, uh, less-than-perfect code. Please bear with me.
+
+.. _ATmega328P: http://www.atmel.com/devices/atmega328p.aspx
 
 .. _Pololu Baby Orangutan robot controller: http://www.pololu.com/catalog/product/1220
 

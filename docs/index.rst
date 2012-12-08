@@ -5,13 +5,15 @@ Pigeon Computer
 ============================================
 
 The Pigeon Computer is a simple computer based on the popular
-ATmega328P microcontroller.
+`ATmega328P`_ microcontroller.
+
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
 
+   curiculum
    assembler
    compiler
    pigeon_firmware
@@ -27,4 +29,7 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+
+.. _ATmega328P: http://www.atmel.com/devices/atmega328p.aspx
 
