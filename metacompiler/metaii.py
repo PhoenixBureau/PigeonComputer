@@ -213,7 +213,7 @@ def label_generator():
 
 if __name__ == '__main__':
   metaii_asm = open('metaii.asm').read()
-  metaii_description = open('metaii.metaii').read()
+  metaii_description = open('metaii.pyavrasm.metaii').read()
   m2 = MetaII()
   m2.assemble(metaii_asm)
   new_asm = m2.compile(metaii_description)

@@ -1,32 +1,51 @@
 .SYNTAX PROGRAM
 
-OUT1 = '*1' .OUT('GN1') |
-       '*2' .OUT('GN2') |
-       '*' .OUT('CI') |
-       .STRING .OUT('CL '*) ;
+OUT1 = '*1' .OUT('gen_label_1()') |
+       '*2' .OUT('gen_label_2()') |
+       '*' .OUT('copy_input()') |
+       .STRING .OUT('copy_literal(' * ')') ;
 
 OUTPUT = ('.OUT' '(' $ OUT1 ')' |
           '.LABEL' .OUT('LB') OUT1)
-         .OUT('OUT') ;
+         .OUT('output_line()') ;
 
-EX3 = .ID .OUT('CLL '*) |
-      .STRING .OUT('TST '*) |
-      '.ID' .OUT('ID') |
-      '.NUMBER' .OUT('NUM') |
-      '.STRING' .OUT('SR') |
+EX3 = .ID .OUT('call(' * ')') |
+      .STRING .OUT('startswith(' * ')') |
+      '.ID' .OUT('identifier()') |
+      '.NUMBER' .OUT('number()') |
+      '.STRING' .OUT('string()') |
       '(' EX1 ')' |
-      '.EMPTY' .OUT('SET') |
-      '$' .LABEL *1 EX3 .OUT('BT ' *1) .OUT('SET') ;
+      '.EMPTY' .OUT('sbr(switch_reg, 1 << switch_bit)') |
+      '$' .OUT('label(' *1 ')') EX3
+       .OUT('sbrc(switch_reg, switch_bit)')
+       .OUT('jmp(' *1 ')')
+       .OUT('sbr(switch_reg, 1 << switch_bit)') ;
 
-EX2 = (EX3 .OUT('BF ' *1) | OUTPUT) $ (EX3 .OUT('BE') | OUTPUT)
-      .LABEL *1 ;
+EX2 = (EX3
+        .OUT('sbrs(switch_reg, switch_bit)')
+        .OUT('jmp(' *1 ')')
+       | OUTPUT)
+    $ (EX3
+        .OUT('sbrs(switch_reg, switch_bit)')
+        .OUT('jmp(ERROR)')
+       | OUTPUT)
+      .OUT('label(' *1 ')') ;
 
-EX1 = EX2 $('|' .OUT('BT ' *1) EX2 )
-      .LABEL *1 ;
+EX1 = EX2 $('|'
+             .OUT('sbrc(switch_reg, switch_bit)')
+             .OUT('jmp(' *1 ')')
+            EX2 )
+      .OUT('label(' *1 ')') ;
 
-ST = .ID .LABEL * '=' EX1 ';' .OUT('R') ;
+ST = .ID .OUT('label(' * ') # subroutine ==========')
+       '=' EX1 ';' .OUT('ret()') .OUT('') ;
 
-PROGRAM = '.SYNTAX' .ID .OUT('ADR ' *) $ ST '.END' .OUT('END') ;
+PROGRAM = '.SYNTAX' .ID
+             .OUT('define(switch_bit=0)')
+             .OUT('define(switch_reg=r0)')
+             .OUT('')
+             .OUT('label(' * ')')
+          $ ST '.END' .OUT('#END') ;
 
 .END
 
