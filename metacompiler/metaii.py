@@ -212,8 +212,19 @@ def label_generator():
 
 
 if __name__ == '__main__':
-  metaii_asm = open('metaii.asm').read()
-  metaii_description = open('metaii.pyavrasm.metaii').read()
+  from argparse import ArgumentParser
+  parser = ArgumentParser(description=__doc__)
+  parser.add_argument(
+    '-p', '--program',
+    default='metaii.asm',
+    help='Assembly file to use for compiler (default: %(default)s).',
+    )
+  parser.add_argument('source', help='Source code file to compile.')
+  args = parser.parse_args()
+
+  metaii_asm = open(args.program).read()
+  metaii_description = open(args.source).read()
+
   m2 = MetaII()
   m2.assemble(metaii_asm)
   new_asm = m2.compile(metaii_description)
