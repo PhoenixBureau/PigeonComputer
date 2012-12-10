@@ -1,12 +1,50 @@
 #!/usr/bin/env python
 '''
-Python implementation of Val Shorre's Meta II metacompiler.
+==========================================
+Meta II Meta-Compiler
+==========================================
+
+This is a Python implementation of Val Shorre's `Meta II metacompiler`_.
+
+It is just the engine, the Meta-II machine, *not* a self-regenerating
+metacompiler.  It *does* run the Meta-II assembly code and can scan the
+Meta-II compiler description and (re-)compile that assembly code.
+
+This engine can be used to play with metacompilers and generate all sorts
+of cool and interesting things (see the Bayfront Technologies
+`Metacompilers Tutorial`_.)  We're going to use it to target the Pigeon
+Assembler's source format.
+
+We can compile descriptions of high-level programming language constructs
+into assembly code and then use the assembler to generate HEX files to
+load on our chips, giving us a simple but powerful *toolchain* for
+developing code for our micro-controllers.
+
+
+.. _Meta II metacompiler: http://en.wikipedia.org/wiki/META_II
+
+.. _Metacompilers Tutorial: http://www.bayfronttechnologies.com/mc_tutorial.html
+
 '''
 from StringIO import StringIO
 
 
 class MetaII(object):
+  '''
+  Implementation of Val Shorre's Meta II metacompiler.
+  (see http://en.wikipedia.org/wiki/META_II)
 
+  usage: metaii.py [-h] [-p PROGRAM] source
+
+  positional arguments:
+    source                Source code file to compile.
+
+  optional arguments:
+    -h, --help            show this help message and exit
+    -p PROGRAM, --program PROGRAM
+                          Assembly file to use for compiler (default:
+                          metaii.asm).
+  '''
   def __init__(self):
     self.program = []
     self.labels = {}
