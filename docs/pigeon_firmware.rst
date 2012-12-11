@@ -17,6 +17,10 @@ Pigeon Firmware
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+
+.. contents::
+
+
 Introduction
 ------------
 
@@ -98,7 +102,7 @@ Base (numeric base for converting digits to numbers)::
 
   define(Base=r8)
 
-Number keeps track of the digits it is comverting using this register::
+Number keeps track of the digits it is converting using this register::
 
   define(number_pointer=r9)
 
