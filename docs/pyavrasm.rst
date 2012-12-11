@@ -38,6 +38,15 @@ Intermediate Representations
 Second Pass
 -----------
 
+When you call :py:meth:`pyavrasm.AVRAssembly.pass2` the assembler goes
+through the :py:attr:`pyavrasm.AVRAssembly.data` dictionary and calls the
+bit-pattern-generating op functions with the associated arguments.  The
+returned binary strings are compiled into another dictionary, keyed by
+their target addresses.
+
+This dictionary is used by the :py:meth:`pyavrasm.AVRAssembly.to_hex`
+method to generate the HEX format output.
+
 
 .. automodule:: pyavrasm
 

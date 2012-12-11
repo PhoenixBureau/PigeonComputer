@@ -1,4 +1,4 @@
-Appendix: Supported Assembly Instructions
+Appendix B: Supported Assembly Instructions
 ============================================
 
 Currently forty-three instructions are implemented.
