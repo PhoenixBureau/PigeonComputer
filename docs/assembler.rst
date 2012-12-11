@@ -16,8 +16,6 @@ Contents:
    basic_usage
    reading
    writing
-   m328P
-   instructions
    pyavrasm
 
 

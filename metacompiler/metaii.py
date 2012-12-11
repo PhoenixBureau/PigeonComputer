@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 '''
 ==========================================
-Meta II Meta-Compiler
+Meta II Meta-Compiler (Python Engine)
 ==========================================
 
 This is a Python implementation of Val Shorre's `Meta II metacompiler`_.

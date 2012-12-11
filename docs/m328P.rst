@@ -1,4 +1,4 @@
-ATmega328P Definitions
+Appendix: ATmega328P Definitions
 ============================================
 
 .. automodule:: m328P_def

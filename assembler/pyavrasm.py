@@ -4,7 +4,7 @@
 Python AVR Assembler
 ====================
 
-
+This is the Pigeon Assembler.
 '''
 import pprint
 from collections import defaultdict
@@ -153,6 +153,19 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
   Then you're probably going to want to call the ``to_hex()`` method to
   get that binary data out as (the contents of) a hex file, suitable for
   writing to your ATmega328P.
+
+  When you create an :py:class:`AVRAssembly` object you can pass an
+  initial_context object, a ``dict`` or anything that can be passed to
+  ``dict.update()``, and it will be added to the execution context for
+  your asm code.  Typically you would pass :py:obj:`m328P_def.defs` to
+  include those definition for your code to use.
+
+  :param initial_context: Context to include to make things available
+     to your assembler code.  (:py:obj:`m328P_def.defs` or some other
+     useful functions for example.)
+  :type initial_context: ``dict`` or anything that can be passed to
+     ``dict.update()``
+
   '''
 
   def __init__(self, initial_context=None):

@@ -17,6 +17,8 @@ Contents:
    assembler
    compiler
    pigeon_firmware
+   m328P
+   instructions
 
 
 Written to support the General Course of Skool to give visibility into

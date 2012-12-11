@@ -1,3 +1,5 @@
+.. _Pigeon Firmware:
+
 ===============
 Pigeon Firmware
 ===============
