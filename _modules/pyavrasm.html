@@ -46,6 +46,14 @@
         
         
   <h1>Source code for pyavrasm</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">====================</span>
+<span class="sd">Python AVR Assembler</span>
+<span class="sd">====================</span>
+
+
+<span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">import</span> <span class="nn">pprint</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">pack</span>
@@ -64,10 +72,20 @@
 
 <div class="viewcode-block" id="DirectivesMixin"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin">[docs]</a><span class="k">class</span> <span class="nc">DirectivesMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
   <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">  I am a docstring!</span>
+<span class="sd">  These are *directives*, assembler functions that don&#39;t correspond to op</span>
+<span class="sd">  codes but instead do some sort of other function.</span>
 <span class="sd">  &#39;&#39;&#39;</span>
 
 <div class="viewcode-block" id="DirectivesMixin.define"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin.define">[docs]</a>  <span class="k">def</span> <span class="nf">define</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">defs</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Update one or more names in the execution namespace.  The main</span>
+<span class="sd">    difference between using this function and simply setting a variable</span>
+<span class="sd">    in your asm code is that this function automatically converts</span>
+<span class="sd">    integer value(s) into ``intbv`` object(s).</span>
+
+<span class="sd">    :param defs: ``&lt;name&gt;=&lt;value&gt;`` pairs</span>
+<span class="sd">    :rtype: ``None``</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">defs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
       <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">defs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span> <span class="o">=</span> <span class="n">ibv</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
@@ -75,11 +93,45 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">defs</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="DirectivesMixin.org"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin.org">[docs]</a>  <span class="k">def</span> <span class="nf">org</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Set the current output address of the assembly process to</span>
+<span class="sd">    ``address``.  If ``address`` isn&#39;t an ``intbv`` it is converted to</span>
+<span class="sd">    one.</span>
+
+<span class="sd">    :param address: Location in program.</span>
+<span class="sd">    :type address: ``intbv``, ``int``, or symbolic label.</span>
+<span class="sd">    :rtype: ``None``</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">address</span> <span class="o">=</span> <span class="n">ibv</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
     <span class="k">print</span> <span class="s">&#39;setting org to </span><span class="si">%#06x</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">address</span><span class="p">,)</span>
     <span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">here</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="DirectivesMixin.label"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin.label">[docs]</a>  <span class="k">def</span> <span class="nf">label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_thunk</span><span class="p">,</span> <span class="n">reserves</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Create a symbolic label at the current output address of the assembly</span>
+<span class="sd">    process. If ``reserves`` is given (and greater than zero) that many</span>
+<span class="sd">    bytes are reserved by adding the value to the current output address.</span>
+
+<span class="sd">    :param label_thunk: An ``intbv`` object serving as a container for a</span>
+<span class="sd">       pointer value to an address in your assembly program.</span>
+
+<span class="sd">       When you mention a previously unused name in your asm code the</span>
+<span class="sd">       execution context will automatically provide that name with a new</span>
+<span class="sd">       ``intbv`` object initialized to zero.</span>
+
+<span class="sd">       Because this ``intbv`` object will be (re-)used in other parts of</span>
+<span class="sd">       your program wherever the name is used it becomes a container for</span>
+<span class="sd">       the eventual value (a thunk) of the address.</span>
+
+<span class="sd">       When you use this *directive* with a given named address thunk</span>
+<span class="sd">       (label) it fills in the value of the current output address of the</span>
+<span class="sd">       assembly process.</span>
+<span class="sd">    :type label_thunk: ``intbv``</span>
+<span class="sd">    :param reserves: Reserve this many bytes by increasing the current</span>
+<span class="sd">       output address of the assembly process.</span>
+<span class="sd">    :type reserves: ``int``</span>
+<span class="sd">    :rtype: ``None``</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label_thunk</span><span class="p">,</span> <span class="n">intbv</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="n">label_thunk</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">label_thunk</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">label_thunk</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_of_address_thunk</span><span class="p">(</span><span class="n">label_thunk</span><span class="p">)</span>
@@ -90,6 +142,13 @@
       <span class="bp">self</span><span class="o">.</span><span class="n">here</span> <span class="o">+=</span> <span class="n">reserves</span>
 </div>
 <div class="viewcode-block" id="DirectivesMixin.dw"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin.dw">[docs]</a>  <span class="k">def</span> <span class="nf">dw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Lay down unsigned 16-bit integer values in the program image.</span>
+
+<span class="sd">    :param values: Integer values to assemble.</span>
+<span class="sd">    :type values: iterable of ``int``</span>
+<span class="sd">    :rtype: ``None``</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_here</span><span class="p">()</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">compute_dw</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
     <span class="n">nbytes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -98,6 +157,14 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">here</span> <span class="o">+=</span> <span class="n">nbytes</span>
 </div>
 <div class="viewcode-block" id="DirectivesMixin.db"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin.db">[docs]</a>  <span class="k">def</span> <span class="nf">db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Lay down bytes in the program image. Integers 0 &lt;= n &lt;= 255 and</span>
+<span class="sd">    strings are accepted.</span>
+
+<span class="sd">    :param values: Values to assemble.</span>
+<span class="sd">    :type values: iterable of ``int`` and/or ``string`` values</span>
+<span class="sd">    :rtype: ``None``</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_here</span><span class="p">()</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">compute_db</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
     <span class="n">nbytes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -113,9 +180,47 @@
 
 </div>
 <div class="viewcode-block" id="AVRAssembly"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.AVRAssembly">[docs]</a><span class="k">class</span> <span class="nc">AVRAssembly</span><span class="p">(</span><span class="n">InstructionsMixin</span><span class="p">,</span> <span class="n">DirectivesMixin</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+  <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">  This is the primary assembler object.  It is created out of the</span>
+<span class="sd">  InstructionsMixin and DirectivesMixin, which together define the</span>
+<span class="sd">  functions that you use in your assembly code, and the methods in this</span>
+<span class="sd">  class which run the assembly proper.</span>
+
+<span class="sd">  Assembling a file is a two-pass process.</span>
+
+<span class="sd">  First, the text of the asm</span>
+<span class="sd">  code is passed to the ``assemble()`` method (or you can pass a file name</span>
+<span class="sd">  to ``assemble_file()``) which builds up an internal model of the op</span>
+<span class="sd">  codes to be assembled.</span>
+
+<span class="sd">  Second, you call ``pass2()`` which converts the internal model of the</span>
+<span class="sd">  op codes to be assembled into a dictionary that maps addresses in the</span>
+<span class="sd">  output machine code to the byte strings of the data that should reside</span>
+<span class="sd">  at those addresses.</span>
+
+<span class="sd">  Then you&#39;re probably going to want to call the ``to_hex()`` method to</span>
+<span class="sd">  get that binary data out as (the contents of) a hex file, suitable for</span>
+<span class="sd">  writing to your ATmega328P.</span>
+<span class="sd">  &#39;&#39;&#39;</span>
 
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_context</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+
+    <span class="c">#: This is the execution context for your assembly file.  It is used</span>
+    <span class="c">#: as the namespace for ``exec`` or ``execfile`` for parsing and</span>
+    <span class="c">#: running your code.</span>
+    <span class="c">#:</span>
+    <span class="c">#: Because it&#39;s a ``defaultdict`` and the default factory function</span>
+    <span class="c">#: returns ``intbv`` objects **any** name (identifier) that you use</span>
+    <span class="c">#: in your code that is not previously defined will automatically</span>
+    <span class="c">#: generate a new variable binding.</span>
+    <span class="c">#:</span>
+    <span class="c">#: That is how labels work: you simply use a label and it gets its</span>
+    <span class="c">#: own ``intbv`` object.  Then when you use the ``label()``</span>
+    <span class="c">#: *directive* on that label the ``intbv`` gets updated with the</span>
+    <span class="c">#: actual current output address, and that value will be used to</span>
+    <span class="c">#: assemble the proper bit patterns in ``pass2()``.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">context</span> <span class="o">=</span> <span class="n">defaultdict</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="n">int2addr</span><span class="p">(</span><span class="mi">0</span><span class="p">))</span>
+
     <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_instruction_namespace</span><span class="p">())</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_directives</span><span class="p">())</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">((</span><span class="n">f</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="p">(</span>
@@ -127,26 +232,61 @@
     <span class="k">if</span> <span class="n">initial_context</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">initial_context</span><span class="p">)</span>
 
+    <span class="c">#: Current output address of the assembly process.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">here</span> <span class="o">=</span> <span class="n">int2addr</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+
+    <span class="c">#: Internal intermediate data structure.  This holds the output of</span>
+    <span class="c">#: the methods in the ``InstructionsMixin`` used to create the byte</span>
+    <span class="c">#: strings in ``pass2()``.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
 
 <div class="viewcode-block" id="AVRAssembly.assemble"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.AVRAssembly.assemble">[docs]</a>  <span class="k">def</span> <span class="nf">assemble</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Assemble the string asm source code.</span>
+
+<span class="sd">    :param text: Assembly source code.</span>
+<span class="sd">    :type text: ``str``</span>
+<span class="sd">    :rtype: ``None``</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">exec</span> <span class="n">text</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span>
     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s">&#39;__builtins__&#39;</span><span class="p">]</span>
 </div>
 <div class="viewcode-block" id="AVRAssembly.assemble_file"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.AVRAssembly.assemble_file">[docs]</a>  <span class="k">def</span> <span class="nf">assemble_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Assemble asm source code from a named file.</span>
+
+<span class="sd">    :param filename: File name of an assembly source code file.</span>
+<span class="sd">    :type filename: ``str``</span>
+<span class="sd">    :rtype: ``None``</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="nb">execfile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s">&#39;__builtins__&#39;</span><span class="p">]</span>
 </div>
 <div class="viewcode-block" id="AVRAssembly.pass2"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.AVRAssembly.pass2">[docs]</a>  <span class="k">def</span> <span class="nf">pass2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Second pass of the assembly process.</span>
+
+<span class="sd">    Once the asm source code has been assembled into the intermediate</span>
+<span class="sd">    form (by ``assemble()`` or ``assemble_file()``) this method converts</span>
+<span class="sd">    it into binary strings.</span>
+
+<span class="sd">    :rtype: Mapping of addresses to strings (binary data) this data</span>
+<span class="sd">       structure is the end result of the assembly process, just before</span>
+<span class="sd">       emitting the strings in e.g. Intel HEX format for burning to a</span>
+<span class="sd">       chip.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">accumulator</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">addr</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
       <span class="n">instruction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span>
       <span class="n">op</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">instruction</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">instruction</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
 
       <span class="c"># Adjust addresses for relative ops.</span>
-      <span class="k">if</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;rcall&#39;</span><span class="p">,</span> <span class="s">&#39;rjmp&#39;</span><span class="p">,</span> <span class="s">&#39;brne&#39;</span><span class="p">,</span> <span class="s">&#39;breq&#39;</span><span class="p">):</span>
+      <span class="k">if</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;rcall&#39;</span><span class="p">,</span> <span class="s">&#39;rjmp&#39;</span><span class="p">,</span> <span class="s">&#39;brne&#39;</span><span class="p">,</span> <span class="s">&#39;breq&#39;</span><span class="p">,</span> <span class="s">&#39;brlo&#39;</span><span class="p">,</span> <span class="s">&#39;brcc&#39;</span><span class="p">,</span> <span class="s">&#39;brsh&#39;</span><span class="p">):</span>
         <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_adjust</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">ibv</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mi">16</span><span class="p">)))</span>
+
+      <span class="c"># see instruction in Amtel manual.</span>
+      <span class="k">elif</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;clr&#39;</span><span class="p">,</span> <span class="s">&#39;lsl&#39;</span><span class="p">):</span>
+        <span class="n">args</span> <span class="o">=</span> <span class="n">args</span> <span class="o">+</span> <span class="n">args</span>
 
       <span class="n">opf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ops</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="k">lambda</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">args</span><span class="p">))</span>
       <span class="n">n</span><span class="p">,</span> <span class="n">data</span> <span class="o">=</span> <span class="n">opf</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
@@ -222,8 +362,8 @@
       <span class="n">ih</span><span class="o">.</span><span class="n">puts</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
       <span class="k">print</span> <span class="s">&#39;non-str&#39;</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-<span class="c">##  ih.dump(tofile=open(&#39;pavr.hex&#39;, &#39;w&#39;))</span>
-  <span class="n">ih</span><span class="o">.</span><span class="n">dump</span><span class="p">()</span>
+  <span class="n">ih</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">tofile</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;pavr.hex&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">))</span>
+<span class="c">##  ih.dump()</span>
 </pre></div>
 
       </div>

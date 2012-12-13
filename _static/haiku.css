@@ -22,6 +22,7 @@
  */
 
 @import url("basic.css");
+@import url(http://fonts.googleapis.com/css?family=Cutive|Oxygen:400,700);
 
 html {
     margin: 0px;
@@ -33,10 +34,14 @@ body {
     line-height: 1.5;
     margin: auto;
     padding: 0px;
-    font-family: "DejaVu Sans", Arial, Helvetica, sans-serif;
+    font-family: 'Oxygen', serif;
     min-width: 59em;
     max-width: 70em;
     color: #333333;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	font-family: 'Cutive', sans-serif;
 }
 
 div.footer {

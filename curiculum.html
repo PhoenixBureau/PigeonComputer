@@ -1,0 +1,162 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>What is a Computer Anyway? &mdash; Pigeon Assembler 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Assembler 0.1 documentation" href="index.html" />
+    <link rel="next" title="Pigeon Assembler" href="assembler.html" />
+    <link rel="prev" title="Pigeon Computer" href="index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Pigeon Assembler 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>What is a Computer Anyway?</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">Pigeon Computer</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="assembler.html">Pigeon Assembler</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="what-is-a-computer-anyway">
+<h1>What is a Computer Anyway?<a class="headerlink" href="#what-is-a-computer-anyway" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="unlike-magnets-computers-can-be-explained">
+<h2>Unlike Magnets, Computers <em>can</em> be Explained<a class="headerlink" href="#unlike-magnets-computers-can-be-explained" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="the-bit">
+<h2>The Bit<a class="headerlink" href="#the-bit" title="Permalink to this headline">¶</a></h2>
+<p>Make a One-bit memory.</p>
+<p>I&#8217;m seriously here, your first lesson is to make a device, no matter how
+simple, that stores one bit. It can be:</p>
+<ul class="simple">
+<li>A coin, flip heads for 1, tails for 0.</li>
+<li>A match, horizontal or vertical, head up or head down...</li>
+<li>A short length of string, knotted for 0, untied for 1.</li>
+<li>A rubber-band, knotted for 1, unknotted for 0.</li>
+<li>A business card, horiz. v. vert., front v. back, bent v. straightened.</li>
+<li>Even a light switch from a hardware store.</li>
+</ul>
+<p>Literally any binary &#8220;storage&#8221; scheme could be accepted, as long as the
+student truly gets the arbitrary mapping from a physical phenomenon to a
+binary digit. I am convinced that doing this physically, with real world
+objects, is crucial. Take your time here, don&#8217;t rush. The binary digit is
+a deep sucker, it just seems so plain on first brush. (Hint: What is the
+least &#8220;stuff&#8221; you need to make a bit? Sample rate and resolution... What
+the heck &#8220;is&#8221; a bit anyway? You can&#8217;t carry it, but you can transmit it,
+what&#8217;s up with that? And you can duplicate it? Huh?)</p>
+</div>
+<div class="section" id="line-up-eight-of-them-make-a-byte">
+<h2>Line up eight of them. Make a byte.<a class="headerlink" href="#line-up-eight-of-them-make-a-byte" title="Permalink to this headline">¶</a></h2>
+<p>Once you&#8217;ve made a bit-store, the next lesson involves lining them up and
+flipping them on and off.</p>
+<p>Count the states, number them, talk about:</p>
+<ul class="simple">
+<li>n-to-the-power-of-two</li>
+<li>Grey Codes</li>
+<li>I Ching</li>
+<li>distinguishable states</li>
+<li>Boolean logic</li>
+<li>all the deep meanings already present in more-than-one-bit-ness. (Twenty Questions!)</li>
+</ul>
+<p>Make concrete the Octet, aka Byte, mention ASCII, signed and unsigned
+&#8220;short&#8221; ints, Unicode and encodings (to bytes) and thence sixteen-bit and
+larger words.</p>
+</div>
+<div class="section" id="stack-up-a-bunch-of-bytes-make-ram">
+<h2>Stack up a bunch of bytes. Make RAM.<a class="headerlink" href="#stack-up-a-bunch-of-bytes-make-ram" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Take some bytes, at least a dozen, and stack them in a column. Count
+the bytes, introduce the count as naming or indexing the bytes, call it
+RAM.</li>
+<li>Show how a few consecutive bytes of RAM can store a string of ASCII
+codes.</li>
+<li>Do a couple of math problems using two adjacent bytes as (binary)
+operands and another byte to store the result.</li>
+<li>Move a couple of bytes from one area in the RAM to another.</li>
+</ul>
+</div>
+<div class="section" id="addresses-numbers-operations-naming-microcode">
+<h2>Addresses, numbers, operations, naming. (microcode)<a class="headerlink" href="#addresses-numbers-operations-naming-microcode" title="Permalink to this headline">¶</a></h2>
+<p>Wonder at the beauty and greatness of what we&#8217;ve done so far. We mapped
+binary digits (bits) to real world phenomenon. We used a simple coding
+system, algebra in base two, to encode the integers into bit patterns. We
+created a &#8220;strip&#8221; or &#8220;column&#8221; of bits, organized in eight-bit-wide words
+called bytes or octets, and then numbered those, counted them to name
+them, and began to use this abacus-like crude machine of ours to perform
+simple operations like math, logic, and &#8220;string&#8221; manipulation.</p>
+</div>
+<div class="section" id="the-power-of-naming">
+<h2>The Power of Naming<a class="headerlink" href="#the-power-of-naming" title="Permalink to this headline">¶</a></h2>
+<p>Start to make the steps used to perform these operations more concrete.
+Use index cards or something and list out the various steps you take in
+performing a few simple math/logic problems and stuff.</p>
+<p>Do the counting-to-name-things trick yet again to enumerate the
+&#8220;microcode&#8221; you&#8217;ve developed, and lay in a simple program using it.</p>
+<p>Act out the Fetch-Execute cycle and let people get used to the idea of
+how simple it is. Maybe even assign each instruction of microcode to a
+different person and have the class cooperatively act out the solving of
+a simple math problem or two according to an in-memory machine language
+program. (That will prove viscerally that you don&#8217;t need a brain or mind
+to &#8220;be&#8221; a computer. Put another way, some classes of mental operation can
+be automated, carried out by machine.)</p>
+<p>(You would also introduce the idea that RAM can be a lot larger than just
+a dozen bytes or so, and likely mention registers too.)</p>
+</div>
+<div class="section" id="parsing-grammar-compiling">
+<h2>Parsing, Grammar, Compiling.<a class="headerlink" href="#parsing-grammar-compiling" title="Permalink to this headline">¶</a></h2>
+<p>Ahem, some about that and the Meta-Compiler...</p>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="index.html">Pigeon Computer</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="assembler.html">Pigeon Assembler</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Simon Forman.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

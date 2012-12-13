@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Pigeon Assembler &mdash; Pigeon Assembler 0.1 documentation</title>
+    <title>Pigeon Computer &mdash; Pigeon Assembler 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -28,57 +28,70 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
     <link rel="top" title="Pigeon Assembler 0.1 documentation" href="#" />
-    <link rel="next" title="Basic Usage" href="basic_usage.html" /> 
+    <link rel="next" title="What is a Computer Anyway?" href="curiculum.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="#">
           <span>Pigeon Assembler 0.1 documentation</span></a></h1>
-        <h2 class="heading"><span>Pigeon Assembler</span></h2>
+        <h2 class="heading"><span>Pigeon Computer</span></h2>
       </div>
       <div class="topnav">
       
         <p>
         <a class="uplink" href="#">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="basic_usage.html">Basic Usage</a>&#160;&#160;»
+        <a href="curiculum.html">What is a Computer Anyway?</a>&#160;&#160;»
         </p>
 
       </div>
       <div class="content">
         
         
-  <div class="section" id="pigeon-assembler">
-<h1>Pigeon Assembler<a class="headerlink" href="#pigeon-assembler" title="Permalink to this headline">¶</a></h1>
-<p>The Pigeon Assembler is a simple assembler targetting the popular
-ATmega328P microcontroller.  It is designed to be easy to read and
-understand and the main code is just a few pages of Python.</p>
+  <div class="section" id="pigeon-computer">
+<h1>Pigeon Computer<a class="headerlink" href="#pigeon-computer" title="Permalink to this headline">¶</a></h1>
+<p>The Pigeon Computer is a simple computer based on the popular
+<a class="reference external" href="http://www.atmel.com/devices/atmega328p.aspx">ATmega328P</a> microcontroller.</p>
 <p>Contents:</p>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
-<li class="toctree-l1"><a class="reference internal" href="reading.html">Reading a Source File</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="reading.html#miki-tebeka-s-clever-idea">Miki Tebeka&#8217;s Clever Idea</a></li>
-<li class="toctree-l2"><a class="reference internal" href="reading.html#source-format">Source Format</a></li>
+<li class="toctree-l1"><a class="reference internal" href="curiculum.html">What is a Computer Anyway?</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="curiculum.html#unlike-magnets-computers-can-be-explained">Unlike Magnets, Computers <em>can</em> be Explained</a></li>
+<li class="toctree-l2"><a class="reference internal" href="curiculum.html#the-bit">The Bit</a></li>
+<li class="toctree-l2"><a class="reference internal" href="curiculum.html#line-up-eight-of-them-make-a-byte">Line up eight of them. Make a byte.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="curiculum.html#stack-up-a-bunch-of-bytes-make-ram">Stack up a bunch of bytes. Make RAM.</a></li>
+<li class="toctree-l2"><a class="reference internal" href="curiculum.html#addresses-numbers-operations-naming-microcode">Addresses, numbers, operations, naming. (microcode)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="curiculum.html#the-power-of-naming">The Power of Naming</a></li>
+<li class="toctree-l2"><a class="reference internal" href="curiculum.html#parsing-grammar-compiling">Parsing, Grammar, Compiling.</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="writing.html">Writing out Binary Data</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="writing.html#bit-pattern-generator">Bit Pattern Generator</a></li>
-<li class="toctree-l2"><a class="reference internal" href="writing.html#output-formats">Output Formats</a></li>
+<li class="toctree-l1"><a class="reference internal" href="assembler.html">Pigeon Assembler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="basic_usage.html">Basic Usage</a></li>
+<li class="toctree-l2"><a class="reference internal" href="reading.html">Reading a Source File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="writing.html">Writing out Binary Data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pyavrasm.html">Pigeon Assembler Internals</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="m328P.html">ATmega328P Definitions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="instructions.html">Supported Assembly Instructions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="pyavrasm.html">Pigeon Assembler</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="pyavrasm.html#first-pass">First Pass</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyavrasm.html#intermediate-representations">Intermediate Representations</a></li>
-<li class="toctree-l2"><a class="reference internal" href="pyavrasm.html#module-pyavrasm">Second Pass</a></li>
+<li class="toctree-l1"><a class="reference internal" href="compiler.html">Pigeon Compiler</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="compiler.html#simple-polymorphic-compiler">Simple Polymorphic Compiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler.html#val-shorres-meta-ii-metacompiler">Val Shorre’s Meta-II Metacompiler</a></li>
+<li class="toctree-l2"><a class="reference internal" href="compiler.html#language-design-and-compiler-extentions">Language Design and Compiler Extentions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="pigeon_firmware.html">Pigeon Firmware</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pigeon_firmware.html#introduction">Introduction</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pigeon_firmware.html#definitions">Definitions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pigeon_firmware.html#data-sram-organization">Data (SRAM) Organization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pigeon_firmware.html#code-flash-ram">Code (Flash RAM)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pigeon_firmware.html#words">Words</a></li>
+<li class="toctree-l2"><a class="reference internal" href="pigeon_firmware.html#conclusion">Conclusion</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="m328P.html">Appendix A: ATmega328P Definitions</a></li>
+<li class="toctree-l1"><a class="reference internal" href="instructions.html">Appendix B: Supported Assembly Instructions</a></li>
 </ul>
 </div>
 <p>Written to support the General Course of Skool to give visibility into
 the process of programming computers.</p>
-<p>Based on the ideas of that one guy.</p>
 </div>
 <div class="section" id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
@@ -96,7 +109,7 @@ the process of programming computers.</p>
         <p>
         <a class="uplink" href="#">Contents</a>
         &#160;&#160;::&#160;&#160;
-        <a href="basic_usage.html">Basic Usage</a>&#160;&#160;»
+        <a href="curiculum.html">What is a Computer Anyway?</a>&#160;&#160;»
         </p>
 
       </div>

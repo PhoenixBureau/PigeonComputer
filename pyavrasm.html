@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Pigeon Assembler &mdash; Pigeon Assembler 0.1 documentation</title>
+    <title>Pigeon Assembler Internals &mdash; Pigeon Assembler 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -28,53 +28,185 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
     <link rel="top" title="Pigeon Assembler 0.1 documentation" href="index.html" />
-    <link rel="prev" title="Supported Assembly Instructions" href="instructions.html" /> 
+    <link rel="up" title="Pigeon Assembler" href="assembler.html" />
+    <link rel="next" title="Pigeon Compiler" href="compiler.html" />
+    <link rel="prev" title="Writing out Binary Data" href="writing.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
           <span>Pigeon Assembler 0.1 documentation</span></a></h1>
-        <h2 class="heading"><span>Pigeon Assembler</span></h2>
+        <h2 class="heading"><span>Pigeon Assembler Internals</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        «&#160;&#160;<a href="instructions.html">Supported Assembly Instructions</a>
+        «&#160;&#160;<a href="writing.html">Writing out Binary Data</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="compiler.html">Pigeon Compiler</a>&#160;&#160;»
         </p>
 
       </div>
       <div class="content">
         
         
-  <div class="section" id="pigeon-assembler">
-<span id="assembler-structure"></span><h1>Pigeon Assembler<a class="headerlink" href="#pigeon-assembler" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="pigeon-assembler-internals">
+<span id="assembler-structure"></span><h1>Pigeon Assembler Internals<a class="headerlink" href="#pigeon-assembler-internals" title="Permalink to this headline">¶</a></h1>
+<p>The internal operation of the assembler is fairly straightforward.</p>
+<p>There is a first pass where an assembly source file (which is just a
+Python script containing calls to the <em>directives</em> and assembly
+instructions) is executed within a special context.  This generates an
+internal data structure that maps addresses to bit-pattern generators and
+their associated args.</p>
+<p>During the second pass these bit-pattern generators are called to
+generate the proper binary op codes.  Addresses of labels are available
+for things like adjusting the target addresses of relative instructions.</p>
 <div class="section" id="first-pass">
 <h2>First Pass<a class="headerlink" href="#first-pass" title="Permalink to this headline">¶</a></h2>
+<p>The <a class="reference internal" href="#pyavrasm.AVRAssembly.assemble" title="pyavrasm.AVRAssembly.assemble"><tt class="xref py py-meth docutils literal"><span class="pre">pyavrasm.AVRAssembly.assemble()</span></tt></a> and
+<a class="reference internal" href="#pyavrasm.AVRAssembly.assemble_file" title="pyavrasm.AVRAssembly.assemble_file"><tt class="xref py py-meth docutils literal"><span class="pre">pyavrasm.AVRAssembly.assemble_file()</span></tt></a> methods read an
+assembly-in-python source file (for example, the <a class="reference internal" href="pigeon_firmware.html#pigeon-firmware"><em>Pigeon Firmware</em></a>.)</p>
+<p>Any of the instruction methods defined in the
+<a class="reference internal" href="instructions.html#instructions.InstructionsMixin" title="instructions.InstructionsMixin"><tt class="xref py py-class docutils literal"><span class="pre">instructions.InstructionsMixin</span></tt></a> that are called in the source
+file will create an entry in the assembler&#8217;s
+<a class="reference internal" href="#pyavrasm.AVRAssembly.data" title="pyavrasm.AVRAssembly.data"><tt class="xref py py-attr docutils literal"><span class="pre">pyavrasm.AVRAssembly.data</span></tt></a> dictionary.  These entries consist
+of the name of the op (instruction) and the arguments that were passed to
+the instruction methods.</p>
 </div>
 <div class="section" id="intermediate-representations">
 <h2>Intermediate Representations<a class="headerlink" href="#intermediate-representations" title="Permalink to this headline">¶</a></h2>
 </div>
-<div class="section" id="module-pyavrasm">
-<span id="second-pass"></span><h2>Second Pass<a class="headerlink" href="#module-pyavrasm" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="second-pass">
+<h2>Second Pass<a class="headerlink" href="#second-pass" title="Permalink to this headline">¶</a></h2>
+<p>When you call <a class="reference internal" href="#pyavrasm.AVRAssembly.pass2" title="pyavrasm.AVRAssembly.pass2"><tt class="xref py py-meth docutils literal"><span class="pre">pyavrasm.AVRAssembly.pass2()</span></tt></a> the assembler goes
+through the <a class="reference internal" href="#pyavrasm.AVRAssembly.data" title="pyavrasm.AVRAssembly.data"><tt class="xref py py-attr docutils literal"><span class="pre">pyavrasm.AVRAssembly.data</span></tt></a> dictionary and calls the
+bit-pattern-generating op functions with the associated arguments.  The
+returned binary strings are compiled into another dictionary, keyed by
+their target addresses.</p>
+<p>This dictionary is used by the <tt class="xref py py-meth docutils literal"><span class="pre">pyavrasm.AVRAssembly.to_hex()</span></tt>
+method to generate the HEX format output.</p>
+<span class="target" id="module-pyavrasm"></span><div class="section" id="python-avr-assembler">
+<h3>Python AVR Assembler<a class="headerlink" href="#python-avr-assembler" title="Permalink to this headline">¶</a></h3>
+<p>This is the Pigeon Assembler.</p>
 <dl class="class">
 <dt id="pyavrasm.AVRAssembly">
 <em class="property">class </em><tt class="descclassname">pyavrasm.</tt><tt class="descname">AVRAssembly</tt><big>(</big><em>initial_context=None</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#AVRAssembly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.AVRAssembly" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="instructions.html#instructions.InstructionsMixin" title="instructions.InstructionsMixin"><tt class="xref py py-class docutils literal"><span class="pre">instructions.InstructionsMixin</span></tt></a>, <a class="reference internal" href="#pyavrasm.DirectivesMixin" title="pyavrasm.DirectivesMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyavrasm.DirectivesMixin</span></tt></a>, <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>This is the primary assembler object.  It is created out of the
+InstructionsMixin and DirectivesMixin, which together define the
+functions that you use in your assembly code, and the methods in this
+class which run the assembly proper.</p>
+<p>Assembling a file is a two-pass process.</p>
+<p>First, the text of the asm
+code is passed to the <tt class="docutils literal"><span class="pre">assemble()</span></tt> method (or you can pass a file name
+to <tt class="docutils literal"><span class="pre">assemble_file()</span></tt>) which builds up an internal model of the op
+codes to be assembled.</p>
+<p>Second, you call <tt class="docutils literal"><span class="pre">pass2()</span></tt> which converts the internal model of the
+op codes to be assembled into a dictionary that maps addresses in the
+output machine code to the byte strings of the data that should reside
+at those addresses.</p>
+<p>Then you&#8217;re probably going to want to call the <tt class="docutils literal"><span class="pre">to_hex()</span></tt> method to
+get that binary data out as (the contents of) a hex file, suitable for
+writing to your ATmega328P.</p>
+<p>When you create an <a class="reference internal" href="#pyavrasm.AVRAssembly" title="pyavrasm.AVRAssembly"><tt class="xref py py-class docutils literal"><span class="pre">AVRAssembly</span></tt></a> object you can pass an
+initial_context object, a <tt class="docutils literal"><span class="pre">dict</span></tt> or anything that can be passed to
+<tt class="docutils literal"><span class="pre">dict.update()</span></tt>, and it will be added to the execution context for
+your asm code.  Typically you would pass <tt class="xref py py-obj docutils literal"><span class="pre">m328P_def.defs</span></tt> to
+include those definition for your code to use.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>initial_context</strong> (<tt class="docutils literal"><span class="pre">dict</span></tt> or anything that can be passed to
+<tt class="docutils literal"><span class="pre">dict.update()</span></tt>) &#8211; Context to include to make things available
+to your assembler code.  (<tt class="xref py py-obj docutils literal"><span class="pre">m328P_def.defs</span></tt> or some other
+useful functions for example.)</td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="pyavrasm.AVRAssembly.assemble">
 <tt class="descname">assemble</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#AVRAssembly.assemble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.AVRAssembly.assemble" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Assemble the string asm source code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>text</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; Assembly source code.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">None</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyavrasm.AVRAssembly.assemble_file">
 <tt class="descname">assemble_file</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#AVRAssembly.assemble_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.AVRAssembly.assemble_file" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Assemble asm source code from a named file.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; File name of an assembly source code file.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">None</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyavrasm.AVRAssembly.context">
+<tt class="descname">context</tt><em class="property"> = None</em><a class="headerlink" href="#pyavrasm.AVRAssembly.context" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is the execution context for your assembly file.  It is used
+as the namespace for <tt class="docutils literal"><span class="pre">exec</span></tt> or <tt class="docutils literal"><span class="pre">execfile</span></tt> for parsing and
+running your code.</p>
+<p>Because it&#8217;s a <tt class="docutils literal"><span class="pre">defaultdict</span></tt> and the default factory function
+returns <tt class="docutils literal"><span class="pre">intbv</span></tt> objects <strong>any</strong> name (identifier) that you use
+in your code that is not previously defined will automatically
+generate a new variable binding.</p>
+<p>That is how labels work: you simply use a label and it gets its
+own <tt class="docutils literal"><span class="pre">intbv</span></tt> object.  Then when you use the <tt class="docutils literal"><span class="pre">label()</span></tt>
+<em>directive</em> on that label the <tt class="docutils literal"><span class="pre">intbv</span></tt> gets updated with the
+actual current output address, and that value will be used to
+assemble the proper bit patterns in <tt class="docutils literal"><span class="pre">pass2()</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyavrasm.AVRAssembly.data">
+<tt class="descname">data</tt><em class="property"> = None</em><a class="headerlink" href="#pyavrasm.AVRAssembly.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Internal intermediate data structure.  This holds the output of
+the methods in the <tt class="docutils literal"><span class="pre">InstructionsMixin</span></tt> used to create the byte
+strings in <tt class="docutils literal"><span class="pre">pass2()</span></tt>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="pyavrasm.AVRAssembly.here">
+<tt class="descname">here</tt><em class="property"> = None</em><a class="headerlink" href="#pyavrasm.AVRAssembly.here" title="Permalink to this definition">¶</a></dt>
+<dd><p>Current output address of the assembly process.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyavrasm.AVRAssembly.pass2">
 <tt class="descname">pass2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#AVRAssembly.pass2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.AVRAssembly.pass2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Second pass of the assembly process.</p>
+<p>Once the asm source code has been assembled into the intermediate
+form (by <tt class="docutils literal"><span class="pre">assemble()</span></tt> or <tt class="docutils literal"><span class="pre">assemble_file()</span></tt>) this method converts
+it into binary strings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">Mapping of addresses to strings (binary data) this data
+structure is the end result of the assembly process, just before
+emitting the strings in e.g. Intel HEX format for burning to a
+chip.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
@@ -82,34 +214,116 @@
 <dt id="pyavrasm.DirectivesMixin">
 <em class="property">class </em><tt class="descclassname">pyavrasm.</tt><tt class="descname">DirectivesMixin</tt><a class="reference internal" href="_modules/pyavrasm.html#DirectivesMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.DirectivesMixin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
-<p>I am a docstring!</p>
+<p>These are <em>directives</em>, assembler functions that don&#8217;t correspond to op
+codes but instead do some sort of other function.</p>
 <dl class="method">
 <dt id="pyavrasm.DirectivesMixin.db">
 <tt class="descname">db</tt><big>(</big><em>*values</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#DirectivesMixin.db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.DirectivesMixin.db" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Lay down bytes in the program image. Integers 0 &lt;= n &lt;= 255 and
+strings are accepted.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>values</strong> (iterable of <tt class="docutils literal"><span class="pre">int</span></tt> and/or <tt class="docutils literal"><span class="pre">string</span></tt> values) &#8211; Values to assemble.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">None</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyavrasm.DirectivesMixin.define">
 <tt class="descname">define</tt><big>(</big><em>**defs</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#DirectivesMixin.define"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.DirectivesMixin.define" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Update one or more names in the execution namespace.  The main
+difference between using this function and simply setting a variable
+in your asm code is that this function automatically converts
+integer value(s) into <tt class="docutils literal"><span class="pre">intbv</span></tt> object(s).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>defs</strong> &#8211; <tt class="docutils literal"><span class="pre">&lt;name&gt;=&lt;value&gt;</span></tt> pairs</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">None</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyavrasm.DirectivesMixin.dw">
 <tt class="descname">dw</tt><big>(</big><em>*values</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#DirectivesMixin.dw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.DirectivesMixin.dw" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Lay down unsigned 16-bit integer values in the program image.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>values</strong> (iterable of <tt class="docutils literal"><span class="pre">int</span></tt>) &#8211; Integer values to assemble.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">None</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyavrasm.DirectivesMixin.label">
 <tt class="descname">label</tt><big>(</big><em>label_thunk</em>, <em>reserves=0</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#DirectivesMixin.label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.DirectivesMixin.label" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Create a symbolic label at the current output address of the assembly
+process. If <tt class="docutils literal"><span class="pre">reserves</span></tt> is given (and greater than zero) that many
+bytes are reserved by adding the value to the current output address.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>label_thunk</strong> (<tt class="docutils literal"><span class="pre">intbv</span></tt>) &#8211; <p>An <tt class="docutils literal"><span class="pre">intbv</span></tt> object serving as a container for a
+pointer value to an address in your assembly program.</p>
+<p>When you mention a previously unused name in your asm code the
+execution context will automatically provide that name with a new
+<tt class="docutils literal"><span class="pre">intbv</span></tt> object initialized to zero.</p>
+<p>Because this <tt class="docutils literal"><span class="pre">intbv</span></tt> object will be (re-)used in other parts of
+your program wherever the name is used it becomes a container for
+the eventual value (a thunk) of the address.</p>
+<p>When you use this <em>directive</em> with a given named address thunk
+(label) it fills in the value of the current output address of the
+assembly process.</p>
+</li>
+<li><strong>reserves</strong> (<tt class="docutils literal"><span class="pre">int</span></tt>) &#8211; Reserve this many bytes by increasing the current
+output address of the assembly process.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><tt class="docutils literal"><span class="pre">None</span></tt></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="pyavrasm.DirectivesMixin.org">
 <tt class="descname">org</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#DirectivesMixin.org"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.DirectivesMixin.org" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set the current output address of the assembly process to
+<tt class="docutils literal"><span class="pre">address</span></tt>.  If <tt class="docutils literal"><span class="pre">address</span></tt> isn&#8217;t an <tt class="docutils literal"><span class="pre">intbv</span></tt> it is converted to
+one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>address</strong> (<tt class="docutils literal"><span class="pre">intbv</span></tt>, <tt class="docutils literal"><span class="pre">int</span></tt>, or symbolic label.) &#8211; Location in program.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">None</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 </dd></dl>
 
+</div>
 </div>
 </div>
 
@@ -118,9 +332,11 @@
       <div class="bottomnav">
       
         <p>
-        «&#160;&#160;<a href="instructions.html">Supported Assembly Instructions</a>
+        «&#160;&#160;<a href="writing.html">Writing out Binary Data</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="compiler.html">Pigeon Compiler</a>&#160;&#160;»
         </p>
 
       </div>

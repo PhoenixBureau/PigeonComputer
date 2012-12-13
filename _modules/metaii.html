@@ -1,0 +1,288 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>metaii &mdash; Pigeon Assembler 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Assembler 0.1 documentation" href="../index.html" />
+    <link rel="up" title="Module code" href="index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../index.html">
+          <span>Pigeon Assembler 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>metaii</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for metaii</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Python implementation of Val Shorre&#39;s Meta II metacompiler.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">StringIO</span> <span class="kn">import</span> <span class="n">StringIO</span>
+
+
+<div class="viewcode-block" id="MetaII"><a class="viewcode-back" href="../compiler.html#metaii.MetaII">[docs]</a><span class="k">class</span> <span class="nc">MetaII</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+  <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">program</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">labels</span> <span class="o">=</span> <span class="p">{}</span>
+
+<div class="viewcode-block" id="MetaII.assemble"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.assemble">[docs]</a>  <span class="k">def</span> <span class="nf">assemble</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">program_source</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">program_source</span><span class="o">.</span><span class="n">splitlines</span><span class="p">(</span><span class="bp">False</span><span class="p">):</span>
+      <span class="k">if</span> <span class="ow">not</span> <span class="n">line</span> <span class="ow">or</span> <span class="n">line</span><span class="o">.</span><span class="n">isspace</span><span class="p">():</span>
+        <span class="k">continue</span>
+      <span class="k">if</span> <span class="n">line</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isspace</span><span class="p">():</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">assemble_line</span><span class="p">(</span><span class="o">*</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)))</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">line</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">label</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MetaII.assemble_line"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.assemble_line">[docs]</a>  <span class="k">def</span> <span class="nf">assemble_line</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">arg</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">)</span>
+    <span class="n">arg</span> <span class="o">=</span> <span class="p">(</span><span class="n">arg</span><span class="p">,)</span> <span class="k">if</span> <span class="n">arg</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="k">else</span> <span class="p">()</span>
+    <span class="k">return</span> <span class="n">f</span><span class="p">,</span> <span class="n">arg</span>
+</div>
+<div class="viewcode-block" id="MetaII.compile"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.compile">[docs]</a>  <span class="k">def</span> <span class="nf">compile</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input_text</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">switch</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">PC</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">stack</span> <span class="o">=</span> <span class="p">[(</span><span class="bp">False</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="n">input_text</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output</span> <span class="o">=</span> <span class="n">StringIO</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output_buffer</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">last</span> <span class="o">=</span> <span class="bp">None</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">q</span> <span class="o">=</span> <span class="n">label_generator</span><span class="p">()</span><span class="o">.</span><span class="n">next</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">end</span><span class="p">):</span>
+      <span class="n">op</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">PC</span><span class="p">]</span>
+      <span class="n">op</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">PC</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="o">.</span><span class="n">getvalue</span><span class="p">()</span>
+
+  <span class="c"># These are the &quot;order codes&quot; (assembly instructions) for the Meta II</span>
+  <span class="c"># metacompiler machine.</span>
+</div>
+<div class="viewcode-block" id="MetaII.ADR"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.ADR">[docs]</a>  <span class="k">def</span> <span class="nf">ADR</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ident</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">PC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">ident</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+</div>
+<div class="viewcode-block" id="MetaII.TST"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.TST">[docs]</a>  <span class="k">def</span> <span class="nf">TST</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">string</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_left_trim_input</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">switch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="n">string</span><span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">last</span> <span class="o">=</span> <span class="n">string</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">string</span><span class="p">):]</span>
+</div>
+<div class="viewcode-block" id="MetaII.ID"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.ID">[docs]</a>  <span class="k">def</span> <span class="nf">ID</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_left_trim_input</span><span class="p">()</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">I</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isalpha</span><span class="p">():</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">switch</span> <span class="o">=</span> <span class="bp">False</span>
+      <span class="k">return</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">while</span> <span class="n">I</span><span class="p">[</span><span class="n">n</span><span class="p">]</span><span class="o">.</span><span class="n">isalnum</span><span class="p">():</span>
+      <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch</span> <span class="o">=</span> <span class="n">I</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">I</span><span class="p">[</span><span class="n">n</span><span class="p">:],</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="MetaII.NUM"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.NUM">[docs]</a>  <span class="k">def</span> <span class="nf">NUM</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_left_trim_input</span><span class="p">()</span>
+    <span class="n">I</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">I</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="ow">in</span> <span class="nb">set</span><span class="p">(</span><span class="s">&#39;0123456789.&#39;</span><span class="p">):</span>
+      <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="n">num</span><span class="p">,</span> <span class="n">rest</span> <span class="o">=</span> <span class="n">I</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">I</span><span class="p">[</span><span class="n">n</span><span class="p">:]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">switch</span> <span class="o">=</span> <span class="n">n</span> <span class="ow">and</span> <span class="n">num</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span> <span class="ow">and</span> <span class="n">num</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">isdigit</span><span class="p">()</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch</span> <span class="ow">and</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">switch</span> <span class="o">=</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span>
+        <span class="n">num</span><span class="p">[</span><span class="n">n</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;.&#39;</span>
+        <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">num</span><span class="p">)</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">num</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">==</span> <span class="s">&#39;.&#39;</span>
+        <span class="p">)</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">last</span> <span class="o">=</span> <span class="n">num</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="n">rest</span>
+</div>
+<div class="viewcode-block" id="MetaII.SR"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.SR">[docs]</a>  <span class="k">def</span> <span class="nf">SR</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_left_trim_input</span><span class="p">()</span>
+    <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span>
+    <span class="k">if</span> <span class="n">I</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="s">&quot;&#39;&quot;</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">switch</span> <span class="o">=</span> <span class="bp">False</span>
+      <span class="k">return</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">L</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">&lt;</span> <span class="n">L</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">I</span><span class="p">[</span><span class="n">n</span><span class="p">]</span> <span class="o">==</span> <span class="s">&quot;&#39;&quot;</span><span class="p">:</span>
+        <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch</span> <span class="o">=</span> <span class="n">I</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">I</span><span class="p">[</span><span class="n">n</span><span class="p">:],</span> <span class="bp">True</span>
+        <span class="k">break</span>
+      <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">switch</span> <span class="o">=</span> <span class="bp">False</span>
+</div>
+<div class="viewcode-block" id="MetaII.CLL"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.CLL">[docs]</a>  <span class="k">def</span> <span class="nf">CLL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_push_call_frame</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">PC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+</div>
+<div class="viewcode-block" id="MetaII.R"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.R">[docs]</a>  <span class="k">def</span> <span class="nf">R</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">PC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_pop_call_frame</span><span class="p">()</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">PC</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="MetaII.SET"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.SET">[docs]</a>  <span class="k">def</span> <span class="nf">SET</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">switch</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="MetaII.B"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.B">[docs]</a>  <span class="k">def</span> <span class="nf">B</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">PC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+</div>
+<div class="viewcode-block" id="MetaII.BT"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.BT">[docs]</a>  <span class="k">def</span> <span class="nf">BT</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">PC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+</div>
+<div class="viewcode-block" id="MetaII.BF"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.BF">[docs]</a>  <span class="k">def</span> <span class="nf">BF</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">PC</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+</div>
+<div class="viewcode-block" id="MetaII.BE"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.BE">[docs]</a>  <span class="k">def</span> <span class="nf">BE</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">error</span> <span class="o">=</span> <span class="bp">True</span>
+</div>
+<div class="viewcode-block" id="MetaII.CL"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.CL">[docs]</a>  <span class="k">def</span> <span class="nf">CL</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">string</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_out</span><span class="p">(</span><span class="n">string</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+</div>
+<div class="viewcode-block" id="MetaII.CI"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.CI">[docs]</a>  <span class="k">def</span> <span class="nf">CI</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_out</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MetaII.GN1"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.GN1">[docs]</a>  <span class="k">def</span> <span class="nf">GN1</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cell</span><span class="p">:</span>
+      <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_out</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MetaII.GN2"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.GN2">[docs]</a>  <span class="k">def</span> <span class="nf">GN2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">cell</span><span class="p">:</span>
+      <span class="n">cell</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">q</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">_out</span><span class="p">(</span><span class="n">cell</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MetaII.LB"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.LB">[docs]</a>  <span class="k">def</span> <span class="nf">LB</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output_buffer</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_buffer</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+</div>
+<div class="viewcode-block" id="MetaII.OUT"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.OUT">[docs]</a>  <span class="k">def</span> <span class="nf">OUT</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">print</span> <span class="o">&gt;&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">output</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">output_buffer</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output_buffer</span> <span class="o">=</span> <span class="s">&#39;</span><span class="se">\t</span><span class="s">&#39;</span>
+</div>
+<div class="viewcode-block" id="MetaII.END"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.END">[docs]</a>  <span class="k">def</span> <span class="nf">END</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">pass</span>
+
+  <span class="c"># Those are the order codes. The rest of these are support methods.</span>
+</div>
+  <span class="k">def</span> <span class="nf">_left_trim_input</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="o">.</span><span class="n">lstrip</span><span class="p">()</span>
+
+  <span class="k">def</span> <span class="nf">_out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">s</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">output_buffer</span> <span class="o">+=</span> <span class="n">s</span>
+
+  <span class="k">def</span> <span class="nf">_push_call_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">blank_already</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="ow">is</span> <span class="bp">None</span>
+    <span class="k">if</span> <span class="n">blank_already</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">None</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="o">.</span><span class="n">extend</span><span class="p">((</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">))</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">blank_already</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">PC</span>
+
+  <span class="k">def</span> <span class="nf">_pop_call_frame</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">were_blank</span><span class="p">,</span> <span class="n">return_address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">were_blank</span><span class="p">:</span>
+      <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span> <span class="o">=</span> <span class="p">[</span><span class="bp">None</span><span class="p">,</span> <span class="bp">None</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+      <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">[</span><span class="o">-</span><span class="mi">3</span><span class="p">:]</span>
+    <span class="k">return</span> <span class="n">return_address</span>
+
+  <span class="c"># Some debugging/introspection methods.  (Not strictly needed.)</span>
+
+<div class="viewcode-block" id="MetaII.info"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.info">[docs]</a>  <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">pprint</span> <span class="kn">import</span> <span class="n">pformat</span>
+    <span class="k">print</span> <span class="s">&#39;Stack:&#39;</span><span class="p">,</span> <span class="n">pformat</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">stack</span><span class="p">)</span>
+    <span class="k">print</span> <span class="s">&#39;last:&#39;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">last</span><span class="p">),</span> <span class="s">&#39;switch:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">switch</span>
+    <span class="k">print</span> <span class="s">&#39;input:&#39;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">input</span><span class="p">[:</span><span class="mi">20</span><span class="p">])</span>
+    <span class="k">print</span> <span class="s">&#39;PC:&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">PC</span><span class="p">,</span>
+    <span class="n">op</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">PC</span><span class="p">]</span>
+    <span class="n">L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels_for_address</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PC</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">L</span><span class="p">:</span>
+      <span class="k">print</span> <span class="n">L</span><span class="p">,</span> <span class="s">&#39;:&#39;</span><span class="p">,</span>
+    <span class="k">print</span> <span class="n">op</span><span class="o">.</span><span class="n">__name__</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">args</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="MetaII.print_program"><a class="viewcode-back" href="../compiler.html#metaii.MetaII.print_program">[docs]</a>  <span class="k">def</span> <span class="nf">print_program</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">n</span><span class="p">,</span> <span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">program</span><span class="p">):</span>
+      <span class="n">L</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_labels_for_address</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">L</span><span class="p">:</span>
+        <span class="k">print</span> <span class="n">L</span><span class="p">,</span> <span class="s">&#39;:&#39;</span>
+      <span class="k">print</span> <span class="s">&#39;    </span><span class="si">%3i</span><span class="s"> </span><span class="si">%3s</span><span class="s"> </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>
+</div>
+  <span class="k">def</span> <span class="nf">_labels_for_address</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
+    <span class="k">return</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">k</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">labels</span><span class="o">.</span><span class="n">iteritems</span><span class="p">()</span> <span class="k">if</span> <span class="n">v</span> <span class="o">==</span> <span class="n">addr</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="label_generator"><a class="viewcode-back" href="../compiler.html#metaii.label_generator">[docs]</a><span class="k">def</span> <span class="nf">label_generator</span><span class="p">():</span>
+  <span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+  <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="k">yield</span> <span class="s">&#39;L&#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">n</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+
+</div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="n">metaii_asm</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;metaii.asm&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+  <span class="n">metaii_description</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s">&#39;metaii.metaii&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+  <span class="n">m2</span> <span class="o">=</span> <span class="n">MetaII</span><span class="p">()</span>
+  <span class="n">m2</span><span class="o">.</span><span class="n">assemble</span><span class="p">(</span><span class="n">metaii_asm</span><span class="p">)</span>
+  <span class="n">new_asm</span> <span class="o">=</span> <span class="n">m2</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="n">metaii_description</span><span class="p">)</span>
+  <span class="k">print</span> <span class="n">new_asm</span>
+  <span class="k">if</span> <span class="n">m2</span><span class="o">.</span><span class="n">error</span><span class="p">:</span>
+    <span class="n">m2</span><span class="o">.</span><span class="n">info</span><span class="p">()</span>
+<span class="c">#  print new_asm.rstrip() == metaii_asm.rstrip()</span>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Simon Forman.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

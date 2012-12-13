@@ -229,10 +229,10 @@
 <span class="sd">  &#39;&#39;&#39;</span>
 
 </div>
-<span class="nd">@G</span>
-<div class="viewcode-block" id="lsl"><a class="viewcode-back" href="../instructions.html#instructions.lsl">[docs]</a><span class="k">def</span> <span class="nf">lsl</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+<span class="nd">@D</span>
+<div class="viewcode-block" id="lsl"><a class="viewcode-back" href="../instructions.html#instructions.lsl">[docs]</a><span class="k">def</span> <span class="nf">lsl</span><span class="p">(</span><span class="n">Rd</span><span class="p">,</span> <span class="n">Rr</span><span class="p">):</span> <span class="c"># See Amtel manual! This instruction only takes one register.</span>
   <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">  0000 11dd dddd dddd</span>
+<span class="sd">  0000 11rd dddd rrrr</span>
 <span class="sd">  &#39;&#39;&#39;</span>
 
 </div>
@@ -317,10 +317,10 @@
 <span class="sd">  &#39;&#39;&#39;</span>
 
 </div>
-<span class="nd">@G</span>
-<div class="viewcode-block" id="clr"><a class="viewcode-back" href="../instructions.html#instructions.clr">[docs]</a><span class="k">def</span> <span class="nf">clr</span><span class="p">(</span><span class="n">Rd</span><span class="p">):</span>
+<span class="nd">@D</span>
+<div class="viewcode-block" id="clr"><a class="viewcode-back" href="../instructions.html#instructions.clr">[docs]</a><span class="k">def</span> <span class="nf">clr</span><span class="p">(</span><span class="n">Rd</span><span class="p">,</span> <span class="n">Rr</span><span class="p">):</span> <span class="c"># See Amtel manual! This instruction only takes one register.</span>
   <span class="sd">&#39;&#39;&#39;</span>
-<span class="sd">  0010 01dd dddd dddd</span>
+<span class="sd">  0010 01rd dddd rrrr</span>
 <span class="sd">  &#39;&#39;&#39;</span>
 
 </div>
@@ -417,11 +417,11 @@
     <span class="k">pass</span>
 </div>
   <span class="nd">@instr</span>
-<div class="viewcode-block" id="InstructionsMixin.ldi"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.ldi">[docs]</a>  <span class="k">def</span> <span class="nf">ldi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">address</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-      <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">address</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
-      <span class="n">address</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">address</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
+<div class="viewcode-block" id="InstructionsMixin.ldi"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.ldi">[docs]</a>  <span class="k">def</span> <span class="nf">ldi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">immediate</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">immediate</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+      <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">immediate</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">immediate</span><span class="p">)</span>
+      <span class="n">immediate</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">immediate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">immediate</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
 </div>
   <span class="nd">@instr</span>
 <div class="viewcode-block" id="InstructionsMixin.out"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.out">[docs]</a>  <span class="k">def</span> <span class="nf">out</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
@@ -477,8 +477,8 @@
     <span class="k">return</span> <span class="n">address</span>
 </div>
   <span class="nd">@instr</span>
-<div class="viewcode-block" id="InstructionsMixin.inc"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.inc">[docs]</a>  <span class="k">def</span> <span class="nf">inc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">address</span>
+<div class="viewcode-block" id="InstructionsMixin.inc"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.inc">[docs]</a>  <span class="k">def</span> <span class="nf">inc</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">register</span>
 </div>
   <span class="nd">@instr</span>
 <div class="viewcode-block" id="InstructionsMixin.mul"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.mul">[docs]</a>  <span class="k">def</span> <span class="nf">mul</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
@@ -489,8 +489,11 @@
     <span class="k">return</span> <span class="n">address</span>
 </div>
   <span class="nd">@instr</span>
-<div class="viewcode-block" id="InstructionsMixin.subi"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.subi">[docs]</a>  <span class="k">def</span> <span class="nf">subi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+<div class="viewcode-block" id="InstructionsMixin.subi"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.subi">[docs]</a>  <span class="k">def</span> <span class="nf">subi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">immediate</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">immediate</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+      <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">immediate</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">immediate</span><span class="p">)</span>
+      <span class="n">immediate</span> <span class="o">=</span> <span class="nb">ord</span><span class="p">(</span><span class="n">immediate</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">immediate</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
 </div>
   <span class="nd">@instr</span>
 <div class="viewcode-block" id="InstructionsMixin.add"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.add">[docs]</a>  <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
@@ -501,8 +504,8 @@
     <span class="k">return</span> <span class="n">address</span>
 </div>
   <span class="nd">@instr</span>
-<div class="viewcode-block" id="InstructionsMixin.clr"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.clr">[docs]</a>  <span class="k">def</span> <span class="nf">clr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">address</span>
+<div class="viewcode-block" id="InstructionsMixin.clr"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.clr">[docs]</a>  <span class="k">def</span> <span class="nf">clr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">register</span>
 </div>
   <span class="nd">@instr</span>
 <div class="viewcode-block" id="InstructionsMixin.lsl"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.lsl">[docs]</a>  <span class="k">def</span> <span class="nf">lsl</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
@@ -530,15 +533,16 @@
 </div>
   <span class="nd">@instr</span>
 <div class="viewcode-block" id="InstructionsMixin.movw"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.movw">[docs]</a>  <span class="k">def</span> <span class="nf">movw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+    <span class="k">return</span> <span class="n">target</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">source</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span>
 </div>
   <span class="nd">@instr</span>
-<div class="viewcode-block" id="InstructionsMixin.andi"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.andi">[docs]</a>  <span class="k">def</span> <span class="nf">andi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+<div class="viewcode-block" id="InstructionsMixin.andi"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.andi">[docs]</a>  <span class="k">def</span> <span class="nf">andi</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">immediate</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">register</span><span class="p">,</span> <span class="n">immediate</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
 </div>
   <span class="nd">@instr</span>
-<div class="viewcode-block" id="InstructionsMixin.adiw"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.adiw">[docs]</a>  <span class="k">def</span> <span class="nf">adiw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+<div class="viewcode-block" id="InstructionsMixin.adiw"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.adiw">[docs]</a>  <span class="k">def</span> <span class="nf">adiw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">register</span><span class="p">,</span> <span class="n">immediate</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">register</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="mi">26</span><span class="p">,</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">30</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="n">register</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">register</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">immediate</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
 </div>
 <div class="viewcode-block" id="InstructionsMixin.lpm"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.lpm">[docs]</a>  <span class="k">def</span> <span class="nf">lpm</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
     <span class="k">assert</span> <span class="n">source</span> <span class="o">==</span> <span class="mi">30</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">source</span><span class="p">)</span> <span class="c"># Must be Z</span>
@@ -561,8 +565,8 @@
     <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
 </div>
   <span class="nd">@instr</span>
-<div class="viewcode-block" id="InstructionsMixin.sbiw"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.sbiw">[docs]</a>  <span class="k">def</span> <span class="nf">sbiw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">target</span><span class="p">,</span> <span class="n">source</span>
+<div class="viewcode-block" id="InstructionsMixin.sbiw"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.sbiw">[docs]</a>  <span class="k">def</span> <span class="nf">sbiw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">target</span><span class="p">,</span> <span class="n">immediate</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">target</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">,</span> <span class="n">immediate</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span>
 </div>
   <span class="nd">@instr</span>
 <div class="viewcode-block" id="InstructionsMixin.lsr"><a class="viewcode-back" href="../instructions.html#instructions.InstructionsMixin.lsr">[docs]</a>  <span class="k">def</span> <span class="nf">lsr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
@@ -588,7 +592,7 @@
 </div>
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
   <span class="kn">import</span> <span class="nn">pprint</span>
-  <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">ops</span><span class="p">)</span>
+  <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">_ops</span><span class="p">)</span>
   <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">InstructionsMixin</span><span class="p">()</span><span class="o">.</span><span class="n">_instruction_namespace</span><span class="p">()))</span>
 </pre></div>
 

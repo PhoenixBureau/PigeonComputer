@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Pigeon Compiler &mdash; Pigeon Assembler 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Assembler 0.1 documentation" href="index.html" />
+    <link rel="next" title="Pigeon Firmware" href="pigeon_firmware.html" />
+    <link rel="prev" title="Pigeon Assembler Internals" href="pyavrasm.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Pigeon Assembler 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>Pigeon Compiler</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="pyavrasm.html">Pigeon Assembler Internals</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="pigeon_firmware.html">Pigeon Firmware</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="pigeon-compiler">
+<h1>Pigeon Compiler<a class="headerlink" href="#pigeon-compiler" title="Permalink to this headline">¶</a></h1>
+<p>In order to teach the basics of compilers and the compilation process
+there is a simple but very flexible and powerful <em>meta-compiler</em> built
+around a fascinating 1964 paper/project/artifact <a class="reference external" href="http://en.wikipedia.org/wiki/META_II">Meta-II</a>.</p>
+<div class="section" id="simple-polymorphic-compiler">
+<h2>Simple Polymorphic Compiler<a class="headerlink" href="#simple-polymorphic-compiler" title="Permalink to this headline">¶</a></h2>
+<p>Tiny engine that loads and runs <em>compiler descriptions</em> which then allow
+it to become several different compilers (including a compiler which can
+compile itself which is why it&#8217;s called a &#8220;meta-compiler&#8221;.)</p>
+<p>A simple high-level description like this:</p>
+<div class="highlight-python"><pre>.SYNTAX OOOLALA
+
+OOOLALA = HUH | 'jones' | foo | bar ;
+
+HUH = gary 'smith' tuesday ;
+
+tuesday = day ( night | .EMPTY ) | cake ;
+
+.END</pre>
+</div>
+<p>...gets compiled into this assembly code:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Program OOOLALA</span>
+<span class="c"># (preamble)</span>
+<span class="n">set_switch</span><span class="p">()</span>
+
+<span class="n">label</span><span class="p">(</span><span class="n">OOOLALA</span><span class="p">)</span> <span class="c"># subroutine ==========</span>
+<span class="n">call</span><span class="p">(</span><span class="n">HUH</span><span class="p">)</span>
+<span class="n">if_not_switch_jmp_to</span><span class="p">(</span><span class="n">L1</span><span class="p">)</span>
+<span class="n">label</span><span class="p">(</span><span class="n">L1</span><span class="p">)</span>
+<span class="n">if_switch_jmp_to</span><span class="p">(</span><span class="n">L2</span><span class="p">)</span>
+<span class="n">expect</span><span class="p">(</span><span class="s">&#39;jones&#39;</span><span class="p">)</span>
+<span class="n">if_not_switch_jmp_to</span><span class="p">(</span><span class="n">L3</span><span class="p">)</span>
+<span class="n">label</span><span class="p">(</span><span class="n">L3</span><span class="p">)</span>
+<span class="n">if_switch_jmp_to</span><span class="p">(</span><span class="n">L2</span><span class="p">)</span>
+<span class="n">call</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="n">if_not_switch_jmp_to</span><span class="p">(</span><span class="n">L4</span><span class="p">)</span>
+<span class="n">label</span><span class="p">(</span><span class="n">L4</span><span class="p">)</span>
+<span class="n">if_switch_jmp_to</span><span class="p">(</span><span class="n">L2</span><span class="p">)</span>
+<span class="n">call</span><span class="p">(</span><span class="n">bar</span><span class="p">)</span>
+<span class="n">if_not_switch_jmp_to</span><span class="p">(</span><span class="n">L5</span><span class="p">)</span>
+<span class="n">label</span><span class="p">(</span><span class="n">L5</span><span class="p">)</span>
+<span class="n">label</span><span class="p">(</span><span class="n">L2</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+
+<span class="n">label</span><span class="p">(</span><span class="n">HUH</span><span class="p">)</span> <span class="c"># subroutine ==========</span>
+<span class="n">call</span><span class="p">(</span><span class="n">gary</span><span class="p">)</span>
+<span class="n">if_not_switch_jmp_to</span><span class="p">(</span><span class="n">L6</span><span class="p">)</span>
+<span class="n">expect</span><span class="p">(</span><span class="s">&#39;smith&#39;</span><span class="p">)</span>
+<span class="n">if_not_switch_jmp_to</span><span class="p">(</span><span class="n">ERROR</span><span class="p">)</span>
+<span class="n">call</span><span class="p">(</span><span class="n">tuesday</span><span class="p">)</span>
+<span class="n">if_not_switch_jmp_to</span><span class="p">(</span><span class="n">ERROR</span><span class="p">)</span>
+<span class="n">label</span><span class="p">(</span><span class="n">L6</span><span class="p">)</span>
+<span class="n">label</span><span class="p">(</span><span class="n">L7</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+
+<span class="n">label</span><span class="p">(</span><span class="n">tuesday</span><span class="p">)</span> <span class="c"># subroutine ==========</span>
+<span class="n">call</span><span class="p">(</span><span class="n">day</span><span class="p">)</span>
+<span class="n">if_not_switch_jmp_to</span><span class="p">(</span><span class="n">L8</span><span class="p">)</span>
+<span class="n">call</span><span class="p">(</span><span class="n">night</span><span class="p">)</span>
+<span class="n">if_not_switch_jmp_to</span><span class="p">(</span><span class="n">L9</span><span class="p">)</span>
+<span class="n">label</span><span class="p">(</span><span class="n">L9</span><span class="p">)</span>
+<span class="n">if_switch_jmp_to</span><span class="p">(</span><span class="n">L10</span><span class="p">)</span>
+<span class="n">set_switch</span><span class="p">()</span>
+<span class="n">if_not_switch_jmp_to</span><span class="p">(</span><span class="n">L11</span><span class="p">)</span>
+<span class="n">label</span><span class="p">(</span><span class="n">L11</span><span class="p">)</span>
+<span class="n">label</span><span class="p">(</span><span class="n">L10</span><span class="p">)</span>
+<span class="n">if_not_switch_jmp_to</span><span class="p">(</span><span class="n">ERROR</span><span class="p">)</span>
+<span class="n">label</span><span class="p">(</span><span class="n">L8</span><span class="p">)</span>
+<span class="n">if_switch_jmp_to</span><span class="p">(</span><span class="n">L12</span><span class="p">)</span>
+<span class="n">call</span><span class="p">(</span><span class="n">cake</span><span class="p">)</span>
+<span class="n">if_not_switch_jmp_to</span><span class="p">(</span><span class="n">L13</span><span class="p">)</span>
+<span class="n">label</span><span class="p">(</span><span class="n">L13</span><span class="p">)</span>
+<span class="n">label</span><span class="p">(</span><span class="n">L12</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+
+<span class="c">#END</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="val-shorres-meta-ii-metacompiler">
+<h2>Val Shorre’s Meta-II Metacompiler<a class="headerlink" href="#val-shorres-meta-ii-metacompiler" title="Permalink to this headline">¶</a></h2>
+<p>The Meta-II engine compiles the <a class="reference external" href="https://github.com/PhoenixBureau/PigeonComputer/blob/master/metacompiler/metaii.metaii">metaii.metaii</a> description into an assembly source
+file (see <a class="reference external" href="https://github.com/PhoenixBureau/PigeonComputer/blob/master/metacompiler/metaii.asm">metaii.asm</a>) which is <em>the same</em> assembly source file that
+it uses to compile the assembly source file.</p>
+<p>The assembly code regenerates itself.  (Where do you get it the first
+time?  You must emulate the engine in your mind and compile it by hand,
+or crib a copy from someone else.)</p>
+<p>Here is the documentation on the Meta-II engine included in the Pigeon Computer project:</p>
+<span class="target" id="module-metaii"></span><div class="section" id="meta-ii-meta-compiler-python-engine">
+<h3>Meta II Meta-Compiler (Python Engine)<a class="headerlink" href="#meta-ii-meta-compiler-python-engine" title="Permalink to this headline">¶</a></h3>
+<p>This is a Python implementation of Val Shorre&#8217;s <a class="reference external" href="http://en.wikipedia.org/wiki/META_II">Meta II metacompiler</a>.</p>
+<p>It is just the engine, the Meta-II machine, <em>not</em> a self-regenerating
+metacompiler.  It <em>does</em> run the Meta-II assembly code and can scan the
+Meta-II compiler description and (re-)compile that assembly code.</p>
+<p>This engine can be used to play with metacompilers and generate all sorts
+of cool and interesting things (see the Bayfront Technologies
+<a class="reference external" href="http://www.bayfronttechnologies.com/mc_tutorial.html">Metacompilers Tutorial</a>.)  We&#8217;re going to use it to target the Pigeon
+Assembler&#8217;s source format.</p>
+<p>We can compile descriptions of high-level programming language constructs
+into assembly code and then use the assembler to generate HEX files to
+load on our chips, giving us a simple but powerful <em>toolchain</em> for
+developing code for our micro-controllers.</p>
+<dl class="class">
+<dt id="metaii.MetaII">
+<em class="property">class </em><tt class="descclassname">metaii.</tt><tt class="descname">MetaII</tt><a class="reference internal" href="_modules/metaii.html#MetaII"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<p>Implementation of Val Shorre&#8217;s Meta II metacompiler.
+(see <a class="reference external" href="http://en.wikipedia.org/wiki/META_II">http://en.wikipedia.org/wiki/META_II</a>)</p>
+<p>usage: metaii.py [-h] [-p PROGRAM] source</p>
+<dl class="docutils">
+<dt>positional arguments:</dt>
+<dd>source                Source code file to compile.</dd>
+<dt>optional arguments:</dt>
+<dd><table class="first last docutils option-list" frame="void" rules="none">
+<col class="option" />
+<col class="description" />
+<tbody valign="top">
+<tr><td class="option-group">
+<kbd><span class="option">-h</span>, <span class="option">--help</span></kbd></td>
+<td>show this help message and exit</td></tr>
+<tr><td class="option-group" colspan="2">
+<kbd><span class="option">-p <var>PROGRAM</var></span>, <span class="option">--program <var>PROGRAM</var></span></kbd></td>
+</tr>
+<tr><td>&nbsp;</td><td>Assembly file to use for compiler (default:
+metaii.asm).</td></tr>
+</tbody>
+</table>
+</dd>
+</dl>
+<dl class="method">
+<dt id="metaii.MetaII.ADR">
+<tt class="descname">ADR</tt><big>(</big><em>ident</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.ADR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.ADR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.B">
+<tt class="descname">B</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.B"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.B" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.BE">
+<tt class="descname">BE</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.BE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.BE" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.BF">
+<tt class="descname">BF</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.BF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.BF" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.BT">
+<tt class="descname">BT</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.BT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.BT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.CI">
+<tt class="descname">CI</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.CI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.CI" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.CL">
+<tt class="descname">CL</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.CL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.CL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.CLL">
+<tt class="descname">CLL</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.CLL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.CLL" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.END">
+<tt class="descname">END</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.END"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.END" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.GN1">
+<tt class="descname">GN1</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.GN1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.GN1" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.GN2">
+<tt class="descname">GN2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.GN2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.GN2" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.ID">
+<tt class="descname">ID</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.ID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.ID" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.LB">
+<tt class="descname">LB</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.LB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.LB" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.NUM">
+<tt class="descname">NUM</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.NUM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.NUM" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.OUT">
+<tt class="descname">OUT</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.OUT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.OUT" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.R">
+<tt class="descname">R</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.R"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.R" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.SET">
+<tt class="descname">SET</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.SET"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.SET" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.SR">
+<tt class="descname">SR</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.SR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.SR" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.TST">
+<tt class="descname">TST</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.TST"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.TST" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.assemble">
+<tt class="descname">assemble</tt><big>(</big><em>program_source</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.assemble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.assemble" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.assemble_line">
+<tt class="descname">assemble_line</tt><big>(</big><em>op</em>, <em>arg=None</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.assemble_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.assemble_line" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.compile">
+<tt class="descname">compile</tt><big>(</big><em>input_text</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.compile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.compile" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.info">
+<tt class="descname">info</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.info" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metaii.MetaII.print_program">
+<tt class="descname">print_program</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.print_program"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.print_program" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="metaii.label_generator">
+<tt class="descclassname">metaii.</tt><tt class="descname">label_generator</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#label_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.label_generator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</div>
+</div>
+<div class="section" id="language-design-and-compiler-extentions">
+<h2>Language Design and Compiler Extentions<a class="headerlink" href="#language-design-and-compiler-extentions" title="Permalink to this headline">¶</a></h2>
+<p>TODO: Write up a bit about all the myriad ways to go from here
+(basically ALL THE REST OF COMPUTER PROGRAMMING!!) Lol.</p>
+<p>For example, here is the Meta-II compiler description that compiles the
+above high-level source to target the Pigeon Assembler:</p>
+<div class="highlight-python"><pre>.SYNTAX PROGRAM
+
+EX3 = .ID .OUT('call(' * ')') |
+      .STRING .OUT('expect(' * ')') |
+      '(' EX1 ')' |
+      '.EMPTY' .OUT('set_switch()') |
+
+      '$' .OUT('label(' *1 ')')
+      EX3 .OUT('if_switch_jmp_to(' *1 ')')
+          .OUT('set_switch()') ;
+
+EX2 = (EX3 .OUT('if_not_switch_jmp_to(' *1 ')'))
+      $ (EX3 .OUT('if_not_switch_jmp_to(ERROR)'))
+      .OUT('label(' *1 ')') ;
+
+EX1 = EX2 $ ( '|' .OUT('if_switch_jmp_to(' *1 ')') EX2)
+      .OUT('label(' *1 ')') ;
+
+ST = .ID .OUT('label(' * ') # subroutine ==========')
+     '='
+     EX1
+     ';' .OUT('ret()') .OUT('') ;
+
+PROGRAM = '.SYNTAX'
+          .ID .OUT('# Program ' * )
+              .OUT('# (preamble)')
+              .OUT('set_switch()')
+              .OUT('')
+          $ ST
+          '.END' .OUT('#END') ;
+
+.END</pre>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="pyavrasm.html">Pigeon Assembler Internals</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="pigeon_firmware.html">Pigeon Firmware</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Simon Forman.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

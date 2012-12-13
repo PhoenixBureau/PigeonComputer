@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Supported Assembly Instructions &mdash; Pigeon Assembler 0.1 documentation</title>
+    <title>Appendix B: Supported Assembly Instructions &mdash; Pigeon Assembler 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -28,33 +28,76 @@
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
     <link rel="top" title="Pigeon Assembler 0.1 documentation" href="index.html" />
-    <link rel="next" title="Pigeon Assembler" href="pyavrasm.html" />
-    <link rel="prev" title="ATmega328P Definitions" href="m328P.html" /> 
+    <link rel="prev" title="Appendix A: ATmega328P Definitions" href="m328P.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
           <span>Pigeon Assembler 0.1 documentation</span></a></h1>
-        <h2 class="heading"><span>Supported Assembly Instructions</span></h2>
+        <h2 class="heading"><span>Appendix B: Supported Assembly Instructions</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        «&#160;&#160;<a href="m328P.html">ATmega328P Definitions</a>
+        «&#160;&#160;<a href="m328P.html">Appendix A: ATmega328P Definitions</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
-        &#160;&#160;::&#160;&#160;
-        <a href="pyavrasm.html">Pigeon Assembler</a>&#160;&#160;»
         </p>
 
       </div>
       <div class="content">
         
         
-  <div class="section" id="supported-assembly-instructions">
-<h1>Supported Assembly Instructions<a class="headerlink" href="#supported-assembly-instructions" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="appendix-b-supported-assembly-instructions">
+<h1>Appendix B: Supported Assembly Instructions<a class="headerlink" href="#appendix-b-supported-assembly-instructions" title="Permalink to this headline">¶</a></h1>
 <p>Currently forty-three instructions are implemented.</p>
 <p>It&#8217;s not hard to add the rest, it&#8217;s just those are the ones I needed
 to get the firmware running.</p>
+<p>The following instructions are implemented so far:</p>
+<ul class="simple">
+<li>add</li>
+<li>adiw</li>
+<li>andi</li>
+<li>brcc</li>
+<li>breq</li>
+<li>brlo</li>
+<li>brne</li>
+<li>brsh</li>
+<li>cli</li>
+<li>clr</li>
+<li>cp</li>
+<li>cpc</li>
+<li>cpi</li>
+<li>cpse</li>
+<li>dec</li>
+<li>ijmp</li>
+<li>inc</li>
+<li>jmp</li>
+<li>ld_post_incr</li>
+<li>ld_pre_decr</li>
+<li>ldi</li>
+<li>lds</li>
+<li>lpm</li>
+<li>lpm_post_incr</li>
+<li>lsl</li>
+<li>lsr</li>
+<li>mov</li>
+<li>movw</li>
+<li>mul</li>
+<li><a href="#id1"><span class="problematic" id="id2">or_</span></a></li>
+<li>out</li>
+<li>pop</li>
+<li>push</li>
+<li>rcall</li>
+<li>ret</li>
+<li>rjmp</li>
+<li>sbiw</li>
+<li>sbrs</li>
+<li>sei</li>
+<li>st_post_incr</li>
+<li>sts</li>
+<li>subi</li>
+<li>swap</li>
+</ul>
 <span class="target" id="module-instructions"></span><dl class="class">
 <dt id="instructions.InstructionsMixin">
 <em class="property">class </em><tt class="descclassname">instructions.</tt><tt class="descname">InstructionsMixin</tt><a class="reference internal" href="_modules/instructions.html#InstructionsMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin" title="Permalink to this definition">¶</a></dt>
@@ -206,7 +249,7 @@ to get the firmware running.</p>
 
 <dl class="attribute">
 <dt id="instructions.InstructionsMixin.ops">
-<tt class="descname">ops</tt><em class="property"> = {'brsh': &lt;function brsh at 0x3a76aa0&gt;, 'rcall': &lt;function rcall at 0x3a44de8&gt;, 'cpse': &lt;function cpse at 0x3a768c0&gt;, 'lsl': &lt;function lsl at 0x3a762a8&gt;, 'pop': &lt;function pop at 0x3a770c8&gt;, 'lds': &lt;function lds at 0x3a74320&gt;, 'lsr': &lt;function lsr at 0x3a761b8&gt;, 'ijmp': &lt;function ijmp at 0x3a766e0&gt;, 'movw': &lt;function movw at 0x3a76b90&gt;, 'cp': &lt;function cp at 0x3a767d0&gt;, 'dec': &lt;function dec at 0x3a76668&gt;, 'ld_pre_decr_Z': &lt;function ld_pre_decr_Z at 0x3a74aa0&gt;, 'sei': &lt;function sei at 0x3a740c8&gt;, 'out': &lt;function out at 0x3a44cf8&gt;, 'andi': &lt;function andi at 0x3a76c80&gt;, 'cli': &lt;function cli at 0x3a44b18&gt;, 'st_post_incr_Z': &lt;function st_post_incr_Z at 0x3a746e0&gt;, 'ret': &lt;function ret at 0x3a74140&gt;, 'add': &lt;function add at 0x3a76398&gt;, 'ld_pre_decr_Y': &lt;function ld_pre_decr_Y at 0x3a747d0&gt;, 'mul': &lt;function mul at 0x3a77668&gt;, 'inc': &lt;function inc at 0x3a76578&gt;, 'ldi': &lt;function ldi at 0x3a44c08&gt;, 'clr': &lt;function clr at 0x3a76e60&gt;, 'rjmp': &lt;function rjmp at 0x3a74230&gt;, 'swap': &lt;function swap at 0x3a772a8&gt;, 'adiw': &lt;function adiw at 0x3a77398&gt;, 'jmp': &lt;function jmp at 0x3a44aa0&gt;, 'db': &lt;function db at 0x3a74500&gt;, 'mov': &lt;function mov at 0x3a74050&gt;, 'lpm_post_incr_Z': &lt;function lpm_post_incr_Z at 0x3a74c80&gt;, 'ld_post_incr_X': &lt;function ld_post_incr_X at 0x3a748c0&gt;, 'ld_post_incr_Z': &lt;function ld_post_incr_Z at 0x3a749b0&gt;, 'brne': &lt;function brne at 0x3a74e60&gt;, 'dw': &lt;function dw at 0x3a74488&gt;, 'brlo': &lt;function brlo at 0x3a760c8&gt;, 'subi': &lt;function subi at 0x3a77578&gt;, 'or_': &lt;function or_ at 0x3a771b8&gt;, 'cpi': &lt;function cpi at 0x3a74d70&gt;, 'cpc': &lt;function cpc at 0x3a769b0&gt;, 'st_post_incr_Y': &lt;function st_post_incr_Y at 0x3a745f0&gt;, 'lpm': &lt;function lpm at 0x3a74b90&gt;, 'sbrs': &lt;function sbrs at 0x3a74410&gt;, 'sts': &lt;function sts at 0x3a44ed8&gt;, 'push': &lt;function push at 0x3a76f50&gt;, 'brcc': &lt;function brcc at 0x3a76488&gt;, 'sbiw': &lt;function sbiw at 0x3a77488&gt;, 'breq': &lt;function breq at 0x3a74f50&gt;, 'sbis': &lt;function sbis at 0x3a76d70&gt;}</em><a class="headerlink" href="#instructions.InstructionsMixin.ops" title="Permalink to this definition">¶</a></dt>
+<tt class="descname">ops</tt><em class="property"> = {'brsh': &lt;function brsh at 0x2f41848&gt;, 'rcall': &lt;function rcall at 0x2f3fb90&gt;, 'cpse': &lt;function cpse at 0x2f41668&gt;, 'lsl': &lt;function lsl at 0x2f41050&gt;, 'pop': &lt;function pop at 0x2f41de8&gt;, 'lds': &lt;function lds at 0x2f400c8&gt;, 'lsr': &lt;function lsr at 0x2f40ed8&gt;, 'ijmp': &lt;function ijmp at 0x2f41488&gt;, 'movw': &lt;function movw at 0x2f41938&gt;, 'cp': &lt;function cp at 0x2f41578&gt;, 'dec': &lt;function dec at 0x2f41410&gt;, 'ld_pre_decr_Z': &lt;function ld_pre_decr_Z at 0x2f40848&gt;, 'sei': &lt;function sei at 0x2f3fde8&gt;, 'out': &lt;function out at 0x2f3faa0&gt;, 'andi': &lt;function andi at 0x2f41a28&gt;, 'cli': &lt;function cli at 0x2f3f8c0&gt;, 'st_post_incr_Z': &lt;function st_post_incr_Z at 0x2f40488&gt;, 'ret': &lt;function ret at 0x2f3fe60&gt;, 'add': &lt;function add at 0x2f41140&gt;, 'ld_pre_decr_Y': &lt;function ld_pre_decr_Y at 0x2f40578&gt;, 'mul': &lt;function mul at 0x2f42410&gt;, 'inc': &lt;function inc at 0x2f41320&gt;, 'ldi': &lt;function ldi at 0x2f3f9b0&gt;, 'clr': &lt;function clr at 0x2f41c08&gt;, 'rjmp': &lt;function rjmp at 0x2f3ff50&gt;, 'swap': &lt;function swap at 0x2f42050&gt;, 'adiw': &lt;function adiw at 0x2f42140&gt;, 'jmp': &lt;function jmp at 0x2f3f848&gt;, 'db': &lt;function db at 0x2f402a8&gt;, 'mov': &lt;function mov at 0x2f3fd70&gt;, 'lpm_post_incr_Z': &lt;function lpm_post_incr_Z at 0x2f40a28&gt;, 'ld_post_incr_X': &lt;function ld_post_incr_X at 0x2f40668&gt;, 'ld_post_incr_Z': &lt;function ld_post_incr_Z at 0x2f40758&gt;, 'brne': &lt;function brne at 0x2f40c08&gt;, 'dw': &lt;function dw at 0x2f40230&gt;, 'brlo': &lt;function brlo at 0x2f40de8&gt;, 'subi': &lt;function subi at 0x2f42320&gt;, 'or_': &lt;function or_ at 0x2f41ed8&gt;, 'cpi': &lt;function cpi at 0x2f40b18&gt;, 'cpc': &lt;function cpc at 0x2f41758&gt;, 'st_post_incr_Y': &lt;function st_post_incr_Y at 0x2f40398&gt;, 'lpm': &lt;function lpm at 0x2f40938&gt;, 'sbrs': &lt;function sbrs at 0x2f401b8&gt;, 'sts': &lt;function sts at 0x2f3fc80&gt;, 'push': &lt;function push at 0x2f41cf8&gt;, 'brcc': &lt;function brcc at 0x2f41230&gt;, 'sbiw': &lt;function sbiw at 0x2f42230&gt;, 'breq': &lt;function breq at 0x2f40cf8&gt;, 'sbis': &lt;function sbis at 0x2f41b18&gt;}</em><a class="headerlink" href="#instructions.InstructionsMixin.ops" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -579,11 +622,9 @@ kkkk kkkk kkkk kkkk</p>
       <div class="bottomnav">
       
         <p>
-        «&#160;&#160;<a href="m328P.html">ATmega328P Definitions</a>
+        «&#160;&#160;<a href="m328P.html">Appendix A: ATmega328P Definitions</a>
         &#160;&#160;::&#160;&#160;
         <a class="uplink" href="index.html">Contents</a>
-        &#160;&#160;::&#160;&#160;
-        <a href="pyavrasm.html">Pigeon Assembler</a>&#160;&#160;»
         </p>
 
       </div>

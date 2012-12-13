@@ -1,0 +1,1002 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Pigeon Firmware &mdash; Pigeon Assembler 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Assembler 0.1 documentation" href="index.html" />
+    <link rel="next" title="Appendix A: ATmega328P Definitions" href="m328P.html" />
+    <link rel="prev" title="Pigeon Compiler" href="compiler.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Pigeon Assembler 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>Pigeon Firmware</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="compiler.html">Pigeon Compiler</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="m328P.html">Appendix A: ATmega328P Definitions</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="pigeon-firmware">
+<span id="id1"></span><h1><a class="toc-backref" href="#id2">Pigeon Firmware</a><a class="headerlink" href="#pigeon-firmware" title="Permalink to this headline">¶</a></h1>
+<blockquote>
+<div><p>This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.</p>
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+<p>You should have received a copy of the GNU General Public License
+along with this program.  If not, see &lt;<a class="reference external" href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>&gt;.</p>
+</div></blockquote>
+<div class="contents topic" id="contents">
+<p class="topic-title first">Contents</p>
+<ul class="simple">
+<li><a class="reference internal" href="#pigeon-firmware" id="id2">Pigeon Firmware</a><ul>
+<li><a class="reference internal" href="#introduction" id="id3">Introduction</a></li>
+<li><a class="reference internal" href="#definitions" id="id4">Definitions</a><ul>
+<li><a class="reference internal" href="#the-data-stack" id="id5">The Data Stack</a></li>
+<li><a class="reference internal" href="#other-register-assignments" id="id6">Other Register Assignments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#data-sram-organization" id="id7">Data (SRAM) Organization</a><ul>
+<li><a class="reference internal" href="#word-buffer" id="id8">Word Buffer</a></li>
+<li><a class="reference internal" href="#data-stack" id="id9">Data Stack</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#code-flash-ram" id="id10">Code (Flash RAM)</a><ul>
+<li><a class="reference internal" href="#macros" id="id11">Macros</a></li>
+<li><a class="reference internal" href="#begining-of-code-proper" id="id12">Begining of code proper</a></li>
+<li><a class="reference internal" href="#interupt-vectors" id="id13">Interupt Vectors</a></li>
+<li><a class="reference internal" href="#initial-reset-vector" id="id14">Initial reset vector</a></li>
+<li><a class="reference internal" href="#main-loop" id="id15">Main Loop</a></li>
+<li><a class="reference internal" href="#initialize-the-usart" id="id16">Initialize the USART</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#words" id="id17">Words</a><ul>
+<li><a class="reference internal" href="#key" id="id18">Key</a></li>
+<li><a class="reference internal" href="#dup" id="id19">Dup</a></li>
+<li><a class="reference internal" href="#emit" id="id20">Emit</a></li>
+<li><a class="reference internal" href="#echo" id="id21">Echo</a></li>
+<li><a class="reference internal" href="#drop" id="id22">Drop</a></li>
+<li><a class="reference internal" href="#word" id="id23">Word</a></li>
+<li><a class="reference internal" href="#number" id="id24">Number</a></li>
+<li><a class="reference internal" href="#left-shift-word-16-bit-value" id="id25">Left Shift Word (16-Bit) Value</a></li>
+<li><a class="reference internal" href="#emithex" id="id26">Emithex</a></li>
+<li><a class="reference internal" href="#s" id="id27">.S</a></li>
+<li><a class="reference internal" href="#find" id="id28">Find</a></li>
+<li><a class="reference internal" href="#to-pfa" id="id29">To PFA</a></li>
+<li><a class="reference internal" href="#interpret" id="id30">interpret</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#conclusion" id="id31">Conclusion</a><ul>
+<li><a class="reference internal" href="#program-ability" id="id32">Program-ability</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="introduction">
+<h2><a class="toc-backref" href="#id3">Introduction</a><a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+<p>This is a simple Forth-like firmware for <a class="reference external" href="http://www.atmel.com/devices/atmega328p.aspx">ATmega328P</a> micro-controllers.</p>
+<p>The system in general probably won&#8217;t make much sense unless you&#8217;re
+already at least a little familiar with Forth. Two helpful sources are
+<a class="reference external" href="http://www.bradrodriguez.com/papers/moving1.htm">Brad Rodriguez&#8217; &#8220;Moving Forth&#8221; series</a> and <a class="reference external" href="http://rwmj.wordpress.com/2010/08/07/jonesforth-git-repository/">Richard
+Jones&#8217;</a> wonderful <a class="reference external" href="http://git.annexia.org/?p=jonesforth.git;a=summary">jonesforth &#8220;literate Forth&#8221;</a>.</p>
+<p>There&#8217;s no attempt to implement or adhere to any standard Forth. I&#8217;m just
+noodling around and creating the easiest version of whatever seems like it
+will work.  It&#8217;s also my first attempt at writing assembly code in over
+a decade, and the first time using AVR assembly, so there are certainly
+going to be some, uh, less-than-perfect code. Please bear with me.</p>
+</div>
+<div class="section" id="definitions">
+<h2><a class="toc-backref" href="#id4">Definitions</a><a class="headerlink" href="#definitions" title="Permalink to this headline">¶</a></h2>
+<p>Let&#8217;s start by creating some definitions for various registers the system
+will use.</p>
+<div class="section" id="the-data-stack">
+<h3><a class="toc-backref" href="#id5">The Data Stack</a><a class="headerlink" href="#the-data-stack" title="Permalink to this headline">¶</a></h3>
+<p>The AVR chip has a Harvard architecture with separate memories and buses for
+program and data RAM. The data bus, SRAM, and registers are eight bits wide,
+while the address bus and Flash memory (for persistent program storage)
+are sixteen bits wide.</p>
+<p>I&#8217;ve decided to try having the Top-Of-Stack (TOS) and the next 8-bit
+&#8220;cell&#8221; underneath it (which I call TOSL below) in two registers with the
+rest of the stack pointed to by another pair of registers.</p>
+<p>Certain pairs of 8-bit registers (namely the &#8220;top&#8221; six registers r26 -
+r31) can be used as 16-bit registers (namely X, Y, and Z) for addressing
+and some math functions</p>
+<p>If we use a pair of such registers as our TOS and TOSL it gives us the
+ability to, say, put the low and high bytes of an address in program or
+data RAM onto the stack and then efficiently use the 16-bit value to
+fetch or store from that location.</p>
+<p>Keep the top two items (bytes) on the stack in the X register:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">define</span><span class="p">(</span><span class="n">TOS</span><span class="o">=</span><span class="n">r27</span><span class="p">)</span>
+<span class="n">define</span><span class="p">(</span><span class="n">TOSL</span><span class="o">=</span><span class="n">r26</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Y register is our Data Stack Pointer.</p>
+</div>
+<div class="section" id="other-register-assignments">
+<h3><a class="toc-backref" href="#id6">Other Register Assignments</a><a class="headerlink" href="#other-register-assignments" title="Permalink to this headline">¶</a></h3>
+<p>Z register will be used for diggin around in the dictionary.</p>
+<p>We also use a working register:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">define</span><span class="p">(</span><span class="n">Working</span><span class="o">=</span><span class="n">r16</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The &#8220;word&#8221; word needs to track how many bytes it has read. This is also
+reused by find:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">define</span><span class="p">(</span><span class="n">word_counter</span><span class="o">=</span><span class="n">r17</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Base (numeric base for converting digits to numbers):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">define</span><span class="p">(</span><span class="n">Base</span><span class="o">=</span><span class="n">r8</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Number keeps track of the digits it is converting using this register:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">define</span><span class="p">(</span><span class="n">number_pointer</span><span class="o">=</span><span class="n">r9</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Registers used by FIND word:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">define</span><span class="p">(</span><span class="n">find_buffer_char</span><span class="o">=</span><span class="n">r10</span><span class="p">)</span>
+<span class="n">define</span><span class="p">(</span><span class="n">find_name_char</span><span class="o">=</span><span class="n">r11</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Register used by Interpret:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">define</span><span class="p">(</span><span class="n">temp_length</span><span class="o">=</span><span class="n">r12</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="data-sram-organization">
+<h2><a class="toc-backref" href="#id7">Data (SRAM) Organization</a><a class="headerlink" href="#data-sram-organization" title="Permalink to this headline">¶</a></h2>
+<p>On the 328P the first 256 bytes of data space are actually the registers
+and I/O ports (see the Datasheet for details):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">org</span><span class="p">(</span><span class="n">SRAM_START</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="word-buffer">
+<h3><a class="toc-backref" href="#id8">Word Buffer</a><a class="headerlink" href="#word-buffer" title="Permalink to this headline">¶</a></h3>
+<p>The &#8220;word&#8221; word reads the stream of characters returned by the &#8220;key&#8221; word
+and fills this buffer until it reaches a space character. It&#8217;s only 64
+bytes because we&#8217;re going to be using a single-byte length field and
+packing two bits of meta-data into it, leaving six bits to specify the
+word length, giving us a maximum possible name length of sixty-four:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">buffer_length</span> <span class="o">=</span> <span class="mh">0x40</span>
+<span class="n">label</span><span class="p">(</span><span class="nb">buffer</span><span class="p">,</span> <span class="n">reserves</span><span class="o">=</span><span class="n">buffer_length</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="data-stack">
+<h3><a class="toc-backref" href="#id9">Data Stack</a><a class="headerlink" href="#data-stack" title="Permalink to this headline">¶</a></h3>
+<p>The Parameter (Data) Stack grows upward
+towards the Return Stack at the top of RAM. Note that the first two bytes
+of stack are kept in the X register. Due to this the initial two bytes of
+the data stack will be filled with whatever was in X before the first
+push, unless you load X (i.e. TOS and Just-Under-TOS) &#8220;manually&#8221; before
+dropping into the interpreter loop:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">data_stack</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="code-flash-ram">
+<h2><a class="toc-backref" href="#id10">Code (Flash RAM)</a><a class="headerlink" href="#code-flash-ram" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="macros">
+<h3><a class="toc-backref" href="#id11">Macros</a><a class="headerlink" href="#macros" title="Permalink to this headline">¶</a></h3>
+<p>Some data stack manipulation macros to ease readability.</p>
+<p>Pop from data stack to TOSL. Note that you are responsible for preserving
+the previous value of TOSL if you still want it after using the macro.
+(I.e. mov TOS, TOSL):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="c"># Macros.</span>
+
+<span class="k">def</span> <span class="nf">popup</span><span class="p">():</span>
+  <span class="n">ld_pre_decr</span><span class="p">(</span><span class="n">TOSL</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Make room on TOS and TOSL by pushing them onto the data stack:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">pushdownw</span><span class="p">():</span>
+  <span class="n">st_post_incr</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">TOSL</span><span class="p">)</span>
+  <span class="n">st_post_incr</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">TOS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Essentially &#8220;drop drop&#8221;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">popupw</span><span class="p">():</span>
+  <span class="n">ld_pre_decr</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+  <span class="n">ld_pre_decr</span><span class="p">(</span><span class="n">TOSL</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="begining-of-code-proper">
+<h3><a class="toc-backref" href="#id12">Begining of code proper</a><a class="headerlink" href="#begining-of-code-proper" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">org</span><span class="p">(</span><span class="mh">0x0000</span><span class="p">)</span>
+<span class="n">jmp</span><span class="p">(</span><span class="n">RESET</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interupt-vectors">
+<h3><a class="toc-backref" href="#id13">Interupt Vectors</a><a class="headerlink" href="#interupt-vectors" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">25</span><span class="p">):</span>   <span class="c"># There are 25 interrupt vectors.</span>
+  <span class="n">jmp</span><span class="p">(</span><span class="n">BAD_INTERUPT</span><span class="p">)</span>
+
+<span class="n">label</span><span class="p">(</span><span class="n">BAD_INTERUPT</span><span class="p">)</span>
+<span class="n">jmp</span><span class="p">(</span><span class="mh">0x0000</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="initial-reset-vector">
+<h3><a class="toc-backref" href="#id14">Initial reset vector</a><a class="headerlink" href="#initial-reset-vector" title="Permalink to this headline">¶</a></h3>
+<p>Disable interrupts and reset everything:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">RESET</span><span class="p">)</span>
+<span class="n">cli</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Set up the Return Stack:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ldi</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">low</span><span class="p">(</span><span class="n">RAMEND</span><span class="p">))</span>
+<span class="n">out</span><span class="p">(</span><span class="n">SPL</span><span class="p">,</span> <span class="n">Working</span><span class="p">)</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">high</span><span class="p">(</span><span class="n">RAMEND</span><span class="p">))</span>
+<span class="n">out</span><span class="p">(</span><span class="n">SPH</span><span class="p">,</span> <span class="n">Working</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Initialize Data Stack:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ldi</span><span class="p">(</span><span class="n">YL</span><span class="p">,</span> <span class="n">low</span><span class="p">(</span><span class="n">data_stack</span><span class="p">))</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">YH</span><span class="p">,</span> <span class="n">high</span><span class="p">(</span><span class="n">data_stack</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Set the UART to talk to a serial port:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rcall</span><span class="p">(</span><span class="n">UART_INIT</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Set up 100kHz freq for TWI/I2C peripheral:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ldi</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="mi">23</span><span class="p">)</span>
+<span class="n">sts</span><span class="p">(</span><span class="n">TWBR</span><span class="p">,</span> <span class="n">Working</span><span class="p">)</span> <span class="c"># set bitrate</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">sts</span><span class="p">(</span><span class="n">TWSR</span><span class="p">,</span> <span class="n">Working</span><span class="p">)</span> <span class="c"># set prescaler</span>
+</pre></div>
+</div>
+<p>Initialize Base:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ldi</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">mov</span><span class="p">(</span><span class="n">Base</span><span class="p">,</span> <span class="n">Working</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Re-enable interrupts:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sei</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>TODO: Set up a Stack Overflow Handler and put its address at RAMEND
+and set initial stack pointer to RAMEND - 2 (or would it be 1?)
+That way if we RET from somewhere and the stack is underflowed we&#8217;ll
+trigger the handler instead of just freaking out.</p>
+</div>
+<div class="section" id="main-loop">
+<h3><a class="toc-backref" href="#id15">Main Loop</a><a class="headerlink" href="#main-loop" title="Permalink to this headline">¶</a></h3>
+<p>Our (very simple) main loop just calls &#8220;quit&#8221; over and over again:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">MAIN</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">INTERPRET_PFA</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">DOTESS_PFA</span><span class="p">)</span>
+<span class="n">rjmp</span><span class="p">(</span><span class="n">MAIN</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="initialize-the-usart">
+<h3><a class="toc-backref" href="#id16">Initialize the USART</a><a class="headerlink" href="#initialize-the-usart" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">UART_INIT</span><span class="p">)</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">r17</span><span class="p">,</span> <span class="n">high</span><span class="p">(</span><span class="mi">520</span><span class="p">))</span> <span class="c"># 2400 baud w/ 20Mhz osc</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">r16</span><span class="p">,</span> <span class="n">low</span><span class="p">(</span><span class="mi">520</span><span class="p">))</span>  <span class="c"># See Datasheet</span>
+<span class="n">sts</span><span class="p">(</span><span class="n">UBRR0H</span><span class="p">,</span> <span class="n">r17</span><span class="p">)</span>
+<span class="n">sts</span><span class="p">(</span><span class="n">UBRR0L</span><span class="p">,</span> <span class="n">r16</span><span class="p">)</span>
+<span class="c"># The chip defaults to 8N1 so we won&#39;t set it here even though we should.</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">r16</span><span class="p">,</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">TXEN0</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">RXEN0</span><span class="p">))</span> <span class="c"># Enable transmit/receive</span>
+<span class="n">sts</span><span class="p">(</span><span class="n">UCSR0B</span><span class="p">,</span> <span class="n">r16</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="words">
+<h2><a class="toc-backref" href="#id17">Words</a><a class="headerlink" href="#words" title="Permalink to this headline">¶</a></h2>
+<p>These are the basic commands of the system that work together to
+implement the interpreter. We define a macro to automatically
+generate word headers:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">_last_defined_word</span> <span class="o">=</span> <span class="mh">0x0000</span>
+<span class="k">def</span> <span class="nf">word_header</span><span class="p">(</span><span class="n">label_</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+  <span class="k">global</span> <span class="n">_last_defined_word</span>
+  <span class="n">label</span><span class="p">(</span><span class="n">label_</span><span class="p">)</span>
+  <span class="n">dw</span><span class="p">(</span><span class="n">_last_defined_word</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span>
+  <span class="n">db</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">),</span> <span class="n">name</span><span class="p">)</span>
+  <span class="n">_last_defined_word</span> <span class="o">=</span> <span class="n">label_</span>
+</pre></div>
+</div>
+<div class="section" id="key">
+<h3><a class="toc-backref" href="#id18">Key</a><a class="headerlink" href="#key" title="Permalink to this headline">¶</a></h3>
+<p>Read a character from the serial port and push it onto the stack:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">word_header</span><span class="p">(</span><span class="n">KEY</span><span class="p">,</span> <span class="s">&quot;key&quot;</span><span class="p">)</span> <span class="c"># = - - - - - - - - - - - -</span>
+</pre></div>
+</div>
+<p>First, loop on the RXC0 bit of the UCSR0A register, which indicates that
+a byte is available in the receive register:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">KEY_PFA</span><span class="p">)</span>
+<span class="n">lds</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">UCSR0A</span><span class="p">)</span>
+<span class="n">sbrs</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">RXC0</span><span class="p">)</span>
+<span class="n">rjmp</span><span class="p">(</span><span class="n">KEY_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Make room on the stack and load the character onto it from the UART&#8217;s data register:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rcall</span><span class="p">(</span><span class="n">DUP_PFA</span><span class="p">)</span>
+<span class="n">lds</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">UDR0</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Echo the char to the serial port:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rcall</span><span class="p">(</span><span class="n">ECHO_PFA</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="dup">
+<h3><a class="toc-backref" href="#id19">Dup</a><a class="headerlink" href="#dup" title="Permalink to this headline">¶</a></h3>
+<p>Duplicate the top value on the stack:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">word_header</span><span class="p">(</span><span class="n">DUP</span><span class="p">,</span> <span class="s">&quot;dup&quot;</span><span class="p">)</span> <span class="c"># = - - - - - - - - - - - -</span>
+<span class="n">label</span><span class="p">(</span><span class="n">DUP_PFA</span><span class="p">)</span>
+<span class="n">st_post_incr</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">TOSL</span><span class="p">)</span> <span class="c"># push TOSL onto data stack</span>
+<span class="n">mov</span><span class="p">(</span><span class="n">TOSL</span><span class="p">,</span> <span class="n">TOS</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="emit">
+<h3><a class="toc-backref" href="#id20">Emit</a><a class="headerlink" href="#emit" title="Permalink to this headline">¶</a></h3>
+<p>Pop the top item from the stack and send it to the serial port:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">word_header</span><span class="p">(</span><span class="n">EMIT</span><span class="p">,</span> <span class="s">&quot;emit&quot;</span><span class="p">)</span> <span class="c"># = - - - - - - - - - - - -</span>
+<span class="n">label</span><span class="p">(</span><span class="n">EMIT_PFA</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">ECHO_PFA</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">DROP_PFA</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="echo">
+<h3><a class="toc-backref" href="#id21">Echo</a><a class="headerlink" href="#echo" title="Permalink to this headline">¶</a></h3>
+<p>Write the top item on the stack to the serial port:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">word_header</span><span class="p">(</span><span class="n">ECHO</span><span class="p">,</span> <span class="s">&quot;echo&quot;</span><span class="p">)</span> <span class="c"># = - - - - - - - - - - - -</span>
+</pre></div>
+</div>
+<p>First, loop on the UDRE0 bit of the UCSR0A register, which indicates that
+the data register is ready for a byte:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">ECHO_PFA</span><span class="p">)</span>
+<span class="n">lds</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">UCSR0A</span><span class="p">)</span>
+<span class="n">sbrs</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">UDRE0</span><span class="p">)</span>
+<span class="n">rjmp</span><span class="p">(</span><span class="n">ECHO_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>When it&#8217;s ready, write the byte to the UART data register:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sts</span><span class="p">(</span><span class="n">UDR0</span><span class="p">,</span> <span class="n">TOS</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="drop">
+<h3><a class="toc-backref" href="#id22">Drop</a><a class="headerlink" href="#drop" title="Permalink to this headline">¶</a></h3>
+<p>Drop the top item from the stack:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">word_header</span><span class="p">(</span><span class="n">DROP</span><span class="p">,</span> <span class="s">&quot;drop&quot;</span><span class="p">)</span> <span class="c"># = - - - - - - - - - - - -</span>
+<span class="n">label</span><span class="p">(</span><span class="n">DROP_PFA</span><span class="p">)</span>
+<span class="n">mov</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">TOSL</span><span class="p">)</span>
+<span class="n">popup</span><span class="p">()</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="word">
+<h3><a class="toc-backref" href="#id23">Word</a><a class="headerlink" href="#word" title="Permalink to this headline">¶</a></h3>
+<p>Now that we can receive bytes from the serial port, the next step is a
+&#8220;word&#8221; word that can parse space (hex 0x20) character-delimited words
+from the stream of incoming chars.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">word_header</span><span class="p">(</span><span class="n">WORD</span><span class="p">,</span> <span class="s">&quot;word&quot;</span><span class="p">)</span> <span class="c"># = - - - - - - - - - - - -</span>
+<span class="n">label</span><span class="p">(</span><span class="n">WORD_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Get next char onto stack:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rcall</span><span class="p">(</span><span class="n">KEY_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Is it a space character?:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cpi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span>
+<span class="n">brne</span><span class="p">(</span><span class="n">_a_key</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then drop it from the stack and loop to get the next character:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rcall</span><span class="p">(</span><span class="n">DROP_PFA</span><span class="p">)</span>
+<span class="n">rjmp</span><span class="p">(</span><span class="n">WORD_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If it&#8217;s not a space character then begin saving chars to the word buffer.
+Set up the Z register to point to the buffer and reset the word_counter:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_a_key</span><span class="p">)</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">ZL</span><span class="p">,</span> <span class="n">low</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">ZH</span><span class="p">,</span> <span class="n">high</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">word_counter</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>First, check that we haven&#8217;t overflowed the buffer. If we have, silently
+&#8220;restart&#8221; the word, and just ditch whatever went before.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_find_length</span><span class="p">)</span>
+<span class="n">cpi</span><span class="p">(</span><span class="n">word_counter</span><span class="p">,</span> <span class="mh">0x40</span><span class="p">)</span>
+<span class="n">breq</span><span class="p">(</span><span class="n">_a_key</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Save the char to the buffer and clear it from the stack:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">st_post_incr</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">TOS</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">DROP_PFA</span><span class="p">)</span>
+<span class="n">inc</span><span class="p">(</span><span class="n">word_counter</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Get the next character, breaking if it&#8217;s a space character (hex 0x20):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rcall</span><span class="p">(</span><span class="n">KEY_PFA</span><span class="p">)</span>
+<span class="n">cpi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span>
+<span class="n">brne</span><span class="p">(</span><span class="n">_find_length</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>A space was found, copy length to TOS:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mov</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">word_counter</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="number">
+<h3><a class="toc-backref" href="#id24">Number</a><a class="headerlink" href="#number" title="Permalink to this headline">¶</a></h3>
+<p>Parse a number from the word_buffer. The length of the word is in TOS.
+Return the number of characters unconverted in TOS and the value, or
+first unconverted character, in TOSL:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">word_header</span><span class="p">(</span><span class="n">NUMBER</span><span class="p">,</span> <span class="s">&quot;number&quot;</span><span class="p">)</span> <span class="c"># = - - - - - - - - - - - -</span>
+<span class="n">label</span><span class="p">(</span><span class="n">NUMBER_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Point Z at the buffer:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ldi</span><span class="p">(</span><span class="n">ZL</span><span class="p">,</span> <span class="n">low</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">ZH</span><span class="p">,</span> <span class="n">high</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>We&#8217;ll accumulate the number in Working. Set it to zero.
+Then save the length to number_pointer and load the first character into
+TOS:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mov</span><span class="p">(</span><span class="n">number_pointer</span><span class="p">,</span> <span class="n">TOS</span><span class="p">)</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">)</span>
+<span class="n">ld_post_incr</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+<span class="n">rjmp</span><span class="p">(</span><span class="n">_convert</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This is where we loop back in if there is more than one digit to convert.
+We multiply the current accumulated value by the Base (the 16-bit result
+is placed in r1:r0) and load the next digit into TOS:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_convert_again</span><span class="p">)</span>
+<span class="n">mul</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">Base</span><span class="p">)</span>
+<span class="n">mov</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">r0</span><span class="p">)</span>
+<span class="n">ld_post_incr</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+
+<span class="n">label</span><span class="p">(</span><span class="n">_convert</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the character is between &#8216;0&#8217; and &#8216;9&#8217; go to _decimal:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cpi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="s">&#39;0&#39;</span><span class="p">)</span>
+<span class="n">brlo</span><span class="p">(</span><span class="n">_num_err</span><span class="p">)</span>
+<span class="n">cpi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="s">&#39;:&#39;</span><span class="p">)</span> <span class="c"># the char after &#39;9&#39;</span>
+<span class="n">brlo</span><span class="p">(</span><span class="n">_decimal</span><span class="p">)</span>
+
+<span class="n">rjmp</span><span class="p">(</span><span class="n">_num_err</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For a decimal digit, just subtract &#8216;0&#8217; from the char to get the value:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_decimal</span><span class="p">)</span>
+<span class="n">subi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="s">&#39;0&#39;</span><span class="p">)</span>
+<span class="n">rjmp</span><span class="p">(</span><span class="n">_converted</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If we encounter an unknown digit put the number of remaining unconverted
+digits into TOS and the unrecognized character in TOSL:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_num_err</span><span class="p">)</span>
+<span class="n">st_post_incr</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">TOSL</span><span class="p">)</span>
+<span class="n">mov</span><span class="p">(</span><span class="n">TOSL</span><span class="p">,</span> <span class="n">TOS</span><span class="p">)</span>
+<span class="n">mov</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">number_pointer</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Once we have a digit in TOS we can add it to our accumulator and, if
+there are more digits to convert, we loop back to keep converting them:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_converted</span><span class="p">)</span>
+<span class="n">add</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">TOS</span><span class="p">)</span>
+<span class="n">dec</span><span class="p">(</span><span class="n">number_pointer</span><span class="p">)</span>
+<span class="n">brne</span><span class="p">(</span><span class="n">_convert_again</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>We&#8217;re done, move the result to TOSL and zero, signaling successful
+conversion, in TOS:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">st_post_incr</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">TOSL</span><span class="p">)</span>
+<span class="n">mov</span><span class="p">(</span><span class="n">TOSL</span><span class="p">,</span> <span class="n">Working</span><span class="p">)</span>
+<span class="n">mov</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">number_pointer</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="left-shift-word-16-bit-value">
+<h3><a class="toc-backref" href="#id25">Left Shift Word (16-Bit) Value</a><a class="headerlink" href="#left-shift-word-16-bit-value" title="Permalink to this headline">¶</a></h3>
+<p>The AVR chip has a slight wrinkle when accessing program (flash) RAM.
+Because it is organized in 16-bit words there are 16K addresses to
+address the 32K of RAM. The architecture allows for reaching each byte
+by means of left-shifting the address and using the least significant
+bit to indicate low (0) or high (1) byte.</p>
+<p>This means that if we get an address from e.g. the return stack and
+we want to access data in program RAM with it we have to shift it one
+bit left. This word &#8220;&lt;&lt;w&#8221; shifts a 16-bit value in TOS:TOSL one bit to
+the left:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">word_header</span><span class="p">(</span><span class="n">LEFT_SHIFT_WORD</span><span class="p">,</span> <span class="s">&quot;&lt;&lt;w&quot;</span><span class="p">)</span> <span class="c"># = - - - - - - - - - - - -</span>
+<span class="n">label</span><span class="p">(</span><span class="n">LEFT_SHIFT_WORD_PFA</span><span class="p">)</span>
+<span class="n">mov</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">TOS</span><span class="p">)</span>
+<span class="n">clr</span><span class="p">(</span><span class="n">TOS</span><span class="p">)</span>
+<span class="n">lsl</span><span class="p">(</span><span class="n">TOSL</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the carry bit is clear skip incrementing TOS:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">brcc</span><span class="p">(</span><span class="n">_lslw0</span><span class="p">)</span>
+<span class="n">inc</span><span class="p">(</span><span class="n">TOS</span><span class="p">)</span> <span class="c"># copy carry flag to TOS[0]</span>
+<span class="n">label</span><span class="p">(</span><span class="n">_lslw0</span><span class="p">)</span>
+<span class="n">lsl</span><span class="p">(</span><span class="n">Working</span><span class="p">)</span>
+<span class="n">or_</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">Working</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>X now contains left-shifted word, and carry bit reflects TOS carry:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="emithex">
+<h3><a class="toc-backref" href="#id26">Emithex</a><a class="headerlink" href="#emithex" title="Permalink to this headline">¶</a></h3>
+<p>I want to be able to emit values (from the stack or wherever) as hex
+digits. This word pops the value on the stack and writes it to the serial
+port as two hex digits (high byte first):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">HEXDIGITS</span><span class="p">)</span> <span class="p">;</span> <span class="n">db</span><span class="p">(</span><span class="s">&quot;0123456789abcdef&quot;</span><span class="p">)</span>
+
+<span class="n">word_header</span><span class="p">(</span><span class="n">EMIT_HEX</span><span class="p">,</span> <span class="s">&quot;emithex&quot;</span><span class="p">)</span> <span class="c"># = - - - - - - - - - - - -</span>
+<span class="n">label</span><span class="p">(</span><span class="n">EMIT_HEX_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Save Z register onto the return stack:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">push</span><span class="p">(</span><span class="n">ZH</span><span class="p">)</span>
+<span class="n">push</span><span class="p">(</span><span class="n">ZL</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Dup TOS, emit the low byte, then the high byte:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rcall</span><span class="p">(</span><span class="n">DUP_PFA</span><span class="p">)</span>
+<span class="n">swap</span><span class="p">(</span><span class="n">TOS</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">emit_nibble</span><span class="p">)</span> <span class="c"># high</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">emit_nibble</span><span class="p">)</span> <span class="c"># low</span>
+</pre></div>
+</div>
+<p>Restore Z from the return stack:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">pop</span><span class="p">(</span><span class="n">ZL</span><span class="p">)</span>
+<span class="n">pop</span><span class="p">(</span><span class="n">ZH</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>So now to emit nybbles. This routine consumes TOS and clobbers Z:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">emit_nibble</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Get the address of HEXDIGITS into Z:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">pushdownw</span><span class="p">()</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">high</span><span class="p">(</span><span class="n">HEXDIGITS</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOSL</span><span class="p">,</span> <span class="n">low</span><span class="p">(</span><span class="n">HEXDIGITS</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">LEFT_SHIFT_WORD_PFA</span><span class="p">)</span>
+<span class="n">movw</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="n">popupw</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>mask high nibble:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">andi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="mh">0x0f</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Since there&#8217;s no direct way to add the nibble to Z (I could define a
+16-bit-plus-8-bit add word, and I probably will later) we&#8217;ll use a loop
+and the adiw instruction:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_eloop</span><span class="p">)</span>
+<span class="n">cpi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If nibble is not zero...:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">breq</span><span class="p">(</span><span class="n">_edone</span><span class="p">)</span>
+<span class="n">dec</span><span class="p">(</span><span class="n">TOS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Increment the HEXDIGITS pointer:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">adiw</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">rjmp</span><span class="p">(</span><span class="n">_eloop</span><span class="p">)</span>
+
+<span class="n">label</span><span class="p">(</span><span class="n">_edone</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Z points at correct char:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">lpm</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">EMIT_PFA</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="s">
+<h3><a class="toc-backref" href="#id27">.S</a><a class="headerlink" href="#s" title="Permalink to this headline">¶</a></h3>
+<p>Print out the stack:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">word_header</span><span class="p">(</span><span class="n">DOTESS</span><span class="p">,</span> <span class="s">&quot;.s&quot;</span><span class="p">)</span> <span class="c"># = - - - - - - - - - - - -</span>
+<span class="n">label</span><span class="p">(</span><span class="n">DOTESS_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Make room on the stack:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rcall</span><span class="p">(</span><span class="n">DUP_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Print out &#8216;cr&#8217; &#8216;lf&#8217; &#8216;[&#8216;:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="mh">0x0d</span><span class="p">)</span> <span class="c"># CR</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">ECHO_PFA</span><span class="p">)</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="mh">0x0a</span><span class="p">)</span> <span class="c"># LF</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">ECHO_PFA</span><span class="p">)</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="s">&#39;[&#39;</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">ECHO_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Print (as hex) TOS and TOSL. First copy TOSL to TOS to get the value back
+but leave the stack at the same depth, then call emithex which will pop
+a value:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mov</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">TOSL</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">EMIT_HEX_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now we&#8217;re back to where we started.:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mov</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">TOSL</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">DUP_PFA</span> <span class="p">)</span>     <span class="c"># tos, tos, tosl</span>
+<span class="n">mov</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">Working</span><span class="p">)</span>   <span class="c"># tosl, tos, tosl</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">DUP_PFA</span><span class="p">)</span>      <span class="c"># tosl, tosl, tos, tosl</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="s">&#39;-&#39;</span><span class="p">)</span>       <span class="c"># &#39;-&#39;, tosl, tos, tosl</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">EMIT_PFA</span><span class="p">)</span>     <span class="c"># tosl, tos, tosl</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">EMIT_HEX_PFA</span><span class="p">)</span> <span class="c"># tos, tosl</span>
+
+<span class="n">rcall</span><span class="p">(</span><span class="n">DUP_PFA</span><span class="p">)</span>  <span class="c"># tos, tos, tosl</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span>   <span class="c"># &#39; &#39;, tos, tosl</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">EMIT_PFA</span><span class="p">)</span> <span class="c"># tos, tosl</span>
+</pre></div>
+</div>
+<p>Point Z at the top of the stack (the part of the stack &#8220;under&#8221; TOS and
+TOSL):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">movw</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">DUP_PFA</span><span class="p">)</span>
+
+<span class="n">label</span><span class="p">(</span><span class="n">_inny</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If the Z register is the same as or higher than data_stack print the
+item at Z:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ldi</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">low</span><span class="p">(</span><span class="n">data_stack</span><span class="p">))</span>
+<span class="n">cp</span><span class="p">(</span><span class="n">ZL</span><span class="p">,</span> <span class="n">Working</span><span class="p">)</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">high</span><span class="p">(</span><span class="n">data_stack</span><span class="p">))</span>
+<span class="n">cpc</span><span class="p">(</span><span class="n">ZH</span><span class="p">,</span> <span class="n">Working</span><span class="p">)</span>
+<span class="n">brsh</span><span class="p">(</span><span class="n">_itsok</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Otherwise, we&#8217;re done:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="s">&#39;]&#39;</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">ECHO_PFA</span><span class="p">)</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="mh">0x0d</span><span class="p">)</span> <span class="c"># CR</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">ECHO_PFA</span><span class="p">)</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="mh">0x0a</span><span class="p">)</span> <span class="c"># LF</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">EMIT_PFA</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Load the value at (pre-decremented) Z and emit it as hex:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_itsok</span><span class="p">)</span>
+<span class="n">ld_pre_decr</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">EMIT_HEX_PFA</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">DUP_PFA</span><span class="p">)</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="s">&#39; &#39;</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">ECHO_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>And go to the next one:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rjmp</span><span class="p">(</span><span class="n">_inny</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="find">
+<h3><a class="toc-backref" href="#id28">Find</a><a class="headerlink" href="#find" title="Permalink to this headline">¶</a></h3>
+<p>Given the length of a word in the word_buffer, find attempts to find that
+word in the dictionary and return its LFA on the stack (in TOS:TOSL).
+If the word can&#8217;t be found, put 0xffff into TOS:TOSL:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">word_header</span><span class="p">(</span><span class="n">FIND</span><span class="p">,</span> <span class="s">&quot;find&quot;</span><span class="p">)</span> <span class="c"># = - - - - - - - - - - - -</span>
+</pre></div>
+</div>
+<p>Make room on the stack for address:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">FIND_PFA</span><span class="p">)</span>
+
+<span class="n">mov</span><span class="p">(</span><span class="n">word_counter</span><span class="p">,</span> <span class="n">TOS</span><span class="p">)</span>
+<span class="n">st_post_incr</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="n">TOSL</span><span class="p">)</span>
+
+<span class="c"># Define this &quot;manually&quot; here to compensate for the fact that high() and</span>
+<span class="c"># low() below will compute and return their results immediately rather</span>
+<span class="c"># than during pass 2  Should FIXME in the future.</span>
+<span class="n">DICTIONARY_START</span> <span class="o">=</span> <span class="mh">0x2a0</span>
+
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOSL</span><span class="p">,</span> <span class="n">low</span><span class="p">(</span><span class="n">DICTIONARY_START</span><span class="p">))</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">high</span><span class="p">(</span><span class="n">DICTIONARY_START</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>Check if TOS:TOSL == 0x0000:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_look_up_word</span><span class="p">)</span>
+<span class="n">cpi</span><span class="p">(</span><span class="n">TOSL</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">)</span>
+<span class="n">brne</span><span class="p">(</span><span class="n">_non_zero</span><span class="p">)</span>
+<span class="n">cpse</span><span class="p">(</span><span class="n">TOSL</span><span class="p">,</span> <span class="n">TOS</span><span class="p">)</span>
+<span class="n">rjmp</span><span class="p">(</span><span class="n">_non_zero</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>if TOS:TOSL == 0x0000 we&#8217;re done:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">)</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOSL</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>While TOS:TOSL != 0x0000 check if this it the right word:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_non_zero</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Save current Link Field Address:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">pushdownw</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Load Link Field Address of next word in the dictionary into the X
+register pair:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rcall</span><span class="p">(</span><span class="n">LEFT_SHIFT_WORD_PFA</span><span class="p">)</span>
+<span class="n">movw</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="n">lpm_post_incr</span><span class="p">(</span><span class="n">TOSL</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+<span class="n">lpm_post_incr</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Now stack has ( - LFA_next, LFA_current) Load length-of-name byte into a register:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">lpm_post_incr</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+<span class="n">cp</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">word_counter</span><span class="p">)</span>
+<span class="n">breq</span><span class="p">(</span><span class="n">_same_length</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Not the same length, ditch LFA_current and loop:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">sbiw</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">rjmp</span><span class="p">(</span><span class="n">_look_up_word</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If they&#8217;re the same length walk through both and compare them character
+by character.</p>
+<p>Length is in Working and word_counter. Z holds current word&#8217;s name&#8217;s
+first byte&#8217;s address in program RAM. TOS:TOSL have the address of the
+next word&#8217;s LFA. So stack has ( - LFA_next, LFA_current)</p>
+<p>Put address of search term in buffer into X (TOS:TOSL):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_same_length</span><span class="p">)</span>
+<span class="n">pushdownw</span><span class="p">()</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">high</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOSL</span><span class="p">,</span> <span class="n">low</span><span class="p">(</span><span class="nb">buffer</span><span class="p">))</span>
+</pre></div>
+</div>
+<p>stack ( - buffer, LFA_next, LFA_current):</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_compare_name_and_target_byte</span><span class="p">)</span>
+<span class="n">ld_post_incr</span><span class="p">(</span><span class="n">find_buffer_char</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span> <span class="c"># from buffer</span>
+<span class="n">lpm_post_incr</span><span class="p">(</span><span class="n">find_name_char</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span> <span class="c"># from program RAM</span>
+<span class="n">cp</span><span class="p">(</span><span class="n">find_buffer_char</span><span class="p">,</span> <span class="n">find_name_char</span><span class="p">)</span>
+<span class="n">breq</span><span class="p">(</span><span class="n">_okay_dokay</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Not equal, clean up and go to next word:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">popupw</span><span class="p">()</span> <span class="c"># ditch search term address</span>
+<span class="n">sbiw</span><span class="p">(</span><span class="n">Y</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="c"># ditch LFA_current</span>
+<span class="n">rjmp</span><span class="p">(</span><span class="n">_look_up_word</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The chars are the same:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_okay_dokay</span><span class="p">)</span>
+<span class="n">dec</span><span class="p">(</span><span class="n">Working</span><span class="p">)</span>
+<span class="n">brne</span><span class="p">(</span><span class="n">_compare_name_and_target_byte</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>If we get here we&#8217;ve checked that every character in the name and the
+target term match:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">popupw</span><span class="p">()</span> <span class="c"># ditch search term address</span>
+<span class="n">popupw</span><span class="p">()</span> <span class="c"># ditch LFA_next</span>
+<span class="n">ret</span><span class="p">()</span> <span class="c"># LFA_current</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="to-pfa">
+<h3><a class="toc-backref" href="#id29">To PFA</a><a class="headerlink" href="#to-pfa" title="Permalink to this headline">¶</a></h3>
+<p>&#8220;&gt;pfa&#8221; Given a word&#8217;s LFA (Link Field Address) in TOS:TOSL, find its PFA:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">word_header</span><span class="p">(</span><span class="n">TPFA</span><span class="p">,</span> <span class="s">&quot;&gt;pfa&quot;</span><span class="p">)</span> <span class="c"># = - - - - - - - - - - - -</span>
+<span class="n">label</span><span class="p">(</span><span class="n">TPFA_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Point to name length and adjust the address:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">adiw</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">pushdownw</span><span class="p">()</span> <span class="c"># save address</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">LEFT_SHIFT_WORD_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>get the length:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">movw</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="n">lpm</span><span class="p">(</span><span class="n">Working</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>
+<span class="n">popupw</span><span class="p">()</span> <span class="c"># restore address</span>
+</pre></div>
+</div>
+<p>We need to map from length in bytes to length in words while allowing
+for the padding bytes in even-length names:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">lsr</span><span class="p">(</span><span class="n">Working</span><span class="p">)</span>
+<span class="n">inc</span><span class="p">(</span><span class="n">Working</span><span class="p">)</span>       <span class="c"># n &lt;- (n &gt;&gt; 1) + 1</span>
+<span class="n">add</span><span class="p">(</span><span class="n">TOSL</span><span class="p">,</span> <span class="n">Working</span><span class="p">)</span> <span class="c"># Add the adjusted name length to our prog mem pointer.</span>
+<span class="n">brcc</span><span class="p">(</span><span class="n">_done_adding</span><span class="p">)</span>
+<span class="n">inc</span><span class="p">(</span><span class="n">TOS</span><span class="p">)</span>           <span class="c"># Account for the carry bit if set.</span>
+<span class="n">label</span><span class="p">(</span><span class="n">_done_adding</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="interpret">
+<h3><a class="toc-backref" href="#id30">interpret</a><a class="headerlink" href="#interpret" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">word_header</span><span class="p">(</span><span class="n">INTERPRET</span><span class="p">,</span> <span class="s">&quot;interpret&quot;</span><span class="p">)</span> <span class="c"># = - - - - - - - - - - - -</span>
+<span class="n">label</span><span class="p">(</span><span class="n">INTERPRET_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>get length of word in buffer:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rcall</span><span class="p">(</span><span class="n">WORD_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>save length:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mov</span><span class="p">(</span><span class="n">temp_length</span><span class="p">,</span> <span class="n">TOS</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Is it a number?:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">rcall</span><span class="p">(</span><span class="n">NUMBER_PFA</span><span class="p">)</span>
+<span class="n">cpi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="mh">0x00</span><span class="p">)</span> <span class="c"># all chars converted?</span>
+<span class="n">brne</span><span class="p">(</span><span class="n">_maybe_word</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Then leave it on the stack:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">mov</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">TOSL</span><span class="p">)</span>
+<span class="n">popup</span><span class="p">()</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>Otherwise, put length back on TOS and call find:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_maybe_word</span><span class="p">)</span>
+<span class="n">mov</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">temp_length</span><span class="p">)</span>
+<span class="n">popup</span><span class="p">()</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">FIND_PFA</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Did we find the word?:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">cpi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="mh">0xff</span><span class="p">)</span>
+<span class="n">brne</span><span class="p">(</span><span class="n">_is_word</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>No? Emit a &#8216;?&#8217; and be done with it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">popup</span><span class="p">()</span>
+<span class="n">ldi</span><span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="s">&#39;?&#39;</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">EMIT_PFA</span><span class="p">)</span>
+<span class="n">ret</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>We found the word, execute it:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="n">label</span><span class="p">(</span><span class="n">_is_word</span><span class="p">)</span>
+<span class="n">rcall</span><span class="p">(</span><span class="n">TPFA_PFA</span><span class="p">)</span>
+<span class="n">movw</span><span class="p">(</span><span class="n">Z</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+<span class="n">popupw</span><span class="p">()</span>
+<span class="n">ijmp</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="conclusion">
+<h2><a class="toc-backref" href="#id31">Conclusion</a><a class="headerlink" href="#conclusion" title="Permalink to this headline">¶</a></h2>
+<p>So that is a useful not-quite-Forth interpreter. I&#8217;ve burned this
+program to my Pololu Baby Orangutan and it runs. I can connect to it
+over a serial connection to pins PD0 and PD1 (I&#8217;m using the Pololu USB
+AVR programmer and its built in USB-to-TTL-compatible serial port.)</p>
+<p>The following thirteen words are defined above:</p>
+<ul class="simple">
+<li>Key</li>
+<li>Emit</li>
+<li>Echo</li>
+<li>Drop</li>
+<li>Word</li>
+<li>Number</li>
+<li>&lt;&lt;w (Left Shift 16-bit Word)</li>
+<li>Emithex</li>
+<li>.s</li>
+<li>Find</li>
+<li>&gt;pfa (To PFA)</li>
+<li>Interpret</li>
+</ul>
+<p>Not bad for 716 bytes of machine code.</p>
+<p>To me it is exciting and even a bit incredible to be communicating to a
+chip smaller than (for instance) the pupil of my eye using a simple but
+effective command line interface that fits within one kilobyte of code.</p>
+<div class="section" id="program-ability">
+<h3><a class="toc-backref" href="#id32">Program-ability</a><a class="headerlink" href="#program-ability" title="Permalink to this headline">¶</a></h3>
+<p>The main difference between this engine and a real Forth is that AVRVM
+can&#8217;t compile new words.</p>
+<p>In a more typical (or really, more original) Forth target architecture,
+the data and program RAM are not separate, and you could easily lay down
+new words in memory and immediately use them.</p>
+<p>With the split Harvard architecture of the AVR the program RAM is flash
+and can only be written to about a thousand times before risking
+degradation. (There is a 1K block of EEPROM memory which can be
+erased/written up to about 100,000 times. I&#8217;m ignoring it for now but
+hope to use it somehow in the future.)</p>
+<p>Since the data SRAM has only 2K, and since you can&#8217;t directly execute
+code bytes from it, there&#8217;s not really a lot of room for compiling words
+there.</p>
+<p>We can compile words there and use the SPM instruction to copy them to
+flash RAM, and I plan to write some words to enable that at some point,
+but it makes a lot more sense to use the rest of the 32K program memory
+to include &#8220;libraries&#8221; of additional routines (Forth words) written in
+assembler (or C with proper interfacing) that can then be &#8220;driven&#8221; by
+small &#8220;scripts&#8221; stored in SRAM.</p>
+<p>The main drawback of this method could be the inability to debug commands
+(words) as you write them. But with careful coding and use of the
+simulator we should be able to develop stable commands without &#8220;burning
+out&#8221; too many processors (with Flash rewrites.)</p>
+</div>
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="compiler.html">Pigeon Compiler</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="m328P.html">Appendix A: ATmega328P Definitions</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Simon Forman.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>
