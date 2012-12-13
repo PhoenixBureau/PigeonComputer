@@ -243,6 +243,9 @@ class MetaII(object):
 
 
 def label_generator():
+  '''
+  Generator of string labels: 'L1', 'L2', 'L3', 'L4', 'L5', ...
+  '''
   n = 1
   while True:
     yield 'L' + str(n)

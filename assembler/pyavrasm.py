@@ -205,6 +205,10 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
     #: strings in ``pass2()``.
     self.data = {}
 
+    #: Internal output data structure.  This holds the byte strings
+    #: created in ``pass2()``.
+    self.accumulator = {}
+
   def assemble(self, text):
     '''
     Assemble the string asm source code.
@@ -240,7 +244,7 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
        emitting the strings in e.g. Intel HEX format for burning to a
        chip.
     '''
-    accumulator = {}
+    accumulator = self.accumulator
     for addr in sorted(self.data):
       instruction = self.data[addr]
       op, args = instruction[0], instruction[1:]
@@ -304,6 +308,20 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
   def _adjust(self, op, args, addr):
     return (ibv(args[0] - addr - 1),)
 
+  def to_hex(self, f):
+    '''
+    Convert the assembled machine code to Intel HEX file format.
+
+    :param f: The HEX data will be written to this destination.
+    :type f: filename or file-like object
+    '''
+    from intelhex import IntelHex
+    ih = IntelHex()
+    for addr, val in self.accumulator.iteritems():
+      addr = int(addr, 16)
+      ih.puts(addr, val)
+    ih.write_hex_file(f)
+
 
 if __name__ == '__main__':
   import m328P_def
@@ -319,13 +337,4 @@ if __name__ == '__main__':
   data = aa.pass2()
   print ; print ; print
   pprint.pprint(data)
-  from intelhex import IntelHex
-  ih = IntelHex()
-  for addr, val in data.iteritems():
-    addr = int(addr, 16)
-    if isinstance(val, str):
-      ih.puts(addr, val)
-    else:
-      print 'non-str', addr, repr(val)
-  ih.dump(tofile=open('pavr.hex', 'w'))
-##  ih.dump()
+  aa.to_hex(open('pavr.hex', 'w'))
