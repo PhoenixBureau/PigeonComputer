@@ -8,7 +8,7 @@ This is the Pigeon Assembler.
 '''
 import pprint, logging
 log = logging.getLogger('ASM')
-logging.basicConfig()
+logging.basicConfig(filename='hello-there.log', level=logging.DEBUG)
 from collections import defaultdict
 from struct import pack
 from myhdl import intbv
@@ -250,6 +250,7 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
        emitting the strings in e.g. Intel HEX format for burning to a
        chip.
     '''
+    log.debug('Pass 2 #############################################')
     accumulator = self.accumulator
     for addr in sorted(self.data):
       instruction = self.data[addr]
@@ -273,15 +274,19 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
       else:
         bindata = pack('2H', data[32:16], data[16:])
 
-##      if op in ('db', 'dw'):
-##        log.debug(addr, 10 * ' ', op, len(data), 'bytes:', repr(data))
-##      else:
-##        try:
-##          fdata = '%-10x' % (data,)
-##        except TypeError:
-##          log.debug(addr, 10 * '.', instruction, repr(data))
-##        else:
-##          log.debug(addr, fdata, instruction, repr(bindata))
+      # debug logging
+      if op in ('db', 'dw'):
+        log.debug(' '.join('%s' * 6),
+                  addr, 10 * ' ', op, len(data), 'bytes:', repr(data))
+      else:
+        try:
+          fdata = '%-10x' % (data,)
+        except TypeError:
+          log.debug(' '.join('%s' * 5),
+                  addr, 10 * '.', op, tuple(map(hex, args)), repr(data))
+        else:
+          log.debug(' '.join('%s' * 5),
+                  addr, fdata, op, tuple(map(hex, args)), repr(bindata))
 
       accumulator[addr] = bindata
 
