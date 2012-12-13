@@ -2,51 +2,94 @@
 Pigeon Compiler
 ============================================
 
+In order to teach the basics of compilers and the compilation process
+there is a simple but very flexible and powerful *meta-compiler* built
+around a fascinating 1964 paper/project/artifact `Meta-II`_.
+
+.. _Meta-II: http://en.wikipedia.org/wiki/META_II
 
 Simple Polymorphic Compiler
 ----------------------------
 
+Tiny engine that loads and runs *compiler descriptions* which then allow
+it to become several different compilers (including a compiler which can
+compile itself which is why it's called a "meta-compiler".)
 
-Meta-II (1964)
-----------------------------
+A simple high-level description like this::
 
-This is the (slightly modified FOOTNOTE) description of the Meta-II
-self-regenerating compiler::
+    .SYNTAX OOOLALA
 
-    .SYNTAX PROGRAM
+    OOOLALA = HUH | 'jones' | foo | bar ;
 
-    OUT1 = '*1' .OUT('GN1') |
-           '*2' .OUT('GN2') |
-           '*' .OUT('CI') |
-           .STRING .OUT('CL '*) ;
+    HUH = gary 'smith' tuesday ;
 
-    OUTPUT = ('.OUT' '(' $ OUT1 ')' |
-              '.LABEL' .OUT('LB') OUT1)
-             .OUT('OUT') ;
-
-    EX3 = .ID .OUT('CLL '*) |
-          .STRING .OUT('TST '*) |
-          '.ID' .OUT('ID') |
-          '.NUMBER' .OUT('NUM') |
-          '.STRING' .OUT('SR') |
-          '(' EX1 ')' |
-          '.EMPTY' .OUT('SET') |
-          '$' .LABEL *1 EX3 .OUT('BT ' *1) .OUT('SET') ;
-
-    EX2 = (EX3 .OUT('BF ' *1) | OUTPUT) $ (EX3 .OUT('BE') | OUTPUT)
-          .LABEL *1 ;
-
-    EX1 = EX2 $('|' .OUT('BT ' *1) EX2 )
-          .LABEL *1 ;
-
-    ST = .ID .LABEL * '=' EX1 ';' .OUT('R') ;
-
-    PROGRAM = '.SYNTAX' .ID .OUT('ADR ' *) $ ST '.END' .OUT('END') ;
+    tuesday = day ( night | .EMPTY ) | cake ;
 
     .END
 
+...gets compiled into this assembly code::
 
-The Meta-II engine compiles the above description into an assembly source
+    # Program OOOLALA
+    # (preamble)
+    set_switch()
+
+    label(OOOLALA) # subroutine ==========
+    call(HUH)
+    if_not_switch_jmp_to(L1)
+    label(L1)
+    if_switch_jmp_to(L2)
+    expect('jones')
+    if_not_switch_jmp_to(L3)
+    label(L3)
+    if_switch_jmp_to(L2)
+    call(foo)
+    if_not_switch_jmp_to(L4)
+    label(L4)
+    if_switch_jmp_to(L2)
+    call(bar)
+    if_not_switch_jmp_to(L5)
+    label(L5)
+    label(L2)
+    ret()
+
+    label(HUH) # subroutine ==========
+    call(gary)
+    if_not_switch_jmp_to(L6)
+    expect('smith')
+    if_not_switch_jmp_to(ERROR)
+    call(tuesday)
+    if_not_switch_jmp_to(ERROR)
+    label(L6)
+    label(L7)
+    ret()
+
+    label(tuesday) # subroutine ==========
+    call(day)
+    if_not_switch_jmp_to(L8)
+    call(night)
+    if_not_switch_jmp_to(L9)
+    label(L9)
+    if_switch_jmp_to(L10)
+    set_switch()
+    if_not_switch_jmp_to(L11)
+    label(L11)
+    label(L10)
+    if_not_switch_jmp_to(ERROR)
+    label(L8)
+    if_switch_jmp_to(L12)
+    call(cake)
+    if_not_switch_jmp_to(L13)
+    label(L13)
+    label(L12)
+    ret()
+
+    #END
+
+
+Val Shorre’s Meta-II Metacompiler
+---------------------------------
+
+The Meta-II engine compiles the `metaii.metaii`_ description into an assembly source
 file (see `metaii.asm`_) which is *the same* assembly source file that
 it uses to compile the assembly source file.
 
@@ -56,6 +99,9 @@ or crib a copy from someone else.)
 
 .. _metaii.asm: https://github.com/PhoenixBureau/PigeonComputer/blob/master/metacompiler/metaii.asm
 
+.. _metaii.metaii: https://github.com/PhoenixBureau/PigeonComputer/blob/master/metacompiler/metaii.metaii
+
+Here is the documentation on the Meta-II engine included in the Pigeon Computer project:
 
 .. automodule:: metaii
 
@@ -66,61 +112,39 @@ Language Design and Compiler Extentions
 TODO: Write up a bit about all the myriad ways to go from here
 (basically ALL THE REST OF COMPUTER PROGRAMMING!!) Lol.
 
-For example, here is the Meta-II compiler description rewritten to target
-the Pigeon Assembler::
+For example, here is the Meta-II compiler description that compiles the
+above high-level source to target the Pigeon Assembler::
 
     .SYNTAX PROGRAM
 
-    OUT1 = '*1' .OUT('gen_label_1()') |
-           '*2' .OUT('gen_label_2()') |
-           '*' .OUT('copy_input()') |
-           .STRING .OUT('copy_literal(' * ')') ;
-
-    OUTPUT = ('.OUT' '(' $ OUT1 ')' |
-              '.LABEL' .OUT('LB') OUT1)
-             .OUT('output_line()') ;
-
     EX3 = .ID .OUT('call(' * ')') |
-          .STRING .OUT('startswith(' * ')') |
-          '.ID' .OUT('identifier()') |
-          '.NUMBER' .OUT('number()') |
-          '.STRING' .OUT('string()') |
+          .STRING .OUT('expect(' * ')') |
           '(' EX1 ')' |
-          '.EMPTY' .OUT('sbr(switch_reg, 1 << switch_bit)') |
-          '$' .OUT('label(' *1 ')') EX3
-           .OUT('sbrc(switch_reg, switch_bit)')
-           .OUT('jmp(' *1 ')')
-           .OUT('sbr(switch_reg, 1 << switch_bit)') ;
+          '.EMPTY' .OUT('set_switch()') |
 
-    EX2 = (EX3
-            .OUT('sbrs(switch_reg, switch_bit)')
-            .OUT('jmp(' *1 ')')
-           | OUTPUT)
-        $ (EX3
-            .OUT('sbrs(switch_reg, switch_bit)')
-            .OUT('jmp(ERROR)')
-           | OUTPUT)
+          '$' .OUT('label(' *1 ')')
+          EX3 .OUT('if_switch_jmp_to(' *1 ')')
+              .OUT('set_switch()') ;
+
+    EX2 = (EX3 .OUT('if_not_switch_jmp_to(' *1 ')'))
+          $ (EX3 .OUT('if_not_switch_jmp_to(ERROR)'))
           .OUT('label(' *1 ')') ;
 
-    EX1 = EX2 $('|'
-                 .OUT('sbrc(switch_reg, switch_bit)')
-                 .OUT('jmp(' *1 ')')
-                EX2 )
+    EX1 = EX2 $ ( '|' .OUT('if_switch_jmp_to(' *1 ')') EX2)
           .OUT('label(' *1 ')') ;
 
     ST = .ID .OUT('label(' * ') # subroutine ==========')
-           '=' EX1 ';' .OUT('ret()') .OUT('') ;
+         '='
+         EX1
+         ';' .OUT('ret()') .OUT('') ;
 
-    PROGRAM = '.SYNTAX' .ID
-                 .OUT('define(switch_bit=0)')
-                 .OUT('define(switch_reg=r0)')
-                 .OUT('')
-                 .OUT('label(' * ')')
-              $ ST '.END' .OUT('#END') ;
+    PROGRAM = '.SYNTAX'
+              .ID .OUT('# Program ' * )
+                  .OUT('# (preamble)')
+                  .OUT('set_switch()')
+                  .OUT('')
+              $ ST
+              '.END' .OUT('#END') ;
 
     .END
-
-
-It's not super-useful as-is, but it demonstrates the idea.
-
 

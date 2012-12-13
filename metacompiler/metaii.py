@@ -97,11 +97,11 @@ class MetaII(object):
   def ID(self):
     self._left_trim_input()
     I = self.input
-    if not I[0].isalpha():
+    if not I[0].isalpha() or I[0] == '_':
       self.switch = False
       return
     n = 1
-    while I[n].isalnum():
+    while I[n].isalnum() or I[n] == '_':
       n += 1
     self.last, self.input, self.switch = I[:n], I[n:], True
 
