@@ -219,6 +219,7 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
     '''
     exec text in self.context
     del self.context['__builtins__']
+    self.pass2()
 
   def assemble_file(self, filename):
     '''
@@ -230,6 +231,7 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
     '''
     execfile(filename, self.context)
     del self.context['__builtins__']
+    self.pass2()
 
   def pass2(self):
     '''
@@ -324,17 +326,24 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
 
 
 if __name__ == '__main__':
+  from argparse import ArgumentParser
+  parser = ArgumentParser(description='Simple assembler for ATmega328P')
+  parser.add_argument(
+    '-x', '--hex',
+    help='Write HEX output to this file. (Use - for stdout.)',
+    )
+  parser.add_argument('source', help='Source code file to assemble.')
+  args = parser.parse_args()
+
   import m328P_def
   aa = AVRAssembly(m328P_def.defs)
-  aa.assemble_file('asm.py')
-
-##  print ; print ; print
-##  pprint.pprint(dict(aa.context))
-##  print ; print ; print
-##  pprint.pprint(dict(aa.data))
-##  print ; print ; print
-##  pprint.pprint(aa.pass2())
-  data = aa.pass2()
-  print ; print ; print
-  pprint.pprint(data)
-  aa.to_hex(open('pavr.hex', 'w'))
+  aa.assemble_file(args.source)
+  if args.hex:
+    if args.hex == '-':
+      from sys import stdout
+      f = stdout
+    else:
+      f = args.hex
+    aa.to_hex(f)
+  else:
+    pprint.pprint(aa.data)
