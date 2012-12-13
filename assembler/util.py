@@ -1,3 +1,5 @@
+import logging
+log = logging.getLogger(__name__)
 from struct import pack
 from functools import wraps
 from myhdl import intbv, concat
@@ -65,7 +67,7 @@ def instr(method):
 
     if arg0 is None:
       assert arg1 is None
-      print 'assembling %s instruction at %s' % (op, addr)
+      log.debug('assembling %s instruction at %s', op, addr)
       instruction = (op,)
       method(self)
 
@@ -73,13 +75,13 @@ def instr(method):
       arg0, arg1 = method(self, arg0, arg1)
       tname, taddress = self._name_or_addr(arg0)
       name, address = self._name_or_addr(arg1)
-      print 'assembling %s instruction at %s %s <- %s' % (op, addr, tname, name)
+      log.debug('assembling %s instruction at %s %s <- %s', op, addr, tname, name)
       instruction = (op, taddress, address)
 
     else:
       arg0 = method(self, arg0)
       name, address = self._name_or_addr(arg0)
-      print 'assembling %s instruction at %s to %s' % (op, addr, name)
+      log.debug('assembling %s instruction at %s to %s', op, addr, name)
       instruction = (op, address)
 
     self.data[addr] = instruction

@@ -1,3 +1,5 @@
+import logging
+log = logging.getLogger(__name__)
 from util import A, B, B_reversed, C, D, E, F, G, H, instr, spec, spec_reversed
 
 
@@ -531,7 +533,7 @@ class InstructionsMixin(object):
   def _one(self, op, address):
     name, address = self._name_or_addr(address)
     addr = self._get_here()
-    print 'assembling %s instruction at %s to %s' % (op, addr, name)
+    log.debug('assembling %s instruction at %s to %s', op, addr, name)
     self.data[addr] = (op, address)
     self.here += 2
 

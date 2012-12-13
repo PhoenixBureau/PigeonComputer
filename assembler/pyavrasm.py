@@ -6,7 +6,9 @@ Python AVR Assembler
 
 This is the Pigeon Assembler.
 '''
-import pprint
+import pprint, logging
+log = logging.getLogger('ASM')
+logging.basicConfig()
 from collections import defaultdict
 from struct import pack
 from myhdl import intbv
@@ -41,7 +43,7 @@ class DirectivesMixin(object):
     for k, v in defs.iteritems():
       if isinstance(v, int):
         defs[k] = v = ibv(v)
-      print 'defining %s = %#x' % (k, v)
+      log.debug('defining %s = %#x', k, v)
     self.context.update(defs)
 
   def org(self, address):
@@ -55,7 +57,7 @@ class DirectivesMixin(object):
     :rtype: ``None``
     '''
     address = ibv(address)
-    print 'setting org to %#06x' % (address,)
+    log.debug('setting org to %#06x', address)
     update(self.here, address)
 
   def label(self, label_thunk, reserves=0):
@@ -87,7 +89,7 @@ class DirectivesMixin(object):
     assert isinstance(label_thunk, intbv), repr(label_thunk)
     assert label_thunk == 0, repr(label_thunk)
     name = self._name_of_address_thunk(label_thunk)
-    print 'label %s => %#06x' % (name, self.here)
+    log.debug('label %s => %#06x', name, self.here)
     update(label_thunk, self.here)
     if reserves:
       assert reserves > 0, repr(reserves)
@@ -104,7 +106,8 @@ class DirectivesMixin(object):
     addr = self._get_here()
     data = compute_dw(values)
     nbytes = len(data)
-    print 'assembling %i data words at %s for %s => %r' % (nbytes/2, addr, values, data)
+    log.debug('assembling %i data words at %s for %s => %r',
+              nbytes/2, addr, values, data)
     self.data[addr] = ('dw', values, data)
     self.here += nbytes
 
@@ -120,7 +123,8 @@ class DirectivesMixin(object):
     addr = self._get_here()
     data = compute_db(values)
     nbytes = len(data)
-    print 'assembling %i data bytes at %s for %s => %r' % (nbytes, addr, values, data)
+    log.debug('assembling %i data bytes at %s for %s => %r',
+              nbytes, addr, values, data)
     self.data[addr] = ('db', values, data)
     self.here += nbytes
 
@@ -270,14 +274,14 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
         bindata = pack('2H', data[32:16], data[16:])
 
 ##      if op in ('db', 'dw'):
-##        print addr, 10 * ' ', op, len(data), 'bytes:', repr(data)
+##        log.debug(addr, 10 * ' ', op, len(data), 'bytes:', repr(data))
 ##      else:
 ##        try:
 ##          fdata = '%-10x' % (data,)
 ##        except TypeError:
-##          print addr, 10 * '.', instruction, repr(data)
+##          log.debug(addr, 10 * '.', instruction, repr(data))
 ##        else:
-##          print addr, fdata, instruction, repr(bindata)
+##          log.debug(addr, fdata, instruction, repr(bindata))
 
       accumulator[addr] = bindata
 
