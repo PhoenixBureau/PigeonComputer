@@ -14,6 +14,24 @@ import re
 from traceback import format_exc
 
 
+class WorldWrapper:
+    def do_lookup(self, name):
+        pass
+    def do_opendoc(self, name):
+        pass
+    def pop(self):
+        pass
+    def push(self, it):
+        pass
+    def peek(self):
+        raise IndexError
+    def interpret(self, command):
+        pass
+    def has(self, name):
+        pass
+    def 
+
+
 #Do-nothing event handler.
 nothing = lambda event : None
 
@@ -220,12 +238,6 @@ class TextViewerWidget(Text, mousebindingsmixin):
 
     def __init__(self, master=None,  **kw):
 
-        #Get our Interpreter, and remove the arg to get it out of Tkinter's way.
-        self.interpreter = kw.pop('interpreter')
-        self.model = kw.pop('model', None)
-
-##        self.interpreter.windows.append(self)
-
         #Turn on undo, but don't override a passed-in setting.
         kw.setdefault('undo', True)
 
@@ -253,7 +265,10 @@ class TextViewerWidget(Text, mousebindingsmixin):
         self.bind('<<Modified>>', self._beenModified)
         self._resetting_modified_flag = False
 
-##        T.protocol("WM_DELETE_WINDOW", self.onclose(T))
+##        T.protocol("WM_DELETE_WINDOW", self.on_close)
+
+    def set_world(self, world)
+        self.world = WorldWrapper(world)
 
     def _beenModified(self, event):
         if self._resetting_modified_flag:
@@ -285,7 +300,7 @@ class TextViewerWidget(Text, mousebindingsmixin):
         data = self.get('0.0', END)[:-1]
         self['state'] = DISABLED
         try:
-            self.model.value = data
+            pass
         finally:
             self['state'] = NORMAL
 
@@ -337,13 +352,13 @@ class TextViewerWidget(Text, mousebindingsmixin):
             return 'break'
 
         #We got a selection. Put it on the stack.
-        self.interpreter.stack.insert(0, text)
+        self.world.push(text)
 
         #Send ourselves a copyto event.
         self.copyto(event)
 
         #And simulate the cut by popping the text off the stack.
-        self.interpreter.stack.pop(0)
+        self.world.pop()
 
     def update_command_word(self, event):
         '''Highlight the command under the mouse.'''
@@ -374,8 +389,7 @@ class TextViewerWidget(Text, mousebindingsmixin):
         #Get the command at the offset in the line.
         cmd = self.findCommandInLine(line, offset)
 
-        if cmd and (
-            cmd[0] in self.interpreter.dictionary or isNumerical(cmd[0])):
+        if cmd and (self.world.has(cmd[0]) or isNumerical(cmd[0])):
 
             #Set self's command variable and extract the indices of it.
             self.command, b, e = cmd
@@ -402,7 +416,7 @@ class TextViewerWidget(Text, mousebindingsmixin):
 
             #Interpret the current command.
             try:
-                self.interpreter.interpret(self.command)
+                self.world.interpret(self.command)
             except SystemExit:
                 raise
             except:
@@ -431,7 +445,7 @@ class TextViewerWidget(Text, mousebindingsmixin):
             s = self.get(select_indices[0], select_indices[1])
 
             #Append the text to our interpreter's stack.
-            self.interpreter.stack.insert(0, s)
+            self.world.push(s)
 
             #Let the pre-existing machinery take care of cutting the selection.
             self.event_generate("<<Cut>>")
@@ -439,12 +453,11 @@ class TextViewerWidget(Text, mousebindingsmixin):
     def copyto(self, event):
         '''Actually "paste" from TOS'''
 
-        #If for some reason there's nothing on the stack, return.
-        if not self.interpreter.stack:
+        #Peek at the TOS item.
+        try:
+            s = self.world.peek()
+        except IndexError:
             return
-
-        #Otherwise, get the TOS item.
-        s = self.interpreter.stack[0]
 
         #Make sure it's a string.
         if not isinstance(s, basestring):
@@ -509,41 +522,24 @@ class TextViewerWidget(Text, mousebindingsmixin):
             self.clipboard_append(s)
 
             #And put it on the stack.
-            self.interpreter.stack.insert(0, s)
+            self.world.push(s)
 
     def pastecut(self, event):
         '''Cut the TOS item to the mouse.'''
-
-        #Paste the TOS item to the mouse.
         self.copyto(event)
-
-        #If that worked (we're here aren't we?)..
-        if self.interpreter.stack:
-
-            #Pop the item off the stack.
-            self.interpreter.stack.pop(0)
+        self.world.pop()
 
     def opendoc(self, event):
         '''OpenDoc the current command.'''
 
-        if not self.command:
-            return
-
-        word = self.interpreter.dictionary.get(self.command)
-        if word:
-            # "Bunt" for now.
-            print 'opendoc', word
+        if self.command:
+            self.world.do_opendoc(self.command)
 
     def lookup(self, event):
         '''Look up the current command.'''
 
-        if not self.command:
-            return
-        
-        word = self.interpreter.dictionary.get(self.command)
-        if word:
-            #Push the current command onto the stack.
-            self.interpreter.stack.insert(0, word)
+        if self.command:
+            self.world.do_lookup(self.command)
 
     def cancel(self, event):
         '''Cancel whatever we're doing.'''
@@ -610,30 +606,13 @@ class TextViewerWidget(Text, mousebindingsmixin):
         #Tell Tkinter that event handling for this event is over.
         return 'break'
 
-    def onclose(self, T):
-        def f():
-            # Collect strings and objects.
-            self._dying = self.DUMP()
-
-            # Destroys ThingButton children, _dying attribute prevents
-            # them from appending their objects to the stack.
-            T.destroy()
-
-            if self._dying:
-                self.interpreter.stack.insert(0, self._dying)
-                del self._dying
-
-##            self.interpreter.windows.remove(self)
-
-        return f
-
     def popupTB(self, tb):
         top = Toplevel()
         T = TextViewerWidget(
             top,
-            interpreter=self.interpreter,
             width=max(len(s) for s in tb.splitlines()) + 3,
             )
+        T.set_world(self.world)
 
         T['background'] = 'darkgrey'
         T['foreground'] = 'darkblue'
