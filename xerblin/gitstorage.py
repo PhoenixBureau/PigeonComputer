@@ -47,6 +47,9 @@ def save_state(files, message, repo=None):
 
   tree = Tree()
   for name, contents in files.iteritems():
+    if isinstance(contents, unicode):
+      contents = str(contents)
+    assert isinstance(contents, str), repr(contents)
     a(add_file(tree, name, contents))
   a(tree)
   c = create_commit(tree, message, parents=parents)

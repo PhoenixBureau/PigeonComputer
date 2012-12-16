@@ -11,8 +11,11 @@ from Tkinter import (
     NORMAL,
     )
 import re
+from time import time
 from traceback import format_exc
 from xerblin.btree import get
+from xerblin.gitstorage import save_state
+from xerblin.world import HistoryListWorld, ROOT, nullView
 
 
 class WorldWrapper:
@@ -59,6 +62,36 @@ class WorldWrapper:
         except KeyError:
             return False
         return True
+
+    def save(self, data):
+        self.world.save(data)
+
+
+class GitstorageWorld(HistoryListWorld, object):
+    '''
+    A subclass of World that overrides the setCurrentState() and
+    getCurrentState() methods to record states in a history list.
+    '''
+
+    def __init__(self, tv, view=nullView, initial=ROOT, save_file=None):
+        self.tv = tv
+        super(GitstorageWorld, self).__init__(view, initial, save_file)
+
+    def setCurrentState(self, state):
+        '''
+        Set current state to passed in state. Overrides super-class.
+        '''
+        super(GitstorageWorld, self).setCurrentState(state)
+        data = self.serializer.stream.getvalue()
+        self._save(data, self.tv.get_contents(), 'set state')
+
+    def _save(self, data, log_contents, message):
+        message += ' ' + str(int(time()))
+        save_state({'system': data, 'log': log_contents}, message)
+
+    def save(self, contents):
+        data = self.serializer.stream.getvalue()
+        self._save(data, contents, 'auto-save')
 
 
 #Do-nothing event handler.
@@ -312,7 +345,7 @@ class TextViewerWidget(Text, mousebindingsmixin):
         finally:
             self._resetting_modified_flag = False
 
-    _saveDelay = 450
+    _saveDelay = 2000
 
     def save(self):
         '''
@@ -325,11 +358,10 @@ class TextViewerWidget(Text, mousebindingsmixin):
 
     def _saveFunc(self):
         self._save = None
-
-        data = self.get('0.0', END)[:-1]
+        data = self.get_contents()
         self['state'] = DISABLED
         try:
-            pass
+            self.world.save(data)
         finally:
             self['state'] = NORMAL
 
@@ -352,6 +384,9 @@ class TextViewerWidget(Text, mousebindingsmixin):
             if save:
                 self.after_cancel(save)
                 save = None
+
+    def get_contents(self):
+        return self.get('0.0', END)[:-1]
 
     def findCommandInLine(self, line, index):
         '''findCommandInLine(line, index) => command, begin, end
@@ -667,13 +702,14 @@ def isNumerical(s):
 
 if __name__ == "__main__":
     from xerblin.btree import items
-    from xerblin.world import HistoryListWorld, view0
-    w = HistoryListWorld(view0)
+    from xerblin.world import view0
+    t = TextViewerWidget()
+
+    w = GitstorageWorld(t, view0)
     dictionary = w.getCurrentState()[1]
     words = 'Words: ' + ' '.join(name for name, value in items(dictionary))
 
-    t = TextViewerWidget()
-    t.insert(END, words)
     t.set_world(w)
+    t.insert(END, words)
     t.pack()
     t.mainloop()
