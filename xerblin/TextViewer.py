@@ -1,24 +1,5 @@
-#!/usr/bin/env python
-"""
-    Copyright (C) 2004-8 Simon Forman
-
-    This file is part of Xerblin.
-
-    Xerblin is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with this program; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-"""
-
+'''
+'''
 from Tkinter import (
     Text,
     Toplevel,
@@ -31,7 +12,6 @@ from Tkinter import (
     )
 import re
 from traceback import format_exc
-from xerblin.messaging import ModelMixin, Viewer
 
 
 #Do-nothing event handler.
@@ -668,49 +648,6 @@ class TextViewerWidget(Text, mousebindingsmixin):
         T.pack(expand=1, fill='both')
         T.see(END)
 
-
-class TextViewer(Viewer):
-
-    def __init__(self, model, master=None, **kw):
-        Viewer.__init__(self, model)
-        kw.setdefault('model', model)
-        self.text = TextViewerWidget(master, **kw)
-        self.text.pack(expand=True, fill='both')
-        self.update()
-        self.text.update_idletasks()
-        ModelMixin.root.addChild(self)
-
-    def __getstate__(self):
-        T = self.text
-        master = T.winfo_toplevel()
-        kw = dict((key, T[key]) for key in T.keys())
-        kw['interpreter'] = T.interpreter
-        model = self.model
-        return model, master, kw
-
-    def __setstate__(self, state):
-        model, master, kw = state
-        self.__init__(model, master, **kw)
-
-    def insert(self, *args):
-        self.text.insert(*args)
-
-    def handle(self, message):
-        if not self._checkMessage(message):
-            return False
-
-        if message.model is self.model or self._dispatch(message):
-            self.update()
-            return True
-
-        return False
-
-    def update(self):
-        self.text.delete('0.0', END)
-        self.text.insert('0.0', self.model.value)
-        self.text._cancelSave()
-        self.text._clearModifiedFlag()
-        
 
 def isNumerical(s):
     try:
