@@ -86,7 +86,12 @@ class GitstorageWorld(HistoryListWorld, object):
         self._save(data, self.tv.get_contents(), 'set state')
 
     def _save(self, data, log_contents, message):
+        print '-' * 100
+        print repr(data)
+        print repr(log_contents)
         message += ' ' + str(int(time()))
+        print message
+        print '-' * 100
         save_state({'system': data, 'log': log_contents}, message)
 
     def save(self, contents):
