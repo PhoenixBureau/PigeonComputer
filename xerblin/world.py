@@ -160,9 +160,11 @@ class World:
         assert hasattr(save_file, 'write'), repr(save_file)
 
         self.serializer = Serializer(initial, save_file)
+        self._view = view
         self.setCurrentState(initial)
-        self.view = view
-        self.view(initial)
+
+    def view(self, state):
+        self._view(state)
 
     def step(self, command):
         '''
@@ -187,15 +189,12 @@ class World:
         # pretty stable.)
         self.serializer.post(command, I)
 
-        # Render the view.
-        self.view(I)
-
     def changeView(self, view):
         '''
         Swap the current view function for the one passed, return the old
         view function.  Calls the new view.
         '''
-        view, self.view = self.view, view
+        view, self._view = self._view, view
         self.view(self.getCurrentState())
         return view
 
@@ -205,6 +204,8 @@ class World:
         mostly to be overridden in subclasses.
         '''
         self.current = state
+        # Render the view.
+        self.view(state)
 
     def getCurrentState(self):
         '''
@@ -229,6 +230,7 @@ class HistoryListWorld(World):
         except AttributeError:
             history = self.history = []
         history.append(state)
+        self.view(state)
 
     def getCurrentState(self):
         '''

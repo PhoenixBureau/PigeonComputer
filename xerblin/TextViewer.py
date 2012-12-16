@@ -12,24 +12,53 @@ from Tkinter import (
     )
 import re
 from traceback import format_exc
+from xerblin.btree import get
 
 
 class WorldWrapper:
+
+    def __init__(self, world):
+        self.world = world
+
     def do_lookup(self, name):
-        pass
+        stack, dictionary = self.world.getCurrentState()
+        try:
+            it = get(dictionary, name)
+        except KeyError:
+            return
+        stack = it, stack
+        self.world.setCurrentState((stack, dictionary))
+
     def do_opendoc(self, name):
         pass
+
     def pop(self):
-        pass
+        stack, dictionary = self.world.getCurrentState()
+        if not stack:
+            return
+        self.world.setCurrentState((stack[1], dictionary))
+
     def push(self, it):
-        pass
+        stack, dictionary = self.world.getCurrentState()
+        stack = it, stack
+        self.world.setCurrentState((stack, dictionary))
+
     def peek(self):
-        raise IndexError
+        stack, dictionary = self.world.getCurrentState()
+        if not stack:
+            raise IndexError
+        return stack[0]
+
     def interpret(self, command):
-        pass
+        self.world.step(command.split())
+
     def has(self, name):
-        pass
-    def 
+        stack, dictionary = self.world.getCurrentState()
+        try:
+            get(dictionary, name)
+        except KeyError:
+            return False
+        return True
 
 
 #Do-nothing event handler.
@@ -267,7 +296,7 @@ class TextViewerWidget(Text, mousebindingsmixin):
 
 ##        T.protocol("WM_DELETE_WINDOW", self.on_close)
 
-    def set_world(self, world)
+    def set_world(self, world):
         self.world = WorldWrapper(world)
 
     def _beenModified(self, event):
@@ -634,3 +663,17 @@ def isNumerical(s):
     except ValueError:
         return False
     return True
+
+
+if __name__ == "__main__":
+    from xerblin.btree import items
+    from xerblin.world import HistoryListWorld, view0
+    w = HistoryListWorld(view0)
+    dictionary = w.getCurrentState()[1]
+    words = 'Words: ' + ' '.join(name for name, value in items(dictionary))
+
+    t = TextViewerWidget()
+    t.insert(END, words)
+    t.set_world(w)
+    t.pack()
+    t.mainloop()
