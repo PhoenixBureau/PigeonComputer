@@ -1,0 +1,214 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>xerblin.base &mdash; Pigeon Computer 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>Pigeon Computer 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>xerblin.base</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for xerblin.base</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">Xerblin Base</span>
+<span class="sd">=================================</span>
+
+<span class="sd">This module builds a Xerblin system out of purely &quot;Functional&quot; parts.</span>
+
+<span class="sd">An interpreter is represented by a two-tuple that holds a stack and a</span>
+<span class="sd">dictionary.</span>
+
+<span class="sd">The stack is a sort of linked list structure while the dictionary is a</span>
+<span class="sd">BTree that maps string names to four kinds of entries:</span>
+
+<span class="sd">Functions - These must accept an interpreter, modify it somehow, and</span>
+<span class="sd">return the modified interpreter.  They are defined in the library</span>
+<span class="sd">module.</span>
+
+<span class="sd">Or, one of three kinds of tuple.  The kind of the tuple is indicated</span>
+<span class="sd">by its first member, which is a handler function, and the rest of the</span>
+<span class="sd">tuple consists in its body as indicated:</span>
+
+<span class="sd">    (SEQUENCE HANDLER, func0, func1, func2)</span>
+<span class="sd">    </span>
+<span class="sd">    (BRANCH HANDLER, true_func, false_func)</span>
+<span class="sd">    </span>
+<span class="sd">    (LOOP HANDLER, func0, func1, func2)</span>
+
+<span class="sd">where any of the functions can be themselves SEQ, BRANCH, LOOP, or</span>
+<span class="sd">plain functions as described above.</span>
+
+<span class="sd">Interpretation is done by means of an apply_func(interpreter, function)</span>
+<span class="sd">function that knows how to deal with the above combo-word tuples as well</span>
+<span class="sd">as library word functions.</span>
+
+<span class="sd">The first three functions defined in this module are used to build</span>
+<span class="sd">&quot;combo&quot; commands in the UI.  There are corresponding commands in the</span>
+<span class="sd">library (NewSeqWord, NewLoopWord, and NewBranchWord) that build tuples</span>
+<span class="sd">with these functions as the first item in the tuple.  When apply_func()</span>
+<span class="sd">encounters these tuples the initial handler function is used to &quot;run&quot; the</span>
+<span class="sd">other functions in the tuple.</span>
+
+<span class="sd">The three functions are:</span>
+
+<span class="sd">    handle_sequence</span>
+
+<span class="sd">    handle_branch</span>
+
+<span class="sd">    handle_loop</span>
+
+<span class="sd">The apply_func() function is used by the handlers and the interpret()</span>
+<span class="sd">function to &quot;run&quot; commands on the interpreter.</span>
+
+<span class="sd">Code Documentation</span>
+<span class="sd">^^^^^^^^^^^^^^^^^^</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">from</span> <span class="nn">xerblin.btree</span> <span class="kn">import</span> <span class="n">get</span>
+
+
+<span class="k">def</span> <span class="nf">_pop_TOS</span><span class="p">(</span><span class="n">I</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Pop the top item off the stack and return it with the</span>
+<span class="sd">    modified interpreter</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c"># This is a helper function factored out from handle_branch() and</span>
+    <span class="c"># handle_loop() below.</span>
+    <span class="p">(</span><span class="n">TOS</span><span class="p">,</span> <span class="n">stack</span><span class="p">),</span> <span class="n">dictionary</span> <span class="o">=</span> <span class="n">I</span>
+    <span class="k">return</span> <span class="n">TOS</span><span class="p">,</span> <span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)</span>
+
+
+<span class="c"># These three following functions process the three kinds of combo-words.</span>
+
+<div class="viewcode-block" id="handle_sequence"><a class="viewcode-back" href="../../user_interface.html#xerblin.base.handle_sequence">[docs]</a><span class="k">def</span> <span class="nf">handle_sequence</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">seq</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Run a sequence and return the modified interpreter.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">func</span> <span class="ow">in</span> <span class="n">seq</span><span class="p">[</span><span class="mi">1</span><span class="p">:]:</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">apply_func</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">I</span>
+
+</div>
+<div class="viewcode-block" id="handle_branch"><a class="viewcode-back" href="../../user_interface.html#xerblin.base.handle_branch">[docs]</a><span class="k">def</span> <span class="nf">handle_branch</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">branch</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Check TOS and do one thing or another depending.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">TOS</span><span class="p">,</span> <span class="n">I</span> <span class="o">=</span> <span class="n">_pop_TOS</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+    <span class="n">func</span> <span class="o">=</span> <span class="n">branch</span><span class="p">[(</span><span class="ow">not</span> <span class="n">TOS</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="c"># i.e. True = 1; False = 2</span>
+    <span class="k">return</span> <span class="n">apply_func</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="handle_loop"><a class="viewcode-back" href="../../user_interface.html#xerblin.base.handle_loop">[docs]</a><span class="k">def</span> <span class="nf">handle_loop</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">loop</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Check TOS and do body if it&#39;s true, repeat.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">TOS</span><span class="p">,</span> <span class="n">I</span> <span class="o">=</span> <span class="n">_pop_TOS</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">TOS</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">handle_sequence</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">loop</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">I</span>
+
+</div>
+<div class="viewcode-block" id="apply_func"><a class="viewcode-back" href="../../user_interface.html#xerblin.base.apply_func">[docs]</a><span class="k">def</span> <span class="nf">apply_func</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Given an interpreter and a function or combo-word tuple, apply the</span>
+<span class="sd">    function or combo to the interpreter and return the modified</span>
+<span class="sd">    interpreter.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">handler</span> <span class="o">=</span> <span class="n">func</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">handler</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">I</span>
+
+
+<span class="c"># This is the main point of this module.  It implements the system with</span>
+<span class="c"># the help of the apply_func() function.</span></div>
+<div class="viewcode-block" id="interpret"><a class="viewcode-back" href="../../user_interface.html#xerblin.base.interpret">[docs]</a><span class="k">def</span> <span class="nf">interpret</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Given an interpreter and a string command, interpret that string on</span>
+<span class="sd">    the interpreter and return the modified interpreter.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">command</span><span class="p">:</span>
+
+        <span class="c"># Is it an integer?</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">literal</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+
+            <span class="c"># Is it a float?</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">literal</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+
+                <span class="c"># Is it a string literal?</span>
+                <span class="k">if</span> <span class="n">word</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">word</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s">&#39;&quot;&#39;</span><span class="p">):</span>
+                    <span class="n">literal</span> <span class="o">=</span> <span class="n">word</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+                <span class="c"># Nope, it must be a command word.</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="c"># Interpret the word.</span>
+                    <span class="n">func</span> <span class="o">=</span> <span class="n">get</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">word</span><span class="p">)</span>
+                    <span class="n">I</span> <span class="o">=</span> <span class="n">apply_func</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
+                    <span class="k">continue</span>
+
+        <span class="c"># A literal was found, push it onto the stack.</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="p">(</span><span class="n">literal</span><span class="p">,</span> <span class="n">I</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">I</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">I</span>
+</pre></div></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Simon Forman.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

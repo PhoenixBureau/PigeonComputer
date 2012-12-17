@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pyavrasm &mdash; Pigeon Assembler 0.1 documentation</title>
+    <title>pyavrasm &mdash; Pigeon Computer 0.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -27,12 +27,12 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/theme_extras.js"></script>
-    <link rel="top" title="Pigeon Assembler 0.1 documentation" href="../index.html" />
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Pigeon Assembler 0.1 documentation</span></a></h1>
+          <span>Pigeon Computer 0.1 documentation</span></a></h1>
         <h2 class="heading"><span>pyavrasm</span></h2>
       </div>
       <div class="topnav">
@@ -52,9 +52,11 @@
 <span class="sd">Python AVR Assembler</span>
 <span class="sd">====================</span>
 
-
+<span class="sd">This is the Pigeon Assembler.</span>
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="kn">import</span> <span class="nn">pprint</span>
+<span class="kn">import</span> <span class="nn">pprint</span><span class="o">,</span> <span class="nn">logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s">&#39;ASM&#39;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">filename</span><span class="o">=</span><span class="s">&#39;hello-there.log&#39;</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">defaultdict</span>
 <span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">pack</span>
 <span class="kn">from</span> <span class="nn">myhdl</span> <span class="kn">import</span> <span class="n">intbv</span>
@@ -89,7 +91,7 @@
     <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">defs</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
       <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
         <span class="n">defs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">v</span> <span class="o">=</span> <span class="n">ibv</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
-      <span class="k">print</span> <span class="s">&#39;defining </span><span class="si">%s</span><span class="s"> = </span><span class="si">%#x</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+      <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;defining </span><span class="si">%s</span><span class="s"> = </span><span class="si">%#x</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">defs</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="DirectivesMixin.org"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin.org">[docs]</a>  <span class="k">def</span> <span class="nf">org</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
@@ -103,7 +105,7 @@
 <span class="sd">    :rtype: ``None``</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="n">address</span> <span class="o">=</span> <span class="n">ibv</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
-    <span class="k">print</span> <span class="s">&#39;setting org to </span><span class="si">%#06x</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">address</span><span class="p">,)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;setting org to </span><span class="si">%#06x</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
     <span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">here</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
 </div>
 <div class="viewcode-block" id="DirectivesMixin.label"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin.label">[docs]</a>  <span class="k">def</span> <span class="nf">label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_thunk</span><span class="p">,</span> <span class="n">reserves</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
@@ -135,7 +137,7 @@
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">label_thunk</span><span class="p">,</span> <span class="n">intbv</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="n">label_thunk</span><span class="p">)</span>
     <span class="k">assert</span> <span class="n">label_thunk</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">label_thunk</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_of_address_thunk</span><span class="p">(</span><span class="n">label_thunk</span><span class="p">)</span>
-    <span class="k">print</span> <span class="s">&#39;label </span><span class="si">%s</span><span class="s"> =&gt; </span><span class="si">%#06x</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">here</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;label </span><span class="si">%s</span><span class="s"> =&gt; </span><span class="si">%#06x</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">here</span><span class="p">)</span>
     <span class="n">update</span><span class="p">(</span><span class="n">label_thunk</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">here</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">reserves</span><span class="p">:</span>
       <span class="k">assert</span> <span class="n">reserves</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">reserves</span><span class="p">)</span>
@@ -152,7 +154,8 @@
     <span class="n">addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_here</span><span class="p">()</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">compute_dw</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
     <span class="n">nbytes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="k">print</span> <span class="s">&#39;assembling </span><span class="si">%i</span><span class="s"> data words at </span><span class="si">%s</span><span class="s"> for </span><span class="si">%s</span><span class="s"> =&gt; </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nbytes</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;assembling </span><span class="si">%i</span><span class="s"> data words at </span><span class="si">%s</span><span class="s"> for </span><span class="si">%s</span><span class="s"> =&gt; </span><span class="si">%r</span><span class="s">&#39;</span><span class="p">,</span>
+              <span class="n">nbytes</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;dw&#39;</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">here</span> <span class="o">+=</span> <span class="n">nbytes</span>
 </div>
@@ -168,7 +171,8 @@
     <span class="n">addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_here</span><span class="p">()</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">compute_db</span><span class="p">(</span><span class="n">values</span><span class="p">)</span>
     <span class="n">nbytes</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-    <span class="k">print</span> <span class="s">&#39;assembling </span><span class="si">%i</span><span class="s"> data bytes at </span><span class="si">%s</span><span class="s"> for </span><span class="si">%s</span><span class="s"> =&gt; </span><span class="si">%r</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">nbytes</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;assembling </span><span class="si">%i</span><span class="s"> data bytes at </span><span class="si">%s</span><span class="s"> for </span><span class="si">%s</span><span class="s"> =&gt; </span><span class="si">%r</span><span class="s">&#39;</span><span class="p">,</span>
+              <span class="n">nbytes</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;db&#39;</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">here</span> <span class="o">+=</span> <span class="n">nbytes</span>
 </div>
@@ -201,6 +205,19 @@
 <span class="sd">  Then you&#39;re probably going to want to call the ``to_hex()`` method to</span>
 <span class="sd">  get that binary data out as (the contents of) a hex file, suitable for</span>
 <span class="sd">  writing to your ATmega328P.</span>
+
+<span class="sd">  When you create an :py:class:`AVRAssembly` object you can pass an</span>
+<span class="sd">  initial_context object, a ``dict`` or anything that can be passed to</span>
+<span class="sd">  ``dict.update()``, and it will be added to the execution context for</span>
+<span class="sd">  your asm code.  Typically you would pass :py:obj:`m328P_def.defs` to</span>
+<span class="sd">  include those definition for your code to use.</span>
+
+<span class="sd">  :param initial_context: Context to include to make things available</span>
+<span class="sd">     to your assembler code.  (:py:obj:`m328P_def.defs` or some other</span>
+<span class="sd">     useful functions for example.)</span>
+<span class="sd">  :type initial_context: ``dict`` or anything that can be passed to</span>
+<span class="sd">     ``dict.update()``</span>
+
 <span class="sd">  &#39;&#39;&#39;</span>
 
   <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_context</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
@@ -240,6 +257,10 @@
     <span class="c">#: strings in ``pass2()``.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">{}</span>
 
+    <span class="c">#: Internal output data structure.  This holds the byte strings</span>
+    <span class="c">#: created in ``pass2()``.</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">accumulator</span> <span class="o">=</span> <span class="p">{}</span>
+
 <div class="viewcode-block" id="AVRAssembly.assemble"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.AVRAssembly.assemble">[docs]</a>  <span class="k">def</span> <span class="nf">assemble</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Assemble the string asm source code.</span>
@@ -250,6 +271,7 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">exec</span> <span class="n">text</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span>
     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s">&#39;__builtins__&#39;</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">pass2</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="AVRAssembly.assemble_file"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.AVRAssembly.assemble_file">[docs]</a>  <span class="k">def</span> <span class="nf">assemble_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -261,6 +283,7 @@
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="nb">execfile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">)</span>
     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s">&#39;__builtins__&#39;</span><span class="p">]</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">pass2</span><span class="p">()</span>
 </div>
 <div class="viewcode-block" id="AVRAssembly.pass2"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.AVRAssembly.pass2">[docs]</a>  <span class="k">def</span> <span class="nf">pass2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
@@ -275,7 +298,8 @@
 <span class="sd">       emitting the strings in e.g. Intel HEX format for burning to a</span>
 <span class="sd">       chip.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
-    <span class="n">accumulator</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;Pass 2 #############################################&#39;</span><span class="p">)</span>
+    <span class="n">accumulator</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">accumulator</span>
     <span class="k">for</span> <span class="n">addr</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">):</span>
       <span class="n">instruction</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span>
       <span class="n">op</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">instruction</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">instruction</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
@@ -298,15 +322,19 @@
       <span class="k">else</span><span class="p">:</span>
         <span class="n">bindata</span> <span class="o">=</span> <span class="n">pack</span><span class="p">(</span><span class="s">&#39;2H&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="mi">32</span><span class="p">:</span><span class="mi">16</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">16</span><span class="p">:])</span>
 
-<span class="c">##      if op in (&#39;db&#39;, &#39;dw&#39;):</span>
-<span class="c">##        print addr, 10 * &#39; &#39;, op, len(data), &#39;bytes:&#39;, repr(data)</span>
-<span class="c">##      else:</span>
-<span class="c">##        try:</span>
-<span class="c">##          fdata = &#39;%-10x&#39; % (data,)</span>
-<span class="c">##        except TypeError:</span>
-<span class="c">##          print addr, 10 * &#39;.&#39;, instruction, repr(data)</span>
-<span class="c">##        else:</span>
-<span class="c">##          print addr, fdata, instruction, repr(bindata)</span>
+      <span class="c"># debug logging</span>
+      <span class="k">if</span> <span class="n">op</span> <span class="ow">in</span> <span class="p">(</span><span class="s">&#39;db&#39;</span><span class="p">,</span> <span class="s">&#39;dw&#39;</span><span class="p">):</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">*</span> <span class="mi">6</span><span class="p">),</span>
+                  <span class="n">addr</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="s">&#39; &#39;</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">),</span> <span class="s">&#39;bytes:&#39;</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+      <span class="k">else</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+          <span class="n">fdata</span> <span class="o">=</span> <span class="s">&#39;</span><span class="si">%-10x</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">data</span><span class="p">,)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+          <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">*</span> <span class="mi">5</span><span class="p">),</span>
+                  <span class="n">addr</span><span class="p">,</span> <span class="mi">10</span> <span class="o">*</span> <span class="s">&#39;.&#39;</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span> <span class="n">args</span><span class="p">)),</span> <span class="nb">repr</span><span class="p">(</span><span class="n">data</span><span class="p">))</span>
+        <span class="k">else</span><span class="p">:</span>
+          <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s">&#39;</span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">*</span> <span class="mi">5</span><span class="p">),</span>
+                  <span class="n">addr</span><span class="p">,</span> <span class="n">fdata</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span> <span class="n">args</span><span class="p">)),</span> <span class="nb">repr</span><span class="p">(</span><span class="n">bindata</span><span class="p">))</span>
 
       <span class="n">accumulator</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="n">bindata</span>
 
@@ -339,31 +367,43 @@
   <span class="k">def</span> <span class="nf">_adjust</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">ibv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">addr</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),)</span>
 
-</div>
+<div class="viewcode-block" id="AVRAssembly.to_hex"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.AVRAssembly.to_hex">[docs]</a>  <span class="k">def</span> <span class="nf">to_hex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Convert the assembled machine code to Intel HEX file format.</span>
+
+<span class="sd">    :param f: The HEX data will be written to this destination.</span>
+<span class="sd">    :type f: filename or file-like object</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="kn">from</span> <span class="nn">intelhex</span> <span class="kn">import</span> <span class="n">IntelHex</span>
+    <span class="n">ih</span> <span class="o">=</span> <span class="n">IntelHex</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">addr</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">accumulator</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
+      <span class="n">addr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
+      <span class="n">ih</span><span class="o">.</span><span class="n">puts</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+    <span class="n">ih</span><span class="o">.</span><span class="n">write_hex_file</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+
+</div></div>
 <span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&#39;__main__&#39;</span><span class="p">:</span>
+  <span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span>
+  <span class="n">parser</span> <span class="o">=</span> <span class="n">ArgumentParser</span><span class="p">(</span><span class="n">description</span><span class="o">=</span><span class="s">&#39;Simple assembler for ATmega328P&#39;</span><span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span>
+    <span class="s">&#39;-x&#39;</span><span class="p">,</span> <span class="s">&#39;--hex&#39;</span><span class="p">,</span>
+    <span class="n">help</span><span class="o">=</span><span class="s">&#39;Write HEX output to this file. (Use - for stdout.)&#39;</span><span class="p">,</span>
+    <span class="p">)</span>
+  <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s">&#39;source&#39;</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s">&#39;Source code file to assemble.&#39;</span><span class="p">)</span>
+  <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+
   <span class="kn">import</span> <span class="nn">m328P_def</span>
   <span class="n">aa</span> <span class="o">=</span> <span class="n">AVRAssembly</span><span class="p">(</span><span class="n">m328P_def</span><span class="o">.</span><span class="n">defs</span><span class="p">)</span>
-  <span class="n">aa</span><span class="o">.</span><span class="n">assemble_file</span><span class="p">(</span><span class="s">&#39;asm.py&#39;</span><span class="p">)</span>
-
-<span class="c">##  print ; print ; print</span>
-<span class="c">##  pprint.pprint(dict(aa.context))</span>
-<span class="c">##  print ; print ; print</span>
-<span class="c">##  pprint.pprint(dict(aa.data))</span>
-<span class="c">##  print ; print ; print</span>
-<span class="c">##  pprint.pprint(aa.pass2())</span>
-  <span class="n">data</span> <span class="o">=</span> <span class="n">aa</span><span class="o">.</span><span class="n">pass2</span><span class="p">()</span>
-  <span class="k">print</span> <span class="p">;</span> <span class="k">print</span> <span class="p">;</span> <span class="k">print</span>
-  <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-  <span class="kn">from</span> <span class="nn">intelhex</span> <span class="kn">import</span> <span class="n">IntelHex</span>
-  <span class="n">ih</span> <span class="o">=</span> <span class="n">IntelHex</span><span class="p">()</span>
-  <span class="k">for</span> <span class="n">addr</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">iteritems</span><span class="p">():</span>
-    <span class="n">addr</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="mi">16</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
-      <span class="n">ih</span><span class="o">.</span><span class="n">puts</span><span class="p">(</span><span class="n">addr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+  <span class="n">aa</span><span class="o">.</span><span class="n">assemble_file</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">source</span><span class="p">)</span>
+  <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">hex</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">hex</span> <span class="o">==</span> <span class="s">&#39;-&#39;</span><span class="p">:</span>
+      <span class="kn">from</span> <span class="nn">sys</span> <span class="kn">import</span> <span class="n">stdout</span>
+      <span class="n">f</span> <span class="o">=</span> <span class="n">stdout</span>
     <span class="k">else</span><span class="p">:</span>
-      <span class="k">print</span> <span class="s">&#39;non-str&#39;</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
-  <span class="n">ih</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">tofile</span><span class="o">=</span><span class="nb">open</span><span class="p">(</span><span class="s">&#39;pavr.hex&#39;</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">))</span>
-<span class="c">##  ih.dump()</span>
+      <span class="n">f</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">hex</span>
+    <span class="n">aa</span><span class="o">.</span><span class="n">to_hex</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">aa</span><span class="o">.</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 
       </div>

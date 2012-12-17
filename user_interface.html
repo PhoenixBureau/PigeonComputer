@@ -1,0 +1,613 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Pigeon User Interface &mdash; Pigeon Computer 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="index.html" />
+    <link rel="next" title="Appendix A: ATmega328P Definitions" href="m328P.html" />
+    <link rel="prev" title="Pigeon Firmware" href="pigeon_firmware.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="index.html">
+          <span>Pigeon Computer 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>Pigeon User Interface</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        «&#160;&#160;<a href="pigeon_firmware.html">Pigeon Firmware</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="m328P.html">Appendix A: ATmega328P Definitions</a>&#160;&#160;»
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <div class="section" id="pigeon-user-interface">
+<h1>Pigeon User Interface<a class="headerlink" href="#pigeon-user-interface" title="Permalink to this headline">¶</a></h1>
+<p>The Pigeon User Interface is a simple but powerful way to interact with
+your computer.  It&#8217;s a general system but I&#8217;ve customized it here for
+experimenting and playing with the Pigeon software and hardware.</p>
+<p>It consists of a <em>Text</em> window that displays editable text, and a <em>Stack</em>
+of data items with a <em>Dictionary</em> of named functions that operate on the
+Stack.  In this way it&#8217;s very much like the Pigeon Firmware (TODO:
+linkify) and in fact many simple commands that work on the firmware will
+also work identically on the PUI (Pigeon User Interface) but the PUI is
+much more powerful.</p>
+<p>For one thing, it never forgets.</p>
+<p>The interface stores the current state of the Stack, Dictionary and Text
+after each command and whenever you change the text and pause for more
+than two seconds.</p>
+<p>You never have to save your work, and you can always go back to any
+previous place in your history and access it or &#8220;restart&#8221; from it.  And,
+unlike most web browsers and undo/redo functions, if you go back in
+history and try a different path the previous path you took is also
+still remembered, not forgotten, and can be re-accessed or re-visited at
+any time.</p>
+<p>The system never forgets, so you never have to remember to hit &#8220;save&#8221; and
+you never have to worry about losing your work.  You can&#8217;t anymore, the
+computer protects you.</p>
+<span class="target" id="module-xerblin.stack"></span><div class="section" id="stack">
+<h2>Stack<a class="headerlink" href="#stack" title="Permalink to this headline">¶</a></h2>
+<p>Tuple-based persistent stack.</p>
+<p>This is too simple to document.  It&#8217;s almost too simple to implement.</p>
+<dl class="function">
+<dt id="xerblin.stack.iterStack">
+<tt class="descclassname">xerblin.stack.</tt><tt class="descname">iterStack</tt><big>(</big><em>stack</em><big>)</big><a class="reference internal" href="_modules/xerblin/stack.html#iterStack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.stack.iterStack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate through the items on the stack.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.stack.lenStack">
+<tt class="descclassname">xerblin.stack.</tt><tt class="descname">lenStack</tt><big>(</big><em>stack</em><big>)</big><a class="reference internal" href="_modules/xerblin/stack.html#lenStack"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.stack.lenStack" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the number of items on the stack.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.stack.pick_">
+<tt class="descclassname">xerblin.stack.</tt><tt class="descname">pick_</tt><big>(</big><em>stack</em>, <em>n</em><big>)</big><a class="reference internal" href="_modules/xerblin/stack.html#pick_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.stack.pick_" title="Permalink to this definition">¶</a></dt>
+<dd><p>Find the nth item on the stack and duplicate it to TOS. (Pick with
+zero is the same as &#8220;dup&#8221;.)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.stack.pop">
+<tt class="descclassname">xerblin.stack.</tt><tt class="descname">pop</tt><big>(</big><em>stack</em>, <em>number</em><big>)</big><a class="reference internal" href="_modules/xerblin/stack.html#pop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.stack.pop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pop number arguments from stack.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.stack.push">
+<tt class="descclassname">xerblin.stack.</tt><tt class="descname">push</tt><big>(</big><em>stack</em>, <em>*items</em><big>)</big><a class="reference internal" href="_modules/xerblin/stack.html#push"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.stack.push" title="Permalink to this definition">¶</a></dt>
+<dd><p>Push arguments onto a stack.</p>
+</dd></dl>
+
+</div>
+<span class="target" id="module-xerblin.btree"></span><div class="section" id="btree">
+<h2>BTree<a class="headerlink" href="#btree" title="Permalink to this headline">¶</a></h2>
+<p>This is a simple Binary Tree implementation that uses tuples in such a
+way as to permit &#8220;persistant&#8221; usage, i.e. all previous versions of the
+btree datastructures are retained and available (provided you don&#8217;t throw
+them away yourself.)</p>
+<p>The empty tree is represented as an empty tuple.  Nodes are a tuple
+consisting of a key, a value, and two (possible empty) sub-nodes for the
+lower and higher branches of the tree.</p>
+<p>This module defines the following functions:</p>
+<blockquote>
+<div><p>insert(node, key, value)</p>
+<p>get(node, key)</p>
+<p>delete(node, key)</p>
+</div></blockquote>
+<p>Both insert() and delete() return a new tuple that is the result of
+applying the operation to the existing node.  (And both get() and delete()
+will raise KeyErrors if the key is not in the tree.)</p>
+<p>Because of the way that insert() and delete() are written, only as much
+of the tree is changed as necessary and the rest of it is reused. This
+provides persistance without using up memory for each version of the
+tree.</p>
+<p>These functions are implemented recursively so they have the potential to
+raise a RuntimeError if the maximum recursion depth is exceeded.  This
+should only be a problem if used with very large trees.  To avoid this
+issue you can use sys.setrecursionlimit(), but I think I might just
+rewrite these to not use recursion.</p>
+<dl class="function">
+<dt id="xerblin.btree.delete">
+<tt class="descclassname">xerblin.btree.</tt><tt class="descname">delete</tt><big>(</big><em>node</em>, <em>key</em><big>)</big><a class="reference internal" href="_modules/xerblin/btree.html#delete"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.btree.delete" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a tree with the value (and key) removed or raise KeyError if
+not found.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.btree.fill_tree">
+<tt class="descclassname">xerblin.btree.</tt><tt class="descname">fill_tree</tt><big>(</big><em>node</em>, <em>items</em><big>)</big><a class="reference internal" href="_modules/xerblin/btree.html#fill_tree"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.btree.fill_tree" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the (key, value) pairs in items to a btree in a balanced way.</p>
+<p>You can balance a tree like so:</p>
+<blockquote>
+<div>tree = fill_tree((), items(tree))</div></blockquote>
+<p>This iterates through the tree and returns a new, balanced tree from
+its contents.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.btree.get">
+<tt class="descclassname">xerblin.btree.</tt><tt class="descname">get</tt><big>(</big><em>node</em>, <em>key</em><big>)</big><a class="reference internal" href="_modules/xerblin/btree.html#get"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.btree.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the value stored under key or raise KeyError if not found.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.btree.insert">
+<tt class="descclassname">xerblin.btree.</tt><tt class="descname">insert</tt><big>(</big><em>node</em>, <em>key</em>, <em>value</em><big>)</big><a class="reference internal" href="_modules/xerblin/btree.html#insert"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.btree.insert" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a tree with value stored under key. Replaces old value if any.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.btree.items">
+<tt class="descclassname">xerblin.btree.</tt><tt class="descname">items</tt><big>(</big><em>node</em><big>)</big><a class="reference internal" href="_modules/xerblin/btree.html#items"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.btree.items" title="Permalink to this definition">¶</a></dt>
+<dd><p>Iterate in order over the (key, value) pairs in a tree.</p>
+</dd></dl>
+
+</div>
+<span class="target" id="module-xerblin.base"></span><div class="section" id="xerblin-base">
+<h2>Xerblin Base<a class="headerlink" href="#xerblin-base" title="Permalink to this headline">¶</a></h2>
+<p>This module builds a Xerblin system out of purely &#8220;Functional&#8221; parts.</p>
+<p>An interpreter is represented by a two-tuple that holds a stack and a
+dictionary.</p>
+<p>The stack is a sort of linked list structure while the dictionary is a
+BTree that maps string names to four kinds of entries:</p>
+<p>Functions - These must accept an interpreter, modify it somehow, and
+return the modified interpreter.  They are defined in the library
+module.</p>
+<p>Or, one of three kinds of tuple.  The kind of the tuple is indicated
+by its first member, which is a handler function, and the rest of the
+tuple consists in its body as indicated:</p>
+<blockquote>
+<div><p>(SEQUENCE HANDLER, func0, func1, func2)</p>
+<p>(BRANCH HANDLER, true_func, false_func)</p>
+<p>(LOOP HANDLER, func0, func1, func2)</p>
+</div></blockquote>
+<p>where any of the functions can be themselves SEQ, BRANCH, LOOP, or
+plain functions as described above.</p>
+<p>Interpretation is done by means of an apply_func(interpreter, function)
+function that knows how to deal with the above combo-word tuples as well
+as library word functions.</p>
+<p>The first three functions defined in this module are used to build
+&#8220;combo&#8221; commands in the UI.  There are corresponding commands in the
+library (NewSeqWord, NewLoopWord, and NewBranchWord) that build tuples
+with these functions as the first item in the tuple.  When apply_func()
+encounters these tuples the initial handler function is used to &#8220;run&#8221; the
+other functions in the tuple.</p>
+<p>The three functions are:</p>
+<blockquote>
+<div><p>handle_sequence</p>
+<p>handle_branch</p>
+<p>handle_loop</p>
+</div></blockquote>
+<p>The apply_func() function is used by the handlers and the interpret()
+function to &#8220;run&#8221; commands on the interpreter.</p>
+<div class="section" id="code-documentation">
+<h3>Code Documentation<a class="headerlink" href="#code-documentation" title="Permalink to this headline">¶</a></h3>
+<dl class="function">
+<dt id="xerblin.base.apply_func">
+<tt class="descclassname">xerblin.base.</tt><tt class="descname">apply_func</tt><big>(</big><em>I</em>, <em>func</em><big>)</big><a class="reference internal" href="_modules/xerblin/base.html#apply_func"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.base.apply_func" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an interpreter and a function or combo-word tuple, apply the
+function or combo to the interpreter and return the modified
+interpreter.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.base.handle_branch">
+<tt class="descclassname">xerblin.base.</tt><tt class="descname">handle_branch</tt><big>(</big><em>I</em>, <em>branch</em><big>)</big><a class="reference internal" href="_modules/xerblin/base.html#handle_branch"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.base.handle_branch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check TOS and do one thing or another depending.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.base.handle_loop">
+<tt class="descclassname">xerblin.base.</tt><tt class="descname">handle_loop</tt><big>(</big><em>I</em>, <em>loop</em><big>)</big><a class="reference internal" href="_modules/xerblin/base.html#handle_loop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.base.handle_loop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Check TOS and do body if it&#8217;s true, repeat.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.base.handle_sequence">
+<tt class="descclassname">xerblin.base.</tt><tt class="descname">handle_sequence</tt><big>(</big><em>I</em>, <em>seq</em><big>)</big><a class="reference internal" href="_modules/xerblin/base.html#handle_sequence"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.base.handle_sequence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run a sequence and return the modified interpreter.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.base.interpret">
+<tt class="descclassname">xerblin.base.</tt><tt class="descname">interpret</tt><big>(</big><em>I</em>, <em>command</em><big>)</big><a class="reference internal" href="_modules/xerblin/base.html#interpret"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.base.interpret" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given an interpreter and a string command, interpret that string on
+the interpreter and return the modified interpreter.</p>
+</dd></dl>
+
+</div>
+</div>
+<span class="target" id="module-xerblin.world"></span><div class="section" id="world">
+<h2>World<a class="headerlink" href="#world" title="Permalink to this headline">¶</a></h2>
+<p>This module defines two classes: Serializer and World. Serializer deals
+with saving history protocols to a pickle file and World deals with
+interacting with an interpreter in a loop.</p>
+<p>This module also defines a subclass of World called HistoryListWorld that
+tracks history in a list object, and a couple of very basic views.</p>
+<p>Starting with an initial interpreter (comprised of a stack of nominal
+data and a dictionary of commands and possibly named state &#8220;variables&#8221;)
+the user issues a command to the interpreter which then results in a new
+state (which can be the same as the initial state.)</p>
+<p>The interpreter is embedded in a frame (a World or subclass) which
+provides view and history and serialization controls.</p>
+<p>These frame &#8220;meta&#8221; controls are several:</p>
+<div class="section" id="change-the-view-function">
+<h3>Change the view function.<a class="headerlink" href="#change-the-view-function" title="Permalink to this headline">¶</a></h3>
+<p>View functions take a state (interpreter, stack and dictionary) and
+render it somehow for the user.</p>
+<p>Implied but not necessary are means for direct manipulation of views
+to send commands to the interpreter.  It may well turn out that tight
+feedback loops between views and modeled states will require a
+relaxation of the strict functional style I&#8217;m striving for here.</p>
+<p>In any event, views take a state and render it.</p>
+<p>Views may render as text in a terminal or GUI text widget, &#8220;direct&#8221;
+graphics via Pygame, etc., GUI systems such as Tkinter or wxPython,
+document formats like Postscript or PDF, graphs using matplotlib or
+other libraries in formats such as PNG or SVG, or web UIs using HTML,
+CSS, Javascript, and perhaps even ActionScript (Flash).</p>
+</div>
+<div class="section" id="examine-history-and-change-to-previous-states">
+<h3>Examine history and change to previous states.<a class="headerlink" href="#examine-history-and-change-to-previous-states" title="Permalink to this headline">¶</a></h3>
+<p>The chief advantage of storing all history is in the ease of going
+back and trying something new from a previous point in time.</p>
+<p>This requires some means of indexing and displaying the states in
+your history and your path through them so you can decide when to go
+back to, and a way to actually go back and set your current state to
+a previous state and add the transition to the history.</p>
+<p>This seems to require another kind of view that can display not just
+one state time-slice of your history, but also the tree-like path
+from state to state you took.</p>
+<p>(There is an infinite regression here: do you keep the history of the
+changing of the history?  What about the history of the keeping of
+that history, do you keep that too?  And that keeping&#8217;s history?
+Etc...  In practice we are likely to make do with only one level of
+history.)</p>
+<p>In addition to simply stepping back and forth in time, we will also
+want to &#8220;pull&#8221; data from different history states, possibly in
+multiple stored pickle files, and combine them in a new synthesized
+states.  We can build new interpreters with the data and commands we
+need to perform tasks and achieve our goals.</p>
+<p>As yet, this script provides only indirect means to manipulate and view
+history.  You can use a HistoryListWorld and manipulate its history
+attribute, which is a list containing all the states of the system in
+order starting with the initial state.</p>
+</div>
+<div class="section" id="manipulate-external-save-files">
+<h3>Manipulate external save files.<a class="headerlink" href="#manipulate-external-save-files" title="Permalink to this headline">¶</a></h3>
+<p>The histories must be stored in python pickle files in some external
+media (i.e. a disk drive or memory stick) and there are issues of
+selecting and loading histories and managing the relations between
+them.</p>
+<p>Currently this script provides no direct means to do any of this.</p>
+<p>You can pass a file name or open file object to the World as its
+save_file argument and that will be used to save the pickle data as
+you use the World object, but other than that you&#8217;re on your own.</p>
+</div>
+<div class="section" id="id1">
+<h3>Code Documentation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<dl class="class">
+<dt id="xerblin.world.HistoryListWorld">
+<em class="property">class </em><tt class="descclassname">xerblin.world.</tt><tt class="descname">HistoryListWorld</tt><big>(</big><em>view=&lt;function nullView at 0x4c5e050&gt;</em>, <em>initial=(()</em>, <em>('mul'</em>, <em>&lt;function mul at 0x4dbac08&gt;</em>, <em>('drop'</em>, <em>&lt;function drop at 0x4dba7d0&gt;</em>, <em>('NewSeqWord'</em>, <em>&lt;function NewSeqWord at 0x4dba9b0&gt;</em>, <em>('NewLoopWord'</em>, <em>&lt;function NewLoopWord at 0x4dbaa28&gt;</em>, <em>('NewBranchWord'</em>, <em>&lt;function NewBranchWord at 0x4dbaaa0&gt;</em>, <em>()</em>, <em>())</em>, <em>())</em>, <em>('add'</em>, <em>&lt;function add at 0x4dbab18&gt;</em>, <em>()</em>, <em>()))</em>, <em>('listwords'</em>, <em>&lt;function listwords at 0x4dbae60&gt;</em>, <em>('inscribe'</em>, <em>&lt;function inscribe at 0x4dba938&gt;</em>, <em>('dup'</em>, <em>&lt;function dup at 0x4dba5f0&gt;</em>, <em>()</em>, <em>())</em>, <em>())</em>, <em>('lookup'</em>, <em>&lt;function lookup at 0x4dba8c0&gt;</em>, <em>()</em>, <em>())))</em>, <em>('sub'</em>, <em>&lt;function sub at 0x4dbab90&gt;</em>, <em>('pickle'</em>, <em>&lt;function pickle at 0x4dbac80&gt;</em>, <em>('pick'</em>, <em>&lt;function pick at 0x4dba6e0&gt;</em>, <em>('over'</em>, <em>&lt;function over at 0x4dba848&gt;</em>, <em>()</em>, <em>())</em>, <em>())</em>, <em>('rebalance'</em>, <em>&lt;function rebalance at 0x4dbad70&gt;</em>, <em>()</em>, <em>()))</em>, <em>('unpickle'</em>, <em>&lt;function unpickle at 0x4dbacf8&gt;</em>, <em>('tuck'</em>, <em>&lt;function tuck at 0x4dba758&gt;</em>, <em>('swap'</em>, <em>&lt;function swap at 0x4dba668&gt;</em>, <em>()</em>, <em>())</em>, <em>())</em>, <em>('view'</em>, <em>&lt;function view at 0x4dbade8&gt;</em>, <em>()</em>, <em>())))))</em>, <em>save_file=None</em><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#HistoryListWorld"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.HistoryListWorld" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="#xerblin.world.World" title="xerblin.world.World"><tt class="xref py py-class docutils literal"><span class="pre">xerblin.world.World</span></tt></a></p>
+<p>A subclass of World that overrides the setCurrentState() and
+getCurrentState() methods to record states in a history list.</p>
+<dl class="method">
+<dt id="xerblin.world.HistoryListWorld.getCurrentState">
+<tt class="descname">getCurrentState</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#HistoryListWorld.getCurrentState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.HistoryListWorld.getCurrentState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current state. Overrides super-class.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xerblin.world.HistoryListWorld.setCurrentState">
+<tt class="descname">setCurrentState</tt><big>(</big><em>state</em><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#HistoryListWorld.setCurrentState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.HistoryListWorld.setCurrentState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set current state to passed in state. Overrides super-class.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="xerblin.world.Serializer">
+<em class="property">class </em><tt class="descclassname">xerblin.world.</tt><tt class="descname">Serializer</tt><big>(</big><em>initial_state</em>, <em>stream</em><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#Serializer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.Serializer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Combines a Pickler and a file or file-like object to track a linear
+protocol of state -&gt; command -&gt; resultant-state history.</p>
+<p>You instantiate it with an initial state (i.e. your &#8220;root&#8221; stack and
+dictionary) and a file(-like object) to save to then you call post()
+repeatedly with the next command and the resultant stack and
+dictionary.</p>
+<p>The Pickler keeps a memo dict of the objects it has seen and pickled
+already and when it sees them again it serializes a reference to them
+rather than the whole object, automatically providing a sort of
+compression for the persistant datastructures we&#8217;re storing in the
+pickle stream.</p>
+<p>You can open the pickle file and call load() repeatedly to get a
+sequence of state, command, state, ...  There will always be an odd
+number of stored data: the initial state followed by zero or more
+pairs of command and result state.</p>
+<dl class="method">
+<dt id="xerblin.world.Serializer.post">
+<tt class="descname">post</tt><big>(</big><em>command</em>, <em>resultant_state</em><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#Serializer.post"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.Serializer.post" title="Permalink to this definition">¶</a></dt>
+<dd><p>Serialize command and resultant_state to the pickle stream. Each
+is saved separately so you can load a command from the stream and
+examine it without loading its resultant state.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="xerblin.world.World">
+<em class="property">class </em><tt class="descclassname">xerblin.world.</tt><tt class="descname">World</tt><big>(</big><em>view=&lt;function nullView at 0x4c5e050&gt;</em>, <em>initial=(()</em>, <em>('mul'</em>, <em>&lt;function mul at 0x4dbac08&gt;</em>, <em>('drop'</em>, <em>&lt;function drop at 0x4dba7d0&gt;</em>, <em>('NewSeqWord'</em>, <em>&lt;function NewSeqWord at 0x4dba9b0&gt;</em>, <em>('NewLoopWord'</em>, <em>&lt;function NewLoopWord at 0x4dbaa28&gt;</em>, <em>('NewBranchWord'</em>, <em>&lt;function NewBranchWord at 0x4dbaaa0&gt;</em>, <em>()</em>, <em>())</em>, <em>())</em>, <em>('add'</em>, <em>&lt;function add at 0x4dbab18&gt;</em>, <em>()</em>, <em>()))</em>, <em>('listwords'</em>, <em>&lt;function listwords at 0x4dbae60&gt;</em>, <em>('inscribe'</em>, <em>&lt;function inscribe at 0x4dba938&gt;</em>, <em>('dup'</em>, <em>&lt;function dup at 0x4dba5f0&gt;</em>, <em>()</em>, <em>())</em>, <em>())</em>, <em>('lookup'</em>, <em>&lt;function lookup at 0x4dba8c0&gt;</em>, <em>()</em>, <em>())))</em>, <em>('sub'</em>, <em>&lt;function sub at 0x4dbab90&gt;</em>, <em>('pickle'</em>, <em>&lt;function pickle at 0x4dbac80&gt;</em>, <em>('pick'</em>, <em>&lt;function pick at 0x4dba6e0&gt;</em>, <em>('over'</em>, <em>&lt;function over at 0x4dba848&gt;</em>, <em>()</em>, <em>())</em>, <em>())</em>, <em>('rebalance'</em>, <em>&lt;function rebalance at 0x4dbad70&gt;</em>, <em>()</em>, <em>()))</em>, <em>('unpickle'</em>, <em>&lt;function unpickle at 0x4dbacf8&gt;</em>, <em>('tuck'</em>, <em>&lt;function tuck at 0x4dba758&gt;</em>, <em>('swap'</em>, <em>&lt;function swap at 0x4dba668&gt;</em>, <em>()</em>, <em>())</em>, <em>())</em>, <em>('view'</em>, <em>&lt;function view at 0x4dbade8&gt;</em>, <em>()</em>, <em>())))))</em>, <em>save_file=None</em><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#World"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.World" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manage an interpreter, a view function, and serialization to a file
+or file-like object.</p>
+<p>This object takes a view function (any callable that accepts an
+interpreter) and optionally an initial interpreter and a save file.
+It creates a Serializer object to save commands and results, and it
+provides a step() method that accepts a command (list of strings) and
+runs it on the interpreter then saves it and calls the view function.</p>
+<dl class="method">
+<dt id="xerblin.world.World.changeView">
+<tt class="descname">changeView</tt><big>(</big><em>view</em><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#World.changeView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.World.changeView" title="Permalink to this definition">¶</a></dt>
+<dd><p>Swap the current view function for the one passed, return the old
+view function.  Calls the new view.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xerblin.world.World.getCurrentState">
+<tt class="descname">getCurrentState</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#World.getCurrentState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.World.getCurrentState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return the current state.  This method exists mostly to be
+overridden in subclasses.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xerblin.world.World.setCurrentState">
+<tt class="descname">setCurrentState</tt><big>(</big><em>state</em><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#World.setCurrentState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.World.setCurrentState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets current state to the passed state.  This method exists
+mostly to be overridden in subclasses.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xerblin.world.World.step">
+<tt class="descname">step</tt><big>(</big><em>command</em><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#World.step"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.World.step" title="Permalink to this definition">¶</a></dt>
+<dd><p>Run one command, a list of strings, on the interpreter then save
+the command and resulting new interpreter to the serialized
+stream and call the view function on the new interpreter.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="xerblin.world.World.view">
+<tt class="descname">view</tt><big>(</big><em>state</em><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#World.view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.World.view" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.world.nullView">
+<tt class="descclassname">xerblin.world.</tt><tt class="descname">nullView</tt><big>(</big><em>I</em><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#nullView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.nullView" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#8220;Do nothing&#8221; view.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.world.view0">
+<tt class="descclassname">xerblin.world.</tt><tt class="descname">view0</tt><big>(</big><em>I</em><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#view0"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.view0" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the stack to stdout with python&#8217;s default formatting.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.world.view1">
+<tt class="descclassname">xerblin.world.</tt><tt class="descname">view1</tt><big>(</big><em>I</em><big>)</big><a class="reference internal" href="_modules/xerblin/world.html#view1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.world.view1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the stack to stdout using the pprint module.</p>
+</dd></dl>
+
+</div>
+</div>
+<span class="target" id="module-xerblin.library"></span><div class="section" id="library-of-words">
+<h2>Library of Words<a class="headerlink" href="#library-of-words" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="xerblin.library.NewBranchWord">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">NewBranchWord</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#NewBranchWord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.NewBranchWord" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new Branch command word.  A branch consumes the top item on
+the stack and does one of two things depending on its &#8220;truth&#8221; value.
+Unlike Loops and Sequences which use all the items on the stack,
+Branch commands only take the top two items. The item on the top of
+the stack should be a function to use in case of &#8220;true&#8221; and the
+second should be a function to use for &#8220;false&#8221;.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.NewLoopWord">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">NewLoopWord</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#NewLoopWord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.NewLoopWord" title="Permalink to this definition">¶</a></dt>
+<dd><p>This command takes all the items on the stack and puts them into a
+tuple with the Loop Handler function in front of them.</p>
+<p>A Loop consumes the top item on the stack, then depending on it&#8217;s
+&#8220;truth&#8221; either runs the commands in its tuple and repeats if it&#8217;s
+true or stops looping altogether if it&#8217;s false.</p>
+<p>Put the first command to run on the stack first, then the second, and
+so on, so that the last item to run is on the top of the stack when
+you run this command.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.NewSeqWord">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">NewSeqWord</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#NewSeqWord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.NewSeqWord" title="Permalink to this definition">¶</a></dt>
+<dd><p>This command takes all the items on the stack and puts them into a
+tuple with the Sequence Handler function in front of them.</p>
+<p>The items on the stack should all be commands from the dictionary,
+either functions or combo commands.  You get these by using the
+&#8220;lookup&#8221; command on the names of the functions you want.</p>
+<p>Put the first command to run on the stack first, then the second, and
+so on, so that the last item to run is on the top of the stack when
+you run this command.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.add">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">add</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.add" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add the top two items on the stack and replace them with the sum.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.drop">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">drop</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#drop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.drop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove the item on the top of the stack and discard it.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.dup">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">dup</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#dup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.dup" title="Permalink to this definition">¶</a></dt>
+<dd><p>&#8220;Duplicate&#8221; the top item on the stack.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.function">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">function</tt><big>(</big><em>interpreter</em><big>)</big><a class="headerlink" href="#xerblin.library.function" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pretty print the interpreter to stdout.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.inscribe">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">inscribe</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#inscribe"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.inscribe" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a name string on the top of the stack and a &#8220;combo&#8221; command
+underneath it (see NewSeqWord, NewLoopWord, and NewBranchWord for how
+to make combo commands) &#8220;inscribe&#8221; the combo command into the
+dictionary under that name, replacing any previous command of that
+name.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.listwords">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">listwords</tt><big>(</big><em>interpreter</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#listwords"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.listwords" title="Permalink to this definition">¶</a></dt>
+<dd><p>Print the list of words in the dictionary to stdout.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.lookup">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">lookup</tt><big>(</big><em>interpreter</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#lookup"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.lookup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given a name on the top of the stack, look up the named command in
+the dictionary and put it on the stack in place of the name.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.mul">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">mul</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#mul"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.mul" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the top two items on the stack with the result of multiplying
+them together.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.over">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">over</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#over"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.over" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put a &#8220;duplicate&#8221; of the second item down in the stack on the top of
+the stack. (I.e. second, top, second.)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.pick">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">pick</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#pick"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.pick" title="Permalink to this definition">¶</a></dt>
+<dd><p>Takes a number from the stack, counts back that many items (starting
+from zero for the top item) and puts a &#8220;duplicate&#8221; of the item found
+on the top of the stack. (So pick with 0 on the stack is thte same as
+the command &#8220;dup&#8221;.)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.pickle">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">pickle</tt><big>(</big><em>interpreter</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#pickle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.pickle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the current interpreter to a portable text format (called a
+&#8220;pickle&#8221;.)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.rebalance">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">rebalance</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#rebalance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.rebalance" title="Permalink to this definition">¶</a></dt>
+<dd><p>This &#8220;rebalances&#8221; a dictionary.  It makes it more efficient to access
+commands in the dictionary if you&#8217;ve added a lot of new ones.</p>
+<p>It&#8217;s a good idea to use this command before creating a pickle to
+save so that the saved pickle&#8217;s dictionary is already balanced.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.sub">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">sub</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#sub"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.sub" title="Permalink to this definition">¶</a></dt>
+<dd><p>Replace the top two items on the stack with the result of subtracting
+the top item from the second item.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.swap">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">swap</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#swap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.swap" title="Permalink to this definition">¶</a></dt>
+<dd><p>Reverse the order of the top two items on the stack.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.tuck">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">tuck</tt><big>(</big><em>(stack</em>, <em>dictionary)</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#tuck"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.tuck" title="Permalink to this definition">¶</a></dt>
+<dd><p>Put a &#8220;duplicate&#8221; of the item on the top of the stack just under the
+second item on the stack. (I.e. top, second, top.)</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.unpickle">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">unpickle</tt><big>(</big><em>interpreter</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#unpickle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.unpickle" title="Permalink to this definition">¶</a></dt>
+<dd><p>Take a string &#8220;pickle&#8221; portable text representation of an interpreter
+and replace the current interpreter with it.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="xerblin.library.view">
+<tt class="descclassname">xerblin.library.</tt><tt class="descname">view</tt><big>(</big><em>interpreter</em><big>)</big><a class="reference internal" href="_modules/xerblin/library.html#view"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#xerblin.library.view" title="Permalink to this definition">¶</a></dt>
+<dd><p>Pretty print the interpreter to stdout.</p>
+</dd></dl>
+
+</div>
+</div>
+
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        «&#160;&#160;<a href="pigeon_firmware.html">Pigeon Firmware</a>
+        &#160;&#160;::&#160;&#160;
+        <a class="uplink" href="index.html">Contents</a>
+        &#160;&#160;::&#160;&#160;
+        <a href="m328P.html">Appendix A: ATmega328P Definitions</a>&#160;&#160;»
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Simon Forman.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>instructions &mdash; Pigeon Assembler 0.1 documentation</title>
+    <title>instructions &mdash; Pigeon Computer 0.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -27,12 +27,12 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/theme_extras.js"></script>
-    <link rel="top" title="Pigeon Assembler 0.1 documentation" href="../index.html" />
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Pigeon Assembler 0.1 documentation</span></a></h1>
+          <span>Pigeon Computer 0.1 documentation</span></a></h1>
         <h2 class="heading"><span>instructions</span></h2>
       </div>
       <div class="topnav">
@@ -46,6 +46,8 @@
         
         
   <h1>Source code for instructions</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">util</span> <span class="kn">import</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">,</span> <span class="n">B_reversed</span><span class="p">,</span> <span class="n">C</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">F</span><span class="p">,</span> <span class="n">G</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="n">instr</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">spec_reversed</span>
 
 
@@ -579,7 +581,7 @@
   <span class="k">def</span> <span class="nf">_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
     <span class="n">name</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_or_addr</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
     <span class="n">addr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_here</span><span class="p">()</span>
-    <span class="k">print</span> <span class="s">&#39;assembling </span><span class="si">%s</span><span class="s"> instruction at </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;assembling </span><span class="si">%s</span><span class="s"> instruction at </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">here</span> <span class="o">+=</span> <span class="mi">2</span>
 

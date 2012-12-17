@@ -1,0 +1,241 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>xerblin.btree &mdash; Pigeon Computer 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>Pigeon Computer 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>xerblin.btree</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for xerblin.btree</h1><div class="highlight"><pre>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">BTree</span>
+<span class="sd">=================================</span>
+
+<span class="sd">This is a simple Binary Tree implementation that uses tuples in such a</span>
+<span class="sd">way as to permit &quot;persistant&quot; usage, i.e. all previous versions of the</span>
+<span class="sd">btree datastructures are retained and available (provided you don&#39;t throw</span>
+<span class="sd">them away yourself.)</span>
+
+<span class="sd">The empty tree is represented as an empty tuple.  Nodes are a tuple</span>
+<span class="sd">consisting of a key, a value, and two (possible empty) sub-nodes for the</span>
+<span class="sd">lower and higher branches of the tree.</span>
+
+<span class="sd">This module defines the following functions:</span>
+
+<span class="sd">    insert(node, key, value)</span>
+
+<span class="sd">    get(node, key)</span>
+
+<span class="sd">    delete(node, key)</span>
+
+<span class="sd">Both insert() and delete() return a new tuple that is the result of</span>
+<span class="sd">applying the operation to the existing node.  (And both get() and delete()</span>
+<span class="sd">will raise KeyErrors if the key is not in the tree.)</span>
+
+<span class="sd">Because of the way that insert() and delete() are written, only as much</span>
+<span class="sd">of the tree is changed as necessary and the rest of it is reused. This</span>
+<span class="sd">provides persistance without using up memory for each version of the</span>
+<span class="sd">tree.</span>
+
+<span class="sd">These functions are implemented recursively so they have the potential to</span>
+<span class="sd">raise a RuntimeError if the maximum recursion depth is exceeded.  This</span>
+<span class="sd">should only be a problem if used with very large trees.  To avoid this</span>
+<span class="sd">issue you can use sys.setrecursionlimit(), but I think I might just</span>
+<span class="sd">rewrite these to not use recursion.</span>
+<span class="sd">&#39;&#39;&#39;</span>
+
+
+<div class="viewcode-block" id="insert"><a class="viewcode-back" href="../../user_interface.html#xerblin.btree.insert">[docs]</a><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return a tree with value stored under key. Replaces old value if any.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="p">(),</span> <span class="p">()</span>
+
+    <span class="n">node_key</span><span class="p">,</span> <span class="n">node_value</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">higher</span> <span class="o">=</span> <span class="n">node</span>
+
+    <span class="k">if</span> <span class="n">key</span> <span class="o">&lt;</span> <span class="n">node_key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">node_key</span><span class="p">,</span> <span class="n">node_value</span><span class="p">,</span> <span class="n">insert</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">),</span> <span class="n">higher</span>
+
+    <span class="k">if</span> <span class="n">key</span> <span class="o">&gt;</span> <span class="n">node_key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">node_key</span><span class="p">,</span> <span class="n">node_value</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">insert</span><span class="p">(</span><span class="n">higher</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">higher</span>
+
+</div>
+<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../user_interface.html#xerblin.btree.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return the value stored under key or raise KeyError if not found.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="n">key</span>
+
+    <span class="n">node_key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">higher</span> <span class="o">=</span> <span class="n">node</span>
+
+    <span class="k">if</span> <span class="n">key</span> <span class="o">==</span> <span class="n">node_key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">value</span>
+
+    <span class="k">return</span> <span class="n">get</span><span class="p">(</span><span class="n">lower</span> <span class="k">if</span> <span class="n">key</span> <span class="o">&lt;</span> <span class="n">node_key</span> <span class="k">else</span> <span class="n">higher</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+</div>
+<div class="viewcode-block" id="delete"><a class="viewcode-back" href="../../user_interface.html#xerblin.btree.delete">[docs]</a><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Return a tree with the value (and key) removed or raise KeyError if</span>
+<span class="sd">    not found.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">KeyError</span><span class="p">,</span> <span class="n">key</span>
+
+    <span class="n">node_key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">higher</span> <span class="o">=</span> <span class="n">node</span>
+
+    <span class="k">if</span> <span class="n">key</span> <span class="o">&lt;</span> <span class="n">node_key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">node_key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">delete</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span> <span class="n">higher</span>
+
+    <span class="k">if</span> <span class="n">key</span> <span class="o">&gt;</span> <span class="n">node_key</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">node_key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">delete</span><span class="p">(</span><span class="n">higher</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+
+    <span class="c"># So, key == node_key, delete this node itself.</span>
+
+    <span class="c"># If we only have one non-empty child node return it.  If both child</span>
+    <span class="c"># nodes are empty return an empty node (one of the children.)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">lower</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">higher</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">higher</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">lower</span>
+
+    <span class="c"># If both child nodes are non-empty, we find the highest node in our</span>
+    <span class="c"># lower sub-tree, take its key and value to replace (delete) our own,</span>
+    <span class="c"># then get rid of it by recursively calling delete() on our lower</span>
+    <span class="c"># sub-node with our new key.</span>
+    <span class="c"># (We could also find the lowest node in our higher sub-tree and take</span>
+    <span class="c"># its key and value and delete it. I only implemented one of these</span>
+    <span class="c"># two symmetrical options. Over a lot of deletions this might make</span>
+    <span class="c"># the tree more unbalanced.  Oh well.)</span>
+    <span class="n">node</span> <span class="o">=</span> <span class="n">lower</span>
+    <span class="k">while</span> <span class="n">node</span><span class="p">[</span><span class="mi">3</span><span class="p">]:</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">node</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="o">=</span> <span class="n">node</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">delete</span><span class="p">(</span><span class="n">lower</span><span class="p">,</span> <span class="n">key</span><span class="p">),</span> <span class="n">higher</span>
+
+
+<span class="c"># The above functions are the &quot;core&quot; functionality for dealing with this</span>
+<span class="c"># tuple-based persistant BTree datastructure.  The rest of this module is</span>
+<span class="c"># just helper functions.</span>
+
+</div>
+<div class="viewcode-block" id="items"><a class="viewcode-back" href="../../user_interface.html#xerblin.btree.items">[docs]</a><span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Iterate in order over the (key, value) pairs in a tree.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">node</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">higher</span> <span class="o">=</span> <span class="n">node</span>
+    
+    <span class="k">for</span> <span class="n">kv</span> <span class="ow">in</span> <span class="n">items</span><span class="p">(</span><span class="n">lower</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">kv</span>
+    
+    <span class="k">yield</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span>
+    
+    <span class="k">for</span> <span class="n">kv</span> <span class="ow">in</span> <span class="n">items</span><span class="p">(</span><span class="n">higher</span><span class="p">):</span>
+        <span class="k">yield</span> <span class="n">kv</span>
+
+</div>
+<span class="k">def</span> <span class="nf">_yield_balanced</span><span class="p">(</span><span class="n">sorted_items</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Recursive generator function to yield the items in a sorted sequence</span>
+<span class="sd">    in such a way as to fill a btree in a balanced fashion.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="c"># For empty sequences do nothing.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">sorted_items</span><span class="p">:</span>
+        <span class="k">return</span>
+
+    <span class="c"># Find the index of the middle item (rounding down for even-length</span>
+    <span class="c"># sequences due to integer division.)</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">sorted_items</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="c"># Yield the middle item.</span>
+    <span class="k">yield</span> <span class="n">sorted_items</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+    <span class="c"># Shortcut in case len(sorted_items) == 1</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">i</span><span class="p">:</span>
+        <span class="k">return</span> 
+
+    <span class="c"># Now recurse on lower and higher halves of the sequence.</span>
+    <span class="k">for</span> <span class="n">low</span> <span class="ow">in</span> <span class="n">_yield_balanced</span><span class="p">(</span><span class="n">sorted_items</span><span class="p">[:</span><span class="n">i</span><span class="p">]):</span>
+        <span class="k">yield</span> <span class="n">low</span>
+    <span class="k">for</span> <span class="n">high</span> <span class="ow">in</span> <span class="n">_yield_balanced</span><span class="p">(</span><span class="n">sorted_items</span><span class="p">[</span><span class="n">i</span><span class="o">+</span><span class="mi">1</span><span class="p">:]):</span>
+        <span class="k">yield</span> <span class="n">high</span>
+
+
+<div class="viewcode-block" id="fill_tree"><a class="viewcode-back" href="../../user_interface.html#xerblin.btree.fill_tree">[docs]</a><span class="k">def</span> <span class="nf">fill_tree</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Add the (key, value) pairs in items to a btree in a balanced way.</span>
+
+<span class="sd">    You can balance a tree like so:</span>
+
+<span class="sd">        tree = fill_tree((), items(tree))</span>
+
+<span class="sd">    This iterates through the tree and returns a new, balanced tree from</span>
+<span class="sd">    its contents.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">_yield_balanced</span><span class="p">(</span><span class="nb">sorted</span><span class="p">(</span><span class="n">items</span><span class="p">)):</span>
+        <span class="n">node</span> <span class="o">=</span> <span class="n">insert</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">node</span></div>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Simon Forman.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

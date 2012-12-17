@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Pigeon Compiler &mdash; Pigeon Assembler 0.1 documentation</title>
+    <title>Pigeon Compiler &mdash; Pigeon Computer 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,13 +27,13 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
-    <link rel="top" title="Pigeon Assembler 0.1 documentation" href="index.html" />
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="index.html" />
     <link rel="next" title="Pigeon Firmware" href="pigeon_firmware.html" />
     <link rel="prev" title="Pigeon Assembler Internals" href="pyavrasm.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
-          <span>Pigeon Assembler 0.1 documentation</span></a></h1>
+          <span>Pigeon Computer 0.1 documentation</span></a></h1>
         <h2 class="heading"><span>Pigeon Compiler</span></h2>
       </div>
       <div class="topnav">
@@ -183,129 +183,182 @@ metaii.asm).</td></tr>
 <dl class="method">
 <dt id="metaii.MetaII.ADR">
 <tt class="descname">ADR</tt><big>(</big><em>ident</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.ADR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.ADR" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set PC to the given label/address.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.B">
 <tt class="descname">B</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.B"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.B" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Unconditional branch to <tt class="docutils literal"><span class="pre">addr</span></tt>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.BE">
 <tt class="descname">BE</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.BE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.BE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Branch to error. Terminates compilation and (by default) prints a bit
+of debugging information.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.BF">
 <tt class="descname">BF</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.BF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.BF" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Branch to <tt class="docutils literal"><span class="pre">addr</span></tt> if switch is clear.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.BT">
 <tt class="descname">BT</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.BT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.BT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Branch to <tt class="docutils literal"><span class="pre">addr</span></tt> if switch is set.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.CI">
 <tt class="descname">CI</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.CI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.CI" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Copy <tt class="docutils literal"><span class="pre">last</span></tt> buffer contents to output buffer.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.CL">
 <tt class="descname">CL</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.CL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.CL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Copy literal to output buffer.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.CLL">
 <tt class="descname">CLL</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.CLL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.CLL" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Call the subroutine at <tt class="docutils literal"><span class="pre">addr</span></tt>.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.END">
 <tt class="descname">END</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.END"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.END" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Terminate compilation normally.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.GN1">
 <tt class="descname">GN1</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.GN1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.GN1" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generate and output label for current subroutine cell 1.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.GN2">
 <tt class="descname">GN2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.GN2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.GN2" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generate and output label for current subroutine cell 2.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.ID">
 <tt class="descname">ID</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.ID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.ID" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Strip all leading whitespace and scan for an identifier.  If found
+consume it, store it in the <tt class="docutils literal"><span class="pre">last</span></tt> buffer and set switch, otherwise
+reset the switch.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.LB">
 <tt class="descname">LB</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.LB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.LB" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set up output buffer for a label (as opposed to an instruction.)</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.NUM">
 <tt class="descname">NUM</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.NUM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.NUM" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Strip all leading whitespace and scan for a number.  If found consume
+it, store it in the <tt class="docutils literal"><span class="pre">last</span></tt> buffer and set switch, otherwise reset
+the switch.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.OUT">
 <tt class="descname">OUT</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.OUT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.OUT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Copy output buffer to output stream, appending a newline character,
+then reset output buffer for next line.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.R">
 <tt class="descname">R</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.R"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.R" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Return from a subroutine.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.SET">
 <tt class="descname">SET</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.SET"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.SET" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Set switch.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.SR">
 <tt class="descname">SR</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.SR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.SR" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Strip all leading whitespace and scan for a string (enclosed in
+single quotes.)  If found consume it, store it in the <tt class="docutils literal"><span class="pre">last</span></tt> buffer
+and set switch, otherwise reset the switch.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.TST">
 <tt class="descname">TST</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.TST"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.TST" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Look for and consume the string in the input text, setting switch if
+found, otherwise consume nothing (but leading whitespace) and reset
+switch.  Strips all leading whitespace.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.assemble">
 <tt class="descname">assemble</tt><big>(</big><em>program_source</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.assemble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.assemble" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Assemble the provided Meta II assembly source text and become the
+machine (compiler) defined by that program.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.assemble_line">
 <tt class="descname">assemble_line</tt><big>(</big><em>op</em>, <em>arg=None</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.assemble_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.assemble_line" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Used by the <tt class="docutils literal"><span class="pre">assemble()</span></tt> method to process each non-label input
+line in the assembly source text.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.compile">
 <tt class="descname">compile</tt><big>(</big><em>input_text</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.compile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.compile" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Once a compiler assembly source text has been assembled (using the
+<tt class="docutils literal"><span class="pre">assemble()</span></tt> method) you can pass source code in the compiler&#8217;s
+language to this method to compile it.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>input_text</strong> (<tt class="docutils literal"><span class="pre">str</span></tt>) &#8211; Source code in the language recognized by the
+machine passed to the <tt class="docutils literal"><span class="pre">assemble()</span></tt> method.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return type:</th><td class="field-body"><tt class="docutils literal"><span class="pre">str</span></tt></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.info">
 <tt class="descname">info</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.info" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Print out some useful information about the current state of the
+assembler/compiler.  Used for debugging and after errors to report,
+uh, errors.</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metaii.MetaII.print_program">
 <tt class="descname">print_program</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.print_program"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.print_program" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Print out a dump of the assembled compiler machine&#8217;s program.  Used
+for debugging.</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="function">
 <dt id="metaii.label_generator">
 <tt class="descclassname">metaii.</tt><tt class="descname">label_generator</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#label_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.label_generator" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Generator of string labels: &#8216;L1&#8217;, &#8216;L2&#8217;, &#8216;L3&#8217;, &#8216;L4&#8217;, &#8216;L5&#8217;, ...</p>
+</dd></dl>
 
 </div>
 </div>

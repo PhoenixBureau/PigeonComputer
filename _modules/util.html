@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>util &mdash; Pigeon Assembler 0.1 documentation</title>
+    <title>util &mdash; Pigeon Computer 0.1 documentation</title>
     
     <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -27,12 +27,12 @@
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <script type="text/javascript" src="../_static/theme_extras.js"></script>
-    <link rel="top" title="Pigeon Assembler 0.1 documentation" href="../index.html" />
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../index.html" />
     <link rel="up" title="Module code" href="index.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="../index.html">
-          <span>Pigeon Assembler 0.1 documentation</span></a></h1>
+          <span>Pigeon Computer 0.1 documentation</span></a></h1>
         <h2 class="heading"><span>util</span></h2>
       </div>
       <div class="topnav">
@@ -46,6 +46,8 @@
         
         
   <h1>Source code for util</h1><div class="highlight"><pre>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">pack</span>
 <span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 <span class="kn">from</span> <span class="nn">myhdl</span> <span class="kn">import</span> <span class="n">intbv</span><span class="p">,</span> <span class="n">concat</span>
@@ -113,7 +115,7 @@
 
     <span class="k">if</span> <span class="n">arg0</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
       <span class="k">assert</span> <span class="n">arg1</span> <span class="ow">is</span> <span class="bp">None</span>
-      <span class="k">print</span> <span class="s">&#39;assembling </span><span class="si">%s</span><span class="s"> instruction at </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
+      <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;assembling </span><span class="si">%s</span><span class="s"> instruction at </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">addr</span><span class="p">)</span>
       <span class="n">instruction</span> <span class="o">=</span> <span class="p">(</span><span class="n">op</span><span class="p">,)</span>
       <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -121,13 +123,13 @@
       <span class="n">arg0</span><span class="p">,</span> <span class="n">arg1</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg0</span><span class="p">,</span> <span class="n">arg1</span><span class="p">)</span>
       <span class="n">tname</span><span class="p">,</span> <span class="n">taddress</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_or_addr</span><span class="p">(</span><span class="n">arg0</span><span class="p">)</span>
       <span class="n">name</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_or_addr</span><span class="p">(</span><span class="n">arg1</span><span class="p">)</span>
-      <span class="k">print</span> <span class="s">&#39;assembling </span><span class="si">%s</span><span class="s"> instruction at </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> &lt;- </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">tname</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+      <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;assembling </span><span class="si">%s</span><span class="s"> instruction at </span><span class="si">%s</span><span class="s"> </span><span class="si">%s</span><span class="s"> &lt;- </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">tname</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
       <span class="n">instruction</span> <span class="o">=</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">taddress</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
 
     <span class="k">else</span><span class="p">:</span>
       <span class="n">arg0</span> <span class="o">=</span> <span class="n">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">arg0</span><span class="p">)</span>
       <span class="n">name</span><span class="p">,</span> <span class="n">address</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_name_or_addr</span><span class="p">(</span><span class="n">arg0</span><span class="p">)</span>
-      <span class="k">print</span> <span class="s">&#39;assembling </span><span class="si">%s</span><span class="s"> instruction at </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="s">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+      <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;assembling </span><span class="si">%s</span><span class="s"> instruction at </span><span class="si">%s</span><span class="s"> to </span><span class="si">%s</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">addr</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
       <span class="n">instruction</span> <span class="o">=</span> <span class="p">(</span><span class="n">op</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
 
     <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="n">instruction</span>

@@ -1,0 +1,409 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>xerblin.world &mdash; Pigeon Computer 0.1 documentation</title>
+    
+    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../../index.html" />
+    <link rel="up" title="Module code" href="../index.html" /> 
+  </head>
+  <body>
+      <div class="header"><h1 class="heading"><a href="../../index.html">
+          <span>Pigeon Computer 0.1 documentation</span></a></h1>
+        <h2 class="heading"><span>xerblin.world</span></h2>
+      </div>
+      <div class="topnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+      <div class="content">
+        
+        
+  <h1>Source code for xerblin.world</h1><div class="highlight"><pre>
+<span class="c">#!/usr/bin/env python</span>
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">World</span>
+<span class="sd">=================================</span>
+
+<span class="sd">This module defines two classes: Serializer and World. Serializer deals</span>
+<span class="sd">with saving history protocols to a pickle file and World deals with</span>
+<span class="sd">interacting with an interpreter in a loop.</span>
+
+<span class="sd">This module also defines a subclass of World called HistoryListWorld that</span>
+<span class="sd">tracks history in a list object, and a couple of very basic views.</span>
+
+<span class="sd">Starting with an initial interpreter (comprised of a stack of nominal</span>
+<span class="sd">data and a dictionary of commands and possibly named state &quot;variables&quot;)</span>
+<span class="sd">the user issues a command to the interpreter which then results in a new</span>
+<span class="sd">state (which can be the same as the initial state.)</span>
+
+<span class="sd">The interpreter is embedded in a frame (a World or subclass) which</span>
+<span class="sd">provides view and history and serialization controls.</span>
+
+<span class="sd">These frame &quot;meta&quot; controls are several:</span>
+
+<span class="sd">Change the view function.</span>
+<span class="sd">^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+
+<span class="sd">View functions take a state (interpreter, stack and dictionary) and</span>
+<span class="sd">render it somehow for the user.</span>
+
+<span class="sd">Implied but not necessary are means for direct manipulation of views</span>
+<span class="sd">to send commands to the interpreter.  It may well turn out that tight</span>
+<span class="sd">feedback loops between views and modeled states will require a</span>
+<span class="sd">relaxation of the strict functional style I&#39;m striving for here.</span>
+
+<span class="sd">In any event, views take a state and render it.</span>
+
+<span class="sd">Views may render as text in a terminal or GUI text widget, &quot;direct&quot;</span>
+<span class="sd">graphics via Pygame, etc., GUI systems such as Tkinter or wxPython,</span>
+<span class="sd">document formats like Postscript or PDF, graphs using matplotlib or</span>
+<span class="sd">other libraries in formats such as PNG or SVG, or web UIs using HTML,</span>
+<span class="sd">CSS, Javascript, and perhaps even ActionScript (Flash).</span>
+
+<span class="sd">Examine history and change to previous states.</span>
+<span class="sd">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+
+<span class="sd">The chief advantage of storing all history is in the ease of going</span>
+<span class="sd">back and trying something new from a previous point in time.</span>
+
+<span class="sd">This requires some means of indexing and displaying the states in</span>
+<span class="sd">your history and your path through them so you can decide when to go</span>
+<span class="sd">back to, and a way to actually go back and set your current state to</span>
+<span class="sd">a previous state and add the transition to the history.</span>
+
+<span class="sd">This seems to require another kind of view that can display not just</span>
+<span class="sd">one state time-slice of your history, but also the tree-like path</span>
+<span class="sd">from state to state you took.</span>
+
+<span class="sd">(There is an infinite regression here: do you keep the history of the</span>
+<span class="sd">changing of the history?  What about the history of the keeping of</span>
+<span class="sd">that history, do you keep that too?  And that keeping&#39;s history?</span>
+<span class="sd">Etc...  In practice we are likely to make do with only one level of</span>
+<span class="sd">history.)</span>
+
+<span class="sd">In addition to simply stepping back and forth in time, we will also</span>
+<span class="sd">want to &quot;pull&quot; data from different history states, possibly in</span>
+<span class="sd">multiple stored pickle files, and combine them in a new synthesized</span>
+<span class="sd">states.  We can build new interpreters with the data and commands we</span>
+<span class="sd">need to perform tasks and achieve our goals.</span>
+
+<span class="sd">As yet, this script provides only indirect means to manipulate and view</span>
+<span class="sd">history.  You can use a HistoryListWorld and manipulate its history</span>
+<span class="sd">attribute, which is a list containing all the states of the system in</span>
+<span class="sd">order starting with the initial state.</span>
+
+<span class="sd">Manipulate external save files.</span>
+<span class="sd">^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^</span>
+
+<span class="sd">The histories must be stored in python pickle files in some external</span>
+<span class="sd">media (i.e. a disk drive or memory stick) and there are issues of</span>
+<span class="sd">selecting and loading histories and managing the relations between</span>
+<span class="sd">them.</span>
+
+<span class="sd">Currently this script provides no direct means to do any of this.</span>
+
+<span class="sd">You can pass a file name or open file object to the World as its</span>
+<span class="sd">save_file argument and that will be used to save the pickle data as</span>
+<span class="sd">you use the World object, but other than that you&#39;re on your own.</span>
+
+<span class="sd">Code Documentation</span>
+<span class="sd">^^^^^^^^^^^^^^^^^^</span>
+
+<span class="sd">&#39;&#39;&#39;</span>
+<span class="kn">import</span> <span class="nn">pickle</span><span class="o">,</span> <span class="nn">pprint</span><span class="o">,</span> <span class="nn">StringIO</span>
+<span class="kn">from</span> <span class="nn">xerblin.btree</span> <span class="kn">import</span> <span class="n">fill_tree</span><span class="p">,</span> <span class="n">items</span>
+<span class="kn">from</span> <span class="nn">xerblin.library</span> <span class="kn">import</span> <span class="n">words</span>
+<span class="kn">from</span> <span class="nn">xerblin.base</span> <span class="kn">import</span> <span class="n">interpret</span>
+
+
+<div class="viewcode-block" id="view0"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.view0">[docs]</a><span class="k">def</span> <span class="nf">view0</span><span class="p">(</span><span class="n">I</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Print the stack to stdout with python&#39;s default formatting.&#39;&#39;&#39;</span>
+    <span class="k">print</span> <span class="nb">repr</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span>
+
+</div>
+<div class="viewcode-block" id="view1"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.view1">[docs]</a><span class="k">def</span> <span class="nf">view1</span><span class="p">(</span><span class="n">I</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;Print the stack to stdout using the pprint module.&#39;&#39;&#39;</span>
+    <span class="n">pprint</span><span class="o">.</span><span class="n">pprint</span><span class="p">(</span><span class="n">I</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span>
+
+</div>
+<div class="viewcode-block" id="nullView"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.nullView">[docs]</a><span class="k">def</span> <span class="nf">nullView</span><span class="p">(</span><span class="n">I</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;&quot;Do nothing&quot; view.&#39;&#39;&#39;</span>
+    <span class="k">pass</span>
+
+
+<span class="c"># An initial interpreter to use for spawning worlds.  It has an empty</span>
+<span class="c"># stack and whatever commands are defined by default in the library</span>
+<span class="c"># module.</span></div>
+<span class="n">ROOT</span> <span class="o">=</span> <span class="p">(),</span> <span class="n">fill_tree</span><span class="p">((),</span> <span class="n">words</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="World"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.World">[docs]</a><span class="k">class</span> <span class="nc">World</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Manage an interpreter, a view function, and serialization to a file</span>
+<span class="sd">    or file-like object.</span>
+
+<span class="sd">    This object takes a view function (any callable that accepts an</span>
+<span class="sd">    interpreter) and optionally an initial interpreter and a save file.</span>
+<span class="sd">    It creates a Serializer object to save commands and results, and it</span>
+<span class="sd">    provides a step() method that accepts a command (list of strings) and</span>
+<span class="sd">    runs it on the interpreter then saves it and calls the view function.</span>
+
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="o">=</span><span class="n">nullView</span><span class="p">,</span> <span class="n">initial</span><span class="o">=</span><span class="n">ROOT</span><span class="p">,</span> <span class="n">save_file</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Create a World object with the given view function.</span>
+
+<span class="sd">        Keyword arguments:</span>
+
+<span class="sd">        initial -- An interpreter to use as the initial state of the</span>
+<span class="sd">            system.  It defaults to ROOT.</span>
+<span class="sd">        </span>
+<span class="sd">        save_file -- A file or file-like object open for writing, or a</span>
+<span class="sd">            string file name which is then opened for writing. If not</span>
+<span class="sd">            given a StringIO object is used and its getvalue() method is</span>
+<span class="sd">            made available on the World object as the attribute</span>
+<span class="sd">            &quot;_getvalue&quot;.</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="n">save_file</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">save_file</span> <span class="o">=</span> <span class="n">StringIO</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_getvalue</span> <span class="o">=</span> <span class="n">save_file</span><span class="o">.</span><span class="n">getvalue</span> <span class="c"># We&#39;re gonna want this.</span>
+
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">save_file</span><span class="p">,</span> <span class="nb">basestring</span><span class="p">):</span>
+            <span class="n">save_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">save_file</span><span class="p">,</span> <span class="s">&#39;w&#39;</span><span class="p">)</span>
+
+        <span class="c"># If save_file isn&#39;t None or a string or unicode object then we</span>
+        <span class="c"># assume it&#39;s a file-like object suitable for the Pickler.</span>
+        <span class="k">assert</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">save_file</span><span class="p">,</span> <span class="s">&#39;write&#39;</span><span class="p">),</span> <span class="nb">repr</span><span class="p">(</span><span class="n">save_file</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">serializer</span> <span class="o">=</span> <span class="n">Serializer</span><span class="p">(</span><span class="n">initial</span><span class="p">,</span> <span class="n">save_file</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_view</span> <span class="o">=</span> <span class="n">view</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentState</span><span class="p">(</span><span class="n">initial</span><span class="p">)</span>
+
+<div class="viewcode-block" id="World.view"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.World.view">[docs]</a>    <span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_view</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="World.step"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.World.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Run one command, a list of strings, on the interpreter then save</span>
+<span class="sd">        the command and resulting new interpreter to the serialized</span>
+<span class="sd">        stream and call the view function on the new interpreter.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getCurrentState</span><span class="p">()</span>
+
+        <span class="c"># Run the command.</span>
+        <span class="n">I</span> <span class="o">=</span> <span class="n">interpret</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">command</span><span class="p">)</span>
+
+        <span class="c"># Record the resultant state.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">setCurrentState</span><span class="p">(</span><span class="n">I</span><span class="p">)</span>
+
+        <span class="c"># Save the command and its resultant state in the serializer. The</span>
+        <span class="c"># history list in the HistoryListWorld subclass serves as a sort</span>
+        <span class="c"># of cache on the contents of the serializer pickle stream.  (The</span>
+        <span class="c"># Pickler object&#39;s memo dict essentially keeps this cache for us</span>
+        <span class="c"># but I don&#39;t want to introduce a bunch of tight coupling with</span>
+        <span class="c"># the pickle medule, despite the fact that it is likely to be</span>
+        <span class="c"># pretty stable.)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">serializer</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="n">command</span><span class="p">,</span> <span class="n">I</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="World.changeView"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.World.changeView">[docs]</a>    <span class="k">def</span> <span class="nf">changeView</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">view</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Swap the current view function for the one passed, return the old</span>
+<span class="sd">        view function.  Calls the new view.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">view</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_view</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_view</span><span class="p">,</span> <span class="n">view</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">getCurrentState</span><span class="p">())</span>
+        <span class="k">return</span> <span class="n">view</span>
+</div>
+<div class="viewcode-block" id="World.setCurrentState"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.World.setCurrentState">[docs]</a>    <span class="k">def</span> <span class="nf">setCurrentState</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Sets current state to the passed state.  This method exists</span>
+<span class="sd">        mostly to be overridden in subclasses.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">current</span> <span class="o">=</span> <span class="n">state</span>
+        <span class="c"># Render the view.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="World.getCurrentState"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.World.getCurrentState">[docs]</a>    <span class="k">def</span> <span class="nf">getCurrentState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return the current state.  This method exists mostly to be</span>
+<span class="sd">        overridden in subclasses.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">current</span>
+
+</div></div>
+<div class="viewcode-block" id="HistoryListWorld"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.HistoryListWorld">[docs]</a><span class="k">class</span> <span class="nc">HistoryListWorld</span><span class="p">(</span><span class="n">World</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    A subclass of World that overrides the setCurrentState() and</span>
+<span class="sd">    getCurrentState() methods to record states in a history list.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+<div class="viewcode-block" id="HistoryListWorld.setCurrentState"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.HistoryListWorld.setCurrentState">[docs]</a>    <span class="k">def</span> <span class="nf">setCurrentState</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Set current state to passed in state. Overrides super-class.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">history</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">history</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="n">history</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">history</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+</div>
+<div class="viewcode-block" id="HistoryListWorld.getCurrentState"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.HistoryListWorld.getCurrentState">[docs]</a>    <span class="k">def</span> <span class="nf">getCurrentState</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Return the current state. Overrides super-class.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c"># Current state is just the most recent history.</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">history</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+</div></div>
+<div class="viewcode-block" id="Serializer"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.Serializer">[docs]</a><span class="k">class</span> <span class="nc">Serializer</span><span class="p">:</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Combines a Pickler and a file or file-like object to track a linear</span>
+<span class="sd">    protocol of state -&gt; command -&gt; resultant-state history.</span>
+
+<span class="sd">    You instantiate it with an initial state (i.e. your &quot;root&quot; stack and</span>
+<span class="sd">    dictionary) and a file(-like object) to save to then you call post()</span>
+<span class="sd">    repeatedly with the next command and the resultant stack and</span>
+<span class="sd">    dictionary.</span>
+
+<span class="sd">    The Pickler keeps a memo dict of the objects it has seen and pickled</span>
+<span class="sd">    already and when it sees them again it serializes a reference to them</span>
+<span class="sd">    rather than the whole object, automatically providing a sort of</span>
+<span class="sd">    compression for the persistant datastructures we&#39;re storing in the</span>
+<span class="sd">    pickle stream.</span>
+
+<span class="sd">    You can open the pickle file and call load() repeatedly to get a</span>
+<span class="sd">    sequence of state, command, state, ...  There will always be an odd</span>
+<span class="sd">    number of stored data: the initial state followed by zero or more</span>
+<span class="sd">    pairs of command and result state.</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">initial_state</span><span class="p">,</span> <span class="n">stream</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">stream</span> <span class="o">=</span> <span class="n">stream</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pickler</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">Pickler</span><span class="p">(</span><span class="n">stream</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pickler</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">initial_state</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Serializer.post"><a class="viewcode-back" href="../../user_interface.html#xerblin.world.Serializer.post">[docs]</a>    <span class="k">def</span> <span class="nf">post</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">command</span><span class="p">,</span> <span class="n">resultant_state</span><span class="p">):</span>
+        <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">        Serialize command and resultant_state to the pickle stream. Each</span>
+<span class="sd">        is saved separately so you can load a command from the stream and</span>
+<span class="sd">        examine it without loading its resultant state.</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pickler</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pickler</span><span class="o">.</span><span class="n">dump</span><span class="p">(</span><span class="n">resultant_state</span><span class="p">)</span>
+
+
+<span class="c"># This is a proof-of-concept frame for interacting with</span>
+<span class="c"># a xerblin interpreter.</span></div></div>
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">&quot;__main__&quot;</span><span class="p">:</span>
+
+    <span class="kn">from</span> <span class="nn">xerblin.btree</span> <span class="kn">import</span> <span class="n">items</span>
+
+    <span class="c"># Create a world with the basic view function.</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">HistoryListWorld</span><span class="p">(</span><span class="n">view0</span><span class="p">)</span>
+
+    <span class="c"># For convenience print out the commands in the dictionary at</span>
+    <span class="c"># startup.</span>
+    <span class="n">dictionary</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">getCurrentState</span><span class="p">()[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">print</span> <span class="s">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">items</span><span class="p">(</span><span class="n">dictionary</span><span class="p">))</span>
+    <span class="k">print</span>
+
+    <span class="c"># Drop into an event loop.</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="c"># Get a command and split it up.</span>
+            <span class="n">command</span> <span class="o">=</span> <span class="nb">raw_input</span><span class="p">(</span><span class="s">&#39;&gt; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">()</span>
+        
+        <span class="k">except</span> <span class="ne">EOFError</span><span class="p">:</span>
+            <span class="c"># User is done, quit.</span>
+            <span class="k">break</span>
+        
+        <span class="c"># Run the command, the World object handles all the details for</span>
+        <span class="c"># us.</span>
+        <span class="n">w</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">command</span><span class="p">)</span>
+
+<span class="c">##</span>
+<span class="c">## Example run:</span>
+<span class="c">##</span>
+<span class="c">## ()</span>
+<span class="c">##</span>
+<span class="c">## NewBranchWord NewLoopWord NewSeqWord add drop dup inscribe listwords</span>
+<span class="c">## lookup mul over pick pickle rebalance sub swap tuck unpickle view</span>
+<span class="c">##</span>
+<span class="c">## &gt; 23 18</span>
+<span class="c">## (18, (23, ()))</span>
+<span class="c">##</span>
+<span class="c">## &gt; over</span>
+<span class="c">## (23, (18, (23, ())))</span>
+<span class="c">##</span>
+<span class="c">## &gt; over</span>
+<span class="c">## (18, (23, (18, (23, ()))))</span>
+<span class="c">##</span>
+<span class="c">## &gt; swap</span>
+<span class="c">## (23, (18, (18, (23, ()))))</span>
+<span class="c">##</span>
+<span class="c">## &gt; sub</span>
+<span class="c">## (-5, (18, (23, ())))</span>
+<span class="c">##</span>
+<span class="c">## &gt; drop</span>
+<span class="c">## (18, (23, ()))</span>
+<span class="c">##</span>
+<span class="c">## &gt; over over sub</span>
+<span class="c">## (5, (18, (23, ())))</span>
+<span class="c">##</span>
+<span class="c">## &gt; drop drop drop</span>
+<span class="c">## ()</span>
+<span class="c">##</span>
+<span class="c">## &gt; </span>
+<span class="c">##</span>
+<span class="c">##</span>
+</pre></div>
+
+      </div>
+      <div class="bottomnav">
+      
+        <p>
+        <a class="uplink" href="../../index.html">Contents</a>
+        </p>
+
+      </div>
+
+    <div class="footer">
+        &copy; Copyright 2012, Simon Forman.
+      Created using <a href="http://sphinx.pocoo.org/">Sphinx</a> 1.1.3.
+    </div>
+  </body>
+</html>

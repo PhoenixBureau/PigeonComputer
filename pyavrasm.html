@@ -8,7 +8,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Pigeon Assembler Internals &mdash; Pigeon Assembler 0.1 documentation</title>
+    <title>Pigeon Assembler Internals &mdash; Pigeon Computer 0.1 documentation</title>
     
     <link rel="stylesheet" href="_static/haiku.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -27,14 +27,14 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="_static/theme_extras.js"></script>
-    <link rel="top" title="Pigeon Assembler 0.1 documentation" href="index.html" />
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="index.html" />
     <link rel="up" title="Pigeon Assembler" href="assembler.html" />
     <link rel="next" title="Pigeon Compiler" href="compiler.html" />
     <link rel="prev" title="Writing out Binary Data" href="writing.html" /> 
   </head>
   <body>
       <div class="header"><h1 class="heading"><a href="index.html">
-          <span>Pigeon Assembler 0.1 documentation</span></a></h1>
+          <span>Pigeon Computer 0.1 documentation</span></a></h1>
         <h2 class="heading"><span>Pigeon Assembler Internals</span></h2>
       </div>
       <div class="topnav">
@@ -84,7 +84,7 @@ through the <a class="reference internal" href="#pyavrasm.AVRAssembly.data" titl
 bit-pattern-generating op functions with the associated arguments.  The
 returned binary strings are compiled into another dictionary, keyed by
 their target addresses.</p>
-<p>This dictionary is used by the <tt class="xref py py-meth docutils literal"><span class="pre">pyavrasm.AVRAssembly.to_hex()</span></tt>
+<p>This dictionary is used by the <a class="reference internal" href="#pyavrasm.AVRAssembly.to_hex" title="pyavrasm.AVRAssembly.to_hex"><tt class="xref py py-meth docutils literal"><span class="pre">pyavrasm.AVRAssembly.to_hex()</span></tt></a>
 method to generate the HEX format output.</p>
 <span class="target" id="module-pyavrasm"></span><div class="section" id="python-avr-assembler">
 <h3>Python AVR Assembler<a class="headerlink" href="#python-avr-assembler" title="Permalink to this headline">¶</a></h3>
@@ -125,6 +125,13 @@ useful functions for example.)</td>
 </tr>
 </tbody>
 </table>
+<dl class="attribute">
+<dt id="pyavrasm.AVRAssembly.accumulator">
+<tt class="descname">accumulator</tt><em class="property"> = None</em><a class="headerlink" href="#pyavrasm.AVRAssembly.accumulator" title="Permalink to this definition">¶</a></dt>
+<dd><p>Internal output data structure.  This holds the byte strings
+created in <tt class="docutils literal"><span class="pre">pass2()</span></tt>.</p>
+</dd></dl>
+
 <dl class="method">
 <dt id="pyavrasm.AVRAssembly.assemble">
 <tt class="descname">assemble</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#AVRAssembly.assemble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.AVRAssembly.assemble" title="Permalink to this definition">¶</a></dt>
@@ -203,6 +210,20 @@ it into binary strings.</p>
 structure is the end result of the assembly process, just before
 emitting the strings in e.g. Intel HEX format for burning to a
 chip.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pyavrasm.AVRAssembly.to_hex">
+<tt class="descname">to_hex</tt><big>(</big><em>f</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#AVRAssembly.to_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.AVRAssembly.to_hex" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert the assembled machine code to Intel HEX file format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>f</strong> (<em>filename or file-like object</em>) &#8211; The HEX data will be written to this destination.</td>
 </tr>
 </tbody>
 </table>
