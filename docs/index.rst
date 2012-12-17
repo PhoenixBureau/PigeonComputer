@@ -17,7 +17,7 @@ Contents:
    assembler
    compiler
    pigeon_firmware
-   xerblin
+   user_interface
    m328P
    instructions
 
