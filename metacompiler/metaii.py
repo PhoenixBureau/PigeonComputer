@@ -50,6 +50,10 @@ class MetaII(object):
     self.labels = {}
 
   def assemble(self, program_source):
+    '''
+    Assemble the provided Meta II assembly source text and become the
+    machine (compiler) defined by that program.
+    '''
     for line in program_source.splitlines(False):
       if not line or line.isspace():
         continue
@@ -60,11 +64,25 @@ class MetaII(object):
         self.labels[label] = len(self.program)
 
   def assemble_line(self, op, arg=None):
+    '''
+    Used by the ``assemble()`` method to process each non-label input
+    line in the assembly source text.
+    '''
     f = getattr(self, op)
     arg = (arg,) if arg is not None else ()
     return f, arg
 
   def compile(self, input_text):
+    '''
+    Once a compiler assembly source text has been assembled (using the
+    ``assemble()`` method) you can pass source code in the compiler's
+    language to this method to compile it.
+
+    :param input_text: Source code in the language recognized by the
+       machine passed to the ``assemble()`` method.
+    :type input_text: ``str``
+    :rtype: ``str``
+    '''
     self.switch = False
     self.PC = 0
     self.stack = [(False, -1), None, None]
@@ -84,9 +102,17 @@ class MetaII(object):
   # metacompiler machine.
 
   def ADR(self, ident):
+    '''
+    Set PC to the given label/address.
+    '''
     self.PC = self.labels[ident] - 1
 
   def TST(self, string):
+    '''
+    Look for and consume the string in the input text, setting switch if
+    found, otherwise consume nothing (but leading whitespace) and reset
+    switch.  Strips all leading whitespace.
+    '''
     string = string[1:-1]
     self._left_trim_input()
     self.switch = self.input.startswith(string)
@@ -95,6 +121,11 @@ class MetaII(object):
       self.input = self.input[len(string):]
 
   def ID(self):
+    '''
+    Strip all leading whitespace and scan for an identifier.  If found
+    consume it, store it in the ``last`` buffer and set switch, otherwise
+    reset the switch.
+    '''
     self._left_trim_input()
     I = self.input
     if not I[0].isalpha() or I[0] == '_':
@@ -106,6 +137,11 @@ class MetaII(object):
     self.last, self.input, self.switch = I[:n], I[n:], True
 
   def NUM(self):
+    '''
+    Strip all leading whitespace and scan for a number.  If found consume
+    it, store it in the ``last`` buffer and set switch, otherwise reset
+    the switch.
+    '''
     self._left_trim_input()
     I, n = self.input, 0
     while I[n] in set('0123456789.'):
@@ -123,6 +159,11 @@ class MetaII(object):
       self.input = rest
 
   def SR(self):
+    '''
+    Strip all leading whitespace and scan for a string (enclosed in
+    single quotes.)  If found consume it, store it in the ``last`` buffer
+    and set switch, otherwise reset the switch.
+    '''
     self._left_trim_input()
     I = self.input
     if I[0] != "'":
@@ -139,58 +180,102 @@ class MetaII(object):
       self.switch = False
 
   def CLL(self, addr):
+    '''
+    Call the subroutine at ``addr``.
+    '''
     self._push_call_frame()
     self.PC = self.labels[addr] - 1
 
   def R(self):
+    '''
+    Return from a subroutine.
+    '''
     self.PC = self._pop_call_frame()
     if self.PC == -1:
       self.end = True
 
   def SET(self):
+    '''
+    Set switch.
+    '''
     self.switch = True
 
   def B(self, addr):
+    '''
+    Unconditional branch to ``addr``.
+    '''
     self.PC = self.labels[addr] - 1
 
   def BT(self, addr):
+    '''
+    Branch to ``addr`` if switch is set.
+    '''
     if self.switch:
       self.PC = self.labels[addr] - 1
 
   def BF(self, addr):
+    '''
+    Branch to ``addr`` if switch is clear.
+    '''
     if not self.switch:
       self.PC = self.labels[addr] - 1
 
   def BE(self):
+    '''
+    Branch to error. Terminates compilation and (by default) prints a bit
+    of debugging information.
+    '''
     if not self.switch:
       self.error = True
 
   def CL(self, string):
+    '''
+    Copy literal to output buffer.
+    '''
     self._out(string[1:-1])
 
   def CI(self):
+    '''
+    Copy ``last`` buffer contents to output buffer.
+    '''
     self._out(self.last)
 
   def GN1(self):
+    '''
+    Generate and output label for current subroutine cell 1.
+    '''
     cell = self.stack[-1]
     if not cell:
       cell = self.stack[-1] = self.q()
     self._out(cell)
 
   def GN2(self):
+    '''
+    Generate and output label for current subroutine cell 2.
+    '''
     cell = self.stack[-2]
     if not cell:
       cell = self.stack[-2] = self.q()
     self._out(cell)
 
   def LB(self):
+    '''
+    Set up output buffer for a label (as opposed to an instruction.)
+    '''
     self.output_buffer = self.output_buffer.lstrip()
 
   def OUT(self):
+    '''
+    Copy output buffer to output stream, appending a newline character,
+    then reset output buffer for next line.
+    '''
     print >> self.output, self.output_buffer.rstrip()
     self.output_buffer = '\t'
 
   def END(self):
+    '''
+    Terminate compilation normally.
+    '''
     pass
 
   # Those are the order codes. The rest of these are support methods.
@@ -220,6 +305,11 @@ class MetaII(object):
   # Some debugging/introspection methods.  (Not strictly needed.)
 
   def info(self):
+    '''
+    Print out some useful information about the current state of the
+    assembler/compiler.  Used for debugging and after errors to report,
+    uh, errors.
+    '''
     from pprint import pformat
     print 'Stack:', pformat(self.stack)
     print 'last:', repr(self.last), 'switch:', self.switch
@@ -232,6 +322,10 @@ class MetaII(object):
     print op.__name__ + str(args)
 
   def print_program(self):
+    '''
+    Print out a dump of the assembled compiler machine's program.  Used
+    for debugging.
+    '''
     for n, (f, a) in enumerate(self.program):
       L = self._labels_for_address(n)
       if L:
