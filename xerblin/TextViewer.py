@@ -33,13 +33,13 @@ class WorldWrapper:
         self.world.setCurrentState((stack, dictionary))
 
     def do_opendoc(self, name):
-        pass
+        self.do_lookup(name)
 
     def pop(self):
         stack, dictionary = self.world.getCurrentState()
         if not stack:
             return
-        self.world.setCurrentState((stack[1], dictionary))
+        self.world.step(['drop'])
 
     def push(self, it):
         stack, dictionary = self.world.getCurrentState()
