@@ -12,8 +12,8 @@ logging.basicConfig(filename='hello-there.log', level=logging.DEBUG)
 from collections import defaultdict
 from struct import pack
 from myhdl import intbv
-from instructions import InstructionsMixin
-from util import (
+from pigeon.assembler.instructions import InstructionsMixin
+from pigeon.assembler.util import (
   update,
   int2addr,
   ibv,
@@ -22,6 +22,7 @@ from util import (
   compute_dw,
   compute_db,
   )
+from pigeon.assembler.m328P_def import defs as m328P_defs
 
 
 class DirectivesMixin(object):
@@ -334,6 +335,15 @@ class AVRAssembly(InstructionsMixin, DirectivesMixin, object):
     ih.write_hex_file(f)
 
 
+def assemble(source):
+  from StringIO import StringIO
+  aa = AVRAssembly(m328P_defs)
+  aa.assemble(source)
+  s = StringIO()
+  aa.to_hex(s)
+  return s.getvalue()
+
+
 if __name__ == '__main__':
   from argparse import ArgumentParser
   parser = ArgumentParser(description='Simple assembler for ATmega328P')
@@ -344,8 +354,7 @@ if __name__ == '__main__':
   parser.add_argument('source', help='Source code file to assemble.')
   args = parser.parse_args()
 
-  import m328P_def
-  aa = AVRAssembly(m328P_def.defs)
+  aa = AVRAssembly(m328P_defs)
   aa.assemble_file(args.source)
   if args.hex:
     if args.hex == '-':

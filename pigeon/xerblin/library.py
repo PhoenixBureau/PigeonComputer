@@ -8,11 +8,33 @@ from pickle import dumps, loads
 from pigeon.xerblin.base import handle_sequence, handle_loop, handle_branch
 from pigeon.xerblin.btree import get, insert, items, fill_tree
 from pigeon.xerblin.stack import pop, push, pick_, iterStack
+from pigeon.assembler.pyavrasm import assemble as assemble_raw
+from pigeon.metacompiler.metaii import comp
 
 
 # Mark the current namespace contents.
 _existing = set(dir())
 _existing.add('_existing')
+
+
+def assemble((stack, dictionary)):
+    '''
+    Assemble the top item on the stack which should be a string of
+    assembly source.
+    '''
+    source, stack = stack
+    HEX = assemble_raw(source)
+    return (HEX, stack), dictionary
+
+
+def compile((stack, dictionary)):
+    '''
+    Use the machine description on the top of the stack to compile the
+    source in second stack cell.
+    '''
+    machine, (source, stack) = stack
+    obj = comp(source, machine)
+    return (obj, stack), dictionary
 
 
 # Stack chatter.

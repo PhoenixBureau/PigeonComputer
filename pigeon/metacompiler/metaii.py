@@ -346,6 +346,12 @@ def label_generator():
     n += 1
 
 
+def comp(source, machine):
+  m2 = MetaII()
+  m2.assemble(machine)
+  return m2.compile(source)
+
+
 if __name__ == '__main__':
   from argparse import ArgumentParser
   parser = ArgumentParser(description=__doc__)
