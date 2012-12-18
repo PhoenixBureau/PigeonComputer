@@ -1,6 +1,6 @@
 Appendix A: ATmega328P Definitions
 ============================================
 
-.. automodule:: m328P_def
+.. automodule:: pigeon.assembler.m328P_def
 
 

@@ -6,7 +6,7 @@ HEX file, binary, intermediate stages.
 Bit Pattern Generator
 ---------------------
 
-.. autofunction:: util.K
+.. autofunction:: pigeon.assembler.util.K
 
 
 Output Formats

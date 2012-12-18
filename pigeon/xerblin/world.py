@@ -90,9 +90,9 @@ Code Documentation
 
 '''
 import pickle, pprint, StringIO
-from xerblin.btree import fill_tree, items
-from xerblin.library import words
-from xerblin.base import interpret
+from pigeon.xerblin.btree import fill_tree, items
+from pigeon.xerblin.library import words
+from pigeon.xerblin.base import interpret
 
 
 def view0(I):

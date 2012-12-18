@@ -131,7 +131,7 @@ or crib a copy from someone else.)
 
 Here is the documentation on the Meta-II engine included in the Pigeon Computer project:
 
-.. automodule:: metaii
+.. automodule:: pigeon.metacompiler.metaii
 
 
 Language Design and Compiler Extentions

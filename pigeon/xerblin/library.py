@@ -5,9 +5,9 @@ Library of Words
 
 '''
 from pickle import dumps, loads
-from xerblin.base import handle_sequence, handle_loop, handle_branch
-from xerblin.btree import get, insert, items, fill_tree
-from xerblin.stack import pop, push, pick_, iterStack
+from pigeon.xerblin.base import handle_sequence, handle_loop, handle_branch
+from pigeon.xerblin.btree import get, insert, items, fill_tree
+from pigeon.xerblin.stack import pop, push, pick_, iterStack
 
 
 # Mark the current namespace contents.
