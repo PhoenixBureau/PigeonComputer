@@ -5,8 +5,24 @@ Pigeon Computer
 ============================================
 
 The Pigeon Computer is a simple computer based on the popular
-`ATmega328P`_ microcontroller.
+`ATmega328P`_ microcontroller.  It has a set of software tools
+(including an assembler, a simple but powerful compiler, and a
+development environment) that are all written in Python and easy
+to understand.
 
+It is designed to support a course on the foundational concepts of
+computing and programming.  After learning how to use the Pigeon
+Computer system you will be able to build and program your own robots
+and other cool electronic devices, and you will be extremely well
+prepared for courses on computers and programming languages like C++
+and Java.
+
+Not only is this really fun but it is direct and valuable preparation
+for a career in programming, electronics, and IT in general.  It teaches
+you the "ABC's" of computation in a way that is relevant to everyone.
+
+**THIS IS STILL A DRAFT DOCUMENT** There are loose ends and missing bits
+and things that might not makes sense without more explanation.
 
 Contents:
 

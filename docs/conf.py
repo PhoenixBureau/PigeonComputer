@@ -40,7 +40,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Pigeon Assembler'
+project = u'Pigeon Computer'
 copyright = u'2012, Simon Forman'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -165,7 +165,7 @@ html_static_path = ['_static']
 #html_file_suffix = None
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'PigeonAssemblerdoc'
+htmlhelp_basename = 'PigeonComputerdoc'
 
 
 # -- Options for LaTeX output --------------------------------------------------
