@@ -32,10 +32,14 @@ class TextViewerWorldMixin(object):
         contents = self.tv.get_contents()
         data = self.serializer.stream.getvalue()
         message += ' ' + str(int(time()))
-        save_state({'system': data, 'log': contents}, message)
+#        save_state({'system': data, 'log': contents}, message)
+##        print repr(data)
+##        print repr(contents)
+##        print '-' * 80
 
 
 class WorldWrapper:
+    # TODO: Merge this class with TextViewerWorldMixin.
 
     def __init__(self, world):
         self.world = world
@@ -59,6 +63,7 @@ class WorldWrapper:
         self.world.step(['drop'])
 
     def push(self, it):
+        it = str(it)
         stack, dictionary = self.world.getCurrentState()
         stack = it, stack
         self.world.setCurrentState((stack, dictionary))
@@ -662,7 +667,7 @@ class TextViewerWidget(Text, mousebindingsmixin):
             top,
             width=max(len(s) for s in tb.splitlines()) + 3,
             )
-        T.set_world(self.world)
+        T.world = self.world
 
         T['background'] = 'darkgrey'
         T['foreground'] = 'darkblue'
@@ -671,6 +676,7 @@ class TextViewerWidget(Text, mousebindingsmixin):
         T.insert(END, tb)
         last_line = str(int(T.index(END).split('.')[0]) - 1) + '.0'
         T.tag_add('err', last_line, END)
+        T['state'] = DISABLED
 
         top.title(T.get(last_line, END).strip())
 

@@ -19,7 +19,10 @@ class TkShell:
         self._update_listbox(self.stack_view, iterStack(stack))
 
     def _update_listbox(self, listbox, contents):
-        contents = list(contents)
+        contents = list(
+            '%s: %r' % (getattr(type(it), '__name__', type(it)), it)
+            for it in contents
+            )
         listbox.delete(0, END)
         listbox.insert(0, *contents)
 
@@ -31,9 +34,9 @@ class TkShell:
 
 
 if __name__ == "__main__":
-    from pigeon.xerblin.world import HistoryListWorld
+    from pigeon.xerblin.world import World
 
-    class World(TextViewerWorldMixin, HistoryListWorld, object):
+    class World(TextViewerWorldMixin, World, object):
         pass
 
     tk = Tk()
