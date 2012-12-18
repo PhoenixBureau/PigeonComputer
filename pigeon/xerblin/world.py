@@ -118,7 +118,7 @@ def nullView(I):
 ROOT = (), fill_tree((), words)
 
 
-class World:
+class World(object):
     '''
     Manage an interpreter, a view function, and serialization to a file
     or file-like object.

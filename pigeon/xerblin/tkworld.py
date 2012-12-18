@@ -4,9 +4,9 @@ A simple Tkinter GUI.
 '''
 from shlex import split
 from Tkinter import Tk, Listbox, N, END, Entry, LEFT, BOTH, Y
-from xerblin.btree import items
-from xerblin.stack import iterStack
-from xerblin.TextViewer import TextViewerWidget, GitstorageWorld
+from pigeon.xerblin.btree import items
+from pigeon.xerblin.stack import iterStack
+from pigeon.xerblin.TextViewer import TextViewerWidget, TextViewerWorldMixin
 
 
 class TkShell:
@@ -16,24 +16,12 @@ class TkShell:
         self.words = []
 
     def view(self, (stack, dictionary)):
-        self._update_stack(stack)
-##        self._update_dictionary(dictionary)
-
-    def _update_stack(self, stack):
         self._update_listbox(self.stack_view, iterStack(stack))
-
-##    def _update_dictionary(self, dictionary):
-##        words = sorted(name for name, value in items(dictionary))
-##        if words == self.words:
-##            return
-##        self.words = words
-##        self.text.insert(END, '\n' + ' '.joins(words) + '\n')
 
     def _update_listbox(self, listbox, contents):
         contents = list(contents)
         listbox.delete(0, END)
         listbox.insert(0, *contents)
-        listbox['height'] = max(10, len(contents) + 1)
 
     def _create_widgets(self, root):
         self.stack_view = Listbox(root, width=64)
@@ -43,12 +31,16 @@ class TkShell:
 
 
 if __name__ == "__main__":
+    from pigeon.xerblin.world import HistoryListWorld
+
+    class World(TextViewerWorldMixin, HistoryListWorld, object):
+        pass
+
     tk = Tk()
     tk.title('Xerblin TkShell')
 
     t = TkShell(tk)
-    w = GitstorageWorld(t.text, t.view)
-    t.text.set_world(w)
+    w = World(t.text, t.view)
 
     dictionary = w.getCurrentState()[1]
     words = sorted(name for name, value in items(dictionary))

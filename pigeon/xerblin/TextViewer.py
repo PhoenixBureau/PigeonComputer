@@ -13,9 +13,26 @@ from Tkinter import (
 import re
 from time import time
 from traceback import format_exc
-from xerblin.btree import get
-from xerblin.gitstorage import save_state
-from xerblin.world import HistoryListWorld, ROOT, nullView
+from pigeon.xerblin.btree import get
+from pigeon.xerblin.gitstorage import save_state
+
+
+class TextViewerWorldMixin(object):
+
+    def __init__(self, tv, *a, **b):
+        self.tv = tv
+        tv.world = WorldWrapper(self)
+        super(TextViewerWorldMixin, self).__init__(*a, **b)
+
+    def setCurrentState(self, state):
+        super(TextViewerWorldMixin, self).setCurrentState(state)
+        self.save('set state')
+
+    def save(self, message='auto-save'):
+        contents = self.tv.get_contents()
+        data = self.serializer.stream.getvalue()
+        message += ' ' + str(int(time()))
+        save_state({'system': data, 'log': contents}, message)
 
 
 class WorldWrapper:
@@ -63,40 +80,8 @@ class WorldWrapper:
             return False
         return True
 
-    def save(self, data):
-        self.world.save(data)
-
-
-class GitstorageWorld(HistoryListWorld, object):
-    '''
-    A subclass of World that overrides the setCurrentState() and
-    getCurrentState() methods to record states in a history list.
-    '''
-
-    def __init__(self, tv, view=nullView, initial=ROOT, save_file=None):
-        self.tv = tv
-        super(GitstorageWorld, self).__init__(view, initial, save_file)
-
-    def setCurrentState(self, state):
-        '''
-        Set current state to passed in state. Overrides super-class.
-        '''
-        super(GitstorageWorld, self).setCurrentState(state)
-        data = self.serializer.stream.getvalue()
-        self._save(data, self.tv.get_contents(), 'set state')
-
-    def _save(self, data, log_contents, message):
-        print '-' * 100
-        print repr(data)
-        print repr(log_contents)
-        message += ' ' + str(int(time()))
-        print message
-        print '-' * 100
-        save_state({'system': data, 'log': log_contents}, message)
-
-    def save(self, contents):
-        data = self.serializer.stream.getvalue()
-        self._save(data, contents, 'auto-save')
+    def save(self):
+        self.world.save()
 
 
 #Do-nothing event handler.
@@ -334,9 +319,6 @@ class TextViewerWidget(Text, mousebindingsmixin):
 
 ##        T.protocol("WM_DELETE_WINDOW", self.on_close)
 
-    def set_world(self, world):
-        self.world = WorldWrapper(world)
-
     def _beenModified(self, event):
         if self._resetting_modified_flag:
             return
@@ -363,10 +345,9 @@ class TextViewerWidget(Text, mousebindingsmixin):
 
     def _saveFunc(self):
         self._save = None
-        data = self.get_contents()
         self['state'] = DISABLED
         try:
-            self.world.save(data)
+            self.world.save()
         finally:
             self['state'] = NORMAL
 
@@ -706,15 +687,20 @@ def isNumerical(s):
 
 
 if __name__ == "__main__":
-    from xerblin.btree import items
-    from xerblin.world import view0
+    from pigeon.xerblin.btree import items
+    from pigeon.xerblin.world import HistoryListWorld, view0
+
+    class World(TextViewerWorldMixin, HistoryListWorld, object):
+        pass
+
     t = TextViewerWidget()
+    w = World(t, view0)
 
-    w = GitstorageWorld(t, view0)
-    dictionary = w.getCurrentState()[1]
-    words = 'Words: ' + ' '.join(name for name, value in items(dictionary))
-
-    t.set_world(w)
+    stack, dictionary = w.getCurrentState()
+    words = 'Words: ' + ' '.join(
+        name
+        for name, value in items(dictionary)
+        )
     t.insert(END, words)
     t.pack()
     t.mainloop()
