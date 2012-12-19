@@ -5,25 +5,32 @@ from dulwich.objects import Blob, Tree, Commit, parse_timezone
 
 
 GIT_ROOT = os.path.expanduser('~/.xerblin')
-author = 'Simon Forman <forman.simon@gmail.com>'
-TZ = parse_timezone('-0800')[0]
+AUTHOR = 'Simon Forman <forman.simon@gmail.com>'
+TZ = '-0800'
 
 
-def get_repo(root=GIT_ROOT):
+def get_repo(root=None):
+  if root is None:
+    root = GIT_ROOT
+  print 'wdfs', root
   try:
     return Repo(root)
   except NotGitRepository:
     return Repo.init(root)
 
 
-def create_commit(tree, message, author=author, tz=TZ, parents=[]):
+def create_commit(tree, message, author=None, tz=None, parents=[]):
+  if author is None:
+    author = AUTHOR
+  if tz is None:
+    tz = TZ
   c = Commit()
   c.tree = tree.id
   if parents:
     c.parents = parents
   c.author = c.committer = author
   c.commit_time = c.author_time = int(time())
-  c.commit_timezone = c.author_timezone = TZ
+  c.commit_timezone = c.author_timezone = parse_timezone(tz)[0]
   c.encoding = 'UTF-8'
   c.message = message
   return c
@@ -38,6 +45,7 @@ def add_file(tree, name, contents, mode=0100644):
 def save_state(files, message, repo=None):
   if repo is None:
     repo = get_repo()
+  print 'hoo', repo
   a = repo.object_store.add_object
 
   try:

@@ -32,7 +32,7 @@ class TextViewerWorldMixin(object):
         contents = self.tv.get_contents()
         data = self.serializer.stream.getvalue()
         message += ' ' + str(int(time()))
-#        save_state({'system': data, 'log': contents}, message)
+        save_state({'system': data, 'log': contents}, message)
 ##        print repr(data)
 ##        print repr(contents)
 ##        print '-' * 80
