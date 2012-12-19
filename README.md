@@ -1,9 +1,9 @@
 Pigeon Computer
 ===============
 
-### From the Bare Bit to the Compiler, and Beyond...
+A simple computer system built around the [ATmega328P microcontroller][1].
 
-Simple computer system built around the [ATmega328P microcontroller][1].
+### From the Bare Bit to the Compiler, and Beyond...
 
 It is designed to be easy to use and understand at a deep level.  It was
 developed to support a very hands-on course on the foundations of
@@ -33,12 +33,51 @@ In addition to reading the source you should read the [Manual (Online
 HTML version)][4] This is still in a very rough draft stage with missing
 sections still to be filled in but I'm actively improving it.
 
-### Dependencies
+### Dependencies and Working Environment
+
+If you have Python (and Tkinter) installed then the only dependencies are:
 
 * MyHDL
 * IntelHex
 * Dulwich
 * pexpect
+
+It is recommended to use Pip and Virtualenv o set up the working environment.
+Start in the toplevel directory, set up a virtual environment, install MyHDL
+(for some reason it's not on PyPI at the time of this writing) and then use
+Pip to install the rest of the requirements automatically:
+
+    virtualenv virt-env
+    source ./virt-env/bin/activate
+    cd thirdparty
+    tar xzf myhdl-0.7.tar.gz
+    cd myhdl-0.7
+    python setup.py install
+    cd ..
+    rm -rf myhdl-0.7
+    cd ..
+    pip install -r requirements.text 
+
+Then run with:
+
+    python -m pigeon
+
+(The module's `__main__.py` file is the main script.)
+
+#### Generating the Pigeon Firmware ASM File (Optional)
+
+The Pigeon Firmware is written as a reStructuredText document and then
+converted into a source file for the Pigeon Assembler using a utility
+script.  You don't have to do this yourself as a copy of the extracted
+assembly source file is already included as `assembler/asm.py`, but it's
+good to know how that file gets made in case you want to modify it
+yourself.
+
+To generate the asm.py file from the pigeon_firmware.rst file use the
+`rest2asm.py` script in the `assembler` subdirectory:
+
+    cd assembler
+    ./rest2asm.py ../docs/pigeon_firmware.rst > asm.py 
 
 
 [1]: http://www.atmel.com/devices/atmega328p.aspx
