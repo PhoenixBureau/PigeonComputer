@@ -36,12 +36,15 @@ class MetaII(object):
 
   usage: metaii.py [-h] [-p PROGRAM] source
 
-  positional arguments:
-    source                Source code file to compile.
+  positional arguments::
 
-  optional arguments:
-    -h, --help            show this help message and exit
-    -p PROGRAM, --program PROGRAM
+     source                Source code file to compile.
+
+  optional arguments::
+
+     -h, --help            show this help message and exit
+
+     -p PROGRAM, --program PROGRAM
                           Assembly file to use for compiler (default:
                           metaii.asm).
   '''

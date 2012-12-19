@@ -33,9 +33,6 @@ class TextViewerWorldMixin(object):
         data = self.serializer.stream.getvalue()
         message += ' ' + str(int(time()))
         save_state({'system': data, 'log': contents}, message)
-##        print repr(data)
-##        print repr(contents)
-##        print '-' * 80
 
 
 class WorldWrapper:
@@ -276,6 +273,20 @@ class mousebindingsmixin:
         self.update_command_word(event)
 
 
+#: Define mapping between Tkinter events and functions or methods. The
+#: keys are string Tk "event sequences" and the values are callables that
+#: get passed the TextViewer instance (so you can bind to methods) and
+#: must return the actual callable to which to bind the event sequence.
+text_bindings = {
+
+    #I want to ensure that these keyboard shortcuts work.
+    '<Control-v>': lambda tv: tv._paste,
+    '<Control-V>': lambda tv: tv._paste,
+    '<Shift-Insert>': lambda tv: tv._paste,
+
+    }
+
+
 class TextViewerWidget(Text, mousebindingsmixin):
     """
     This class is a Tkinter Text with special mousebindings to make
@@ -298,7 +309,7 @@ class TextViewerWidget(Text, mousebindingsmixin):
         #Turn on undo, but don't override a passed-in setting.
         kw.setdefault('undo', True)
 
-##        kw.setdefault('bg', 'white')
+#        kw.setdefault('bg', 'white')
         kw.setdefault('wrap', 'word')
         kw.setdefault('font', 'arial 12')
 
@@ -314,9 +325,12 @@ class TextViewerWidget(Text, mousebindingsmixin):
         #Create us a command instance variable
         self.command = ''
 
-        #I want to ensure that these keyboard shortcuts work.
-        for s in ('<Control-v>', '<Control-V>', '<Shift-Insert>'):
-            self.bind(s, self._paste)
+        #Activate event bindings. Modify text_bindings in your config
+        #file to affect the key bindings and whatnot here.
+        for event_sequence, callback_finder in text_bindings.iteritems():
+            callback = callback_finder(self)
+            print event_sequence, '=>', callback
+            self.bind(event_sequence, callback)
 
         self.tk.call(self._w, 'edit', 'modified', 0)
         self.bind('<<Modified>>', self._beenModified)
@@ -489,6 +503,8 @@ class TextViewerWidget(Text, mousebindingsmixin):
 
     def cut(self, event):
         '''Cut selection to stack.'''
+        print 'CUT!!', event
+        print
 
         #Get the indices of the current selection if any.
         select_indices = self.tag_ranges(SEL)

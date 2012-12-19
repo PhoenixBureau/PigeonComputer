@@ -7,6 +7,11 @@ from Tkinter import Tk, Listbox, N, END, Entry, LEFT, BOTH, Y
 from pigeon.xerblin.btree import items
 from pigeon.xerblin.stack import iterStack
 from pigeon.xerblin.TextViewer import TextViewerWidget, TextViewerWorldMixin
+from pigeon.xerblin.world import World
+
+
+class TextViewerWorld(TextViewerWorldMixin, World, object):
+    pass
 
 
 class TkShell:
@@ -34,16 +39,11 @@ class TkShell:
 
 
 if __name__ == "__main__":
-    from pigeon.xerblin.world import World
-
-    class World(TextViewerWorldMixin, World, object):
-        pass
-
     tk = Tk()
     tk.title('Xerblin TkShell')
 
     t = TkShell(tk)
-    w = World(t.text, t.view)
+    w = TextViewerWorld(t.text, t.view)
 
     dictionary = w.getCurrentState()[1]
     words = sorted(name for name, value in items(dictionary))
