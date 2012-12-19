@@ -8,44 +8,44 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>util &mdash; Pigeon Computer 0.1 documentation</title>
+    <title>pigeon.assembler.util &mdash; Pigeon Computer 0.1 documentation</title>
     
-    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
+        URL_ROOT:    '../../../',
         VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/theme_extras.js"></script>
-    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../index.html" />
-    <link rel="up" title="Module code" href="index.html" /> 
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
-      <div class="header"><h1 class="heading"><a href="../index.html">
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
           <span>Pigeon Computer 0.1 documentation</span></a></h1>
-        <h2 class="heading"><span>util</span></h2>
+        <h2 class="heading"><span>pigeon.assembler.util</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        <a class="uplink" href="../index.html">Contents</a>
+        <a class="uplink" href="../../../index.html">Contents</a>
         </p>
 
       </div>
       <div class="content">
         
         
-  <h1>Source code for util</h1><div class="highlight"><pre>
+  <h1>Source code for pigeon.assembler.util</h1><div class="highlight"><pre>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">__name__</span><span class="p">)</span>
 <span class="kn">from</span> <span class="nn">struct</span> <span class="kn">import</span> <span class="n">pack</span>
@@ -225,7 +225,7 @@
   <span class="k">return</span> <span class="n">inner</span>
 
 
-<div class="viewcode-block" id="K"><a class="viewcode-back" href="../writing.html#util.K">[docs]</a><span class="k">def</span> <span class="nf">K</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span><span class="p">):</span>
+<div class="viewcode-block" id="K"><a class="viewcode-back" href="../../../writing.html#pigeon.assembler.util.K">[docs]</a><span class="k">def</span> <span class="nf">K</span><span class="p">(</span><span class="n">pattern</span><span class="p">,</span> <span class="o">**</span><span class="n">values</span><span class="p">):</span>
   <span class="n">counts</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">((</span><span class="n">variable_letter</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span> <span class="k">for</span> <span class="n">variable_letter</span> <span class="ow">in</span> <span class="n">values</span><span class="p">)</span>
   <span class="n">p</span> <span class="o">=</span> <span class="s">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">pattern</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span><span class="o">.</span><span class="n">split</span><span class="p">())[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
   <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
@@ -248,7 +248,7 @@
       <div class="bottomnav">
       
         <p>
-        <a class="uplink" href="../index.html">Contents</a>
+        <a class="uplink" href="../../../index.html">Contents</a>
         </p>
 
       </div>

@@ -8,44 +8,44 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>xerblin.library &mdash; Pigeon Computer 0.1 documentation</title>
+    <title>pigeon.xerblin.library &mdash; Pigeon Computer 0.1 documentation</title>
     
-    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
+        URL_ROOT:    '../../../',
         VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
-    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" /> 
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
-      <div class="header"><h1 class="heading"><a href="../../index.html">
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
           <span>Pigeon Computer 0.1 documentation</span></a></h1>
-        <h2 class="heading"><span>xerblin.library</span></h2>
+        <h2 class="heading"><span>pigeon.xerblin.library</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        <a class="uplink" href="../../index.html">Contents</a>
+        <a class="uplink" href="../../../index.html">Contents</a>
         </p>
 
       </div>
       <div class="content">
         
         
-  <h1>Source code for xerblin.library</h1><div class="highlight"><pre>
+  <h1>Source code for pigeon.xerblin.library</h1><div class="highlight"><pre>
 <span class="c"># Library</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">Library of Words</span>
@@ -53,9 +53,9 @@
 
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="kn">from</span> <span class="nn">pickle</span> <span class="kn">import</span> <span class="n">dumps</span><span class="p">,</span> <span class="n">loads</span>
-<span class="kn">from</span> <span class="nn">xerblin.base</span> <span class="kn">import</span> <span class="n">handle_sequence</span><span class="p">,</span> <span class="n">handle_loop</span><span class="p">,</span> <span class="n">handle_branch</span>
-<span class="kn">from</span> <span class="nn">xerblin.btree</span> <span class="kn">import</span> <span class="n">get</span><span class="p">,</span> <span class="n">insert</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">fill_tree</span>
-<span class="kn">from</span> <span class="nn">xerblin.stack</span> <span class="kn">import</span> <span class="n">pop</span><span class="p">,</span> <span class="n">push</span><span class="p">,</span> <span class="n">pick_</span><span class="p">,</span> <span class="n">iterStack</span>
+<span class="kn">from</span> <span class="nn">pigeon.xerblin.base</span> <span class="kn">import</span> <span class="n">handle_sequence</span><span class="p">,</span> <span class="n">handle_loop</span><span class="p">,</span> <span class="n">handle_branch</span>
+<span class="kn">from</span> <span class="nn">pigeon.xerblin.btree</span> <span class="kn">import</span> <span class="n">get</span><span class="p">,</span> <span class="n">insert</span><span class="p">,</span> <span class="n">items</span><span class="p">,</span> <span class="n">fill_tree</span>
+<span class="kn">from</span> <span class="nn">pigeon.xerblin.stack</span> <span class="kn">import</span> <span class="n">pop</span><span class="p">,</span> <span class="n">push</span><span class="p">,</span> <span class="n">pick_</span><span class="p">,</span> <span class="n">iterStack</span>
 
 
 <span class="c"># Mark the current namespace contents.</span>
@@ -65,14 +65,14 @@
 
 <span class="c"># Stack chatter.</span>
 
-<div class="viewcode-block" id="dup"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.dup">[docs]</a><span class="k">def</span> <span class="nf">dup</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="dup"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.dup">[docs]</a><span class="k">def</span> <span class="nf">dup</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    &quot;Duplicate&quot; the top item on the stack.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">stack</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">stack</span><span class="p">),</span> <span class="n">dictionary</span>
 
 </div>
-<div class="viewcode-block" id="swap"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.swap">[docs]</a><span class="k">def</span> <span class="nf">swap</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="swap"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.swap">[docs]</a><span class="k">def</span> <span class="nf">swap</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Reverse the order of the top two items on the stack.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -81,7 +81,7 @@
     <span class="k">return</span> <span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span>
 
 </div>
-<div class="viewcode-block" id="pick"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.pick">[docs]</a><span class="k">def</span> <span class="nf">pick</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="pick"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.pick">[docs]</a><span class="k">def</span> <span class="nf">pick</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Takes a number from the stack, counts back that many items (starting</span>
 <span class="sd">    from zero for the top item) and puts a &quot;duplicate&quot; of the item found</span>
@@ -93,7 +93,7 @@
     <span class="k">return</span> <span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span>
 
 </div>
-<div class="viewcode-block" id="tuck"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.tuck">[docs]</a><span class="k">def</span> <span class="nf">tuck</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="tuck"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.tuck">[docs]</a><span class="k">def</span> <span class="nf">tuck</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Put a &quot;duplicate&quot; of the item on the top of the stack just under the</span>
 <span class="sd">    second item on the stack. (I.e. top, second, top.)</span>
@@ -103,14 +103,14 @@
     <span class="k">return</span> <span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span>
 
 </div>
-<div class="viewcode-block" id="drop"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.drop">[docs]</a><span class="k">def</span> <span class="nf">drop</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="drop"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.drop">[docs]</a><span class="k">def</span> <span class="nf">drop</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Remove the item on the top of the stack and discard it.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="n">stack</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">dictionary</span>
 
 </div>
-<div class="viewcode-block" id="over"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.over">[docs]</a><span class="k">def</span> <span class="nf">over</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="over"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.over">[docs]</a><span class="k">def</span> <span class="nf">over</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Put a &quot;duplicate&quot; of the second item down in the stack on the top of</span>
 <span class="sd">    the stack. (I.e. second, top, second.)</span>
@@ -121,7 +121,7 @@
 
 <span class="c"># Programming words.</span>
 </div>
-<div class="viewcode-block" id="lookup"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.lookup">[docs]</a><span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="n">interpreter</span><span class="p">):</span>
+<div class="viewcode-block" id="lookup"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.lookup">[docs]</a><span class="k">def</span> <span class="nf">lookup</span><span class="p">(</span><span class="n">interpreter</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Given a name on the top of the stack, look up the named command in</span>
 <span class="sd">    the dictionary and put it on the stack in place of the name.</span>
@@ -131,7 +131,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">stack</span><span class="p">),</span> <span class="n">dictionary</span>
 
 </div>
-<div class="viewcode-block" id="inscribe"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.inscribe">[docs]</a><span class="k">def</span> <span class="nf">inscribe</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="inscribe"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.inscribe">[docs]</a><span class="k">def</span> <span class="nf">inscribe</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Given a name string on the top of the stack and a &quot;combo&quot; command</span>
 <span class="sd">    underneath it (see NewSeqWord, NewLoopWord, and NewBranchWord for how</span>
@@ -144,7 +144,7 @@
     <span class="k">return</span> <span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span>
 
 </div>
-<div class="viewcode-block" id="NewSeqWord"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.NewSeqWord">[docs]</a><span class="k">def</span> <span class="nf">NewSeqWord</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="NewSeqWord"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.NewSeqWord">[docs]</a><span class="k">def</span> <span class="nf">NewSeqWord</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    This command takes all the items on the stack and puts them into a</span>
 <span class="sd">    tuple with the Sequence Handler function in front of them.</span>
@@ -162,7 +162,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="p">()),</span> <span class="n">dictionary</span>
 
 </div>
-<div class="viewcode-block" id="NewLoopWord"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.NewLoopWord">[docs]</a><span class="k">def</span> <span class="nf">NewLoopWord</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="NewLoopWord"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.NewLoopWord">[docs]</a><span class="k">def</span> <span class="nf">NewLoopWord</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    This command takes all the items on the stack and puts them into a</span>
 <span class="sd">    tuple with the Loop Handler function in front of them.</span>
@@ -180,7 +180,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">loop</span><span class="p">,</span> <span class="p">()),</span> <span class="n">dictionary</span>
 
 </div>
-<div class="viewcode-block" id="NewBranchWord"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.NewBranchWord">[docs]</a><span class="k">def</span> <span class="nf">NewBranchWord</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="NewBranchWord"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.NewBranchWord">[docs]</a><span class="k">def</span> <span class="nf">NewBranchWord</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Create a new Branch command word.  A branch consumes the top item on</span>
 <span class="sd">    the stack and does one of two things depending on its &quot;truth&quot; value.</span>
@@ -197,7 +197,7 @@
 
 <span class="c"># Math words.</span>
 </div>
-<div class="viewcode-block" id="add"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.add">[docs]</a><span class="k">def</span> <span class="nf">add</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="add"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.add">[docs]</a><span class="k">def</span> <span class="nf">add</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Add the top two items on the stack and replace them with the sum.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -205,7 +205,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">,</span> <span class="n">stack</span><span class="p">),</span> <span class="n">dictionary</span>
 
 </div>
-<div class="viewcode-block" id="sub"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.sub">[docs]</a><span class="k">def</span> <span class="nf">sub</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="sub"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.sub">[docs]</a><span class="k">def</span> <span class="nf">sub</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Replace the top two items on the stack with the result of subtracting</span>
 <span class="sd">    the top item from the second item.</span>
@@ -214,7 +214,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">a</span><span class="p">,</span> <span class="n">stack</span><span class="p">),</span> <span class="n">dictionary</span>
 
 </div>
-<div class="viewcode-block" id="mul"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.mul">[docs]</a><span class="k">def</span> <span class="nf">mul</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="mul"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.mul">[docs]</a><span class="k">def</span> <span class="nf">mul</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Replace the top two items on the stack with the result of multiplying</span>
 <span class="sd">    them together.</span>
@@ -225,7 +225,7 @@
 
 <span class="c"># Pickling words.</span>
 </div>
-<div class="viewcode-block" id="pickle"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.pickle">[docs]</a><span class="k">def</span> <span class="nf">pickle</span><span class="p">(</span><span class="n">interpreter</span><span class="p">):</span>
+<div class="viewcode-block" id="pickle"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.pickle">[docs]</a><span class="k">def</span> <span class="nf">pickle</span><span class="p">(</span><span class="n">interpreter</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Convert the current interpreter to a portable text format (called a</span>
 <span class="sd">    &quot;pickle&quot;.)</span>
@@ -235,7 +235,7 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">stack</span><span class="p">),</span> <span class="n">dictionary</span>
 
 </div>
-<div class="viewcode-block" id="unpickle"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.unpickle">[docs]</a><span class="k">def</span> <span class="nf">unpickle</span><span class="p">(</span><span class="n">interpreter</span><span class="p">):</span>
+<div class="viewcode-block" id="unpickle"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.unpickle">[docs]</a><span class="k">def</span> <span class="nf">unpickle</span><span class="p">(</span><span class="n">interpreter</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Take a string &quot;pickle&quot; portable text representation of an interpreter</span>
 <span class="sd">    and replace the current interpreter with it.</span>
@@ -246,7 +246,7 @@
 
 <span class="c"># System words</span>
 </div>
-<div class="viewcode-block" id="rebalance"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.rebalance">[docs]</a><span class="k">def</span> <span class="nf">rebalance</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
+<div class="viewcode-block" id="rebalance"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.rebalance">[docs]</a><span class="k">def</span> <span class="nf">rebalance</span><span class="p">((</span><span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span><span class="p">)):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    This &quot;rebalances&quot; a dictionary.  It makes it more efficient to access</span>
 <span class="sd">    commands in the dictionary if you&#39;ve added a lot of new ones.</span>
@@ -258,7 +258,7 @@
     <span class="k">return</span> <span class="n">stack</span><span class="p">,</span> <span class="n">dictionary</span>
 
 </div>
-<div class="viewcode-block" id="view"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.view">[docs]</a><span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="n">interpreter</span><span class="p">):</span>
+<div class="viewcode-block" id="view"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.view">[docs]</a><span class="k">def</span> <span class="nf">view</span><span class="p">(</span><span class="n">interpreter</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Pretty print the interpreter to stdout.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -267,7 +267,7 @@
     <span class="k">return</span> <span class="n">interpreter</span>
 
 </div>
-<div class="viewcode-block" id="listwords"><a class="viewcode-back" href="../../user_interface.html#xerblin.library.listwords">[docs]</a><span class="k">def</span> <span class="nf">listwords</span><span class="p">(</span><span class="n">interpreter</span><span class="p">):</span>
+<div class="viewcode-block" id="listwords"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.library.listwords">[docs]</a><span class="k">def</span> <span class="nf">listwords</span><span class="p">(</span><span class="n">interpreter</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Print the list of words in the dictionary to stdout.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -294,7 +294,7 @@
       <div class="bottomnav">
       
         <p>
-        <a class="uplink" href="../../index.html">Contents</a>
+        <a class="uplink" href="../../../index.html">Contents</a>
         </p>
 
       </div>

@@ -8,44 +8,44 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>xerblin.stack &mdash; Pigeon Computer 0.1 documentation</title>
+    <title>pigeon.xerblin.stack &mdash; Pigeon Computer 0.1 documentation</title>
     
-    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
+        URL_ROOT:    '../../../',
         VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
-    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" /> 
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
-      <div class="header"><h1 class="heading"><a href="../../index.html">
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
           <span>Pigeon Computer 0.1 documentation</span></a></h1>
-        <h2 class="heading"><span>xerblin.stack</span></h2>
+        <h2 class="heading"><span>pigeon.xerblin.stack</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        <a class="uplink" href="../../index.html">Contents</a>
+        <a class="uplink" href="../../../index.html">Contents</a>
         </p>
 
       </div>
       <div class="content">
         
         
-  <h1>Source code for xerblin.stack</h1><div class="highlight"><pre>
+  <h1>Source code for pigeon.xerblin.stack</h1><div class="highlight"><pre>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">Stack</span>
 <span class="sd">=================================</span>
@@ -56,14 +56,14 @@
 <span class="sd">&#39;&#39;&#39;</span>
 
 
-<div class="viewcode-block" id="push"><a class="viewcode-back" href="../../user_interface.html#xerblin.stack.push">[docs]</a><span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="o">*</span><span class="n">items</span><span class="p">):</span>
+<div class="viewcode-block" id="push"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.stack.push">[docs]</a><span class="k">def</span> <span class="nf">push</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="o">*</span><span class="n">items</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Push arguments onto a stack.&#39;&#39;&#39;</span>
     <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">items</span><span class="p">:</span>
         <span class="n">stack</span> <span class="o">=</span> <span class="n">item</span><span class="p">,</span> <span class="n">stack</span> <span class="c"># push</span>
     <span class="k">return</span> <span class="n">stack</span>
 
 </div>
-<div class="viewcode-block" id="pop"><a class="viewcode-back" href="../../user_interface.html#xerblin.stack.pop">[docs]</a><span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
+<div class="viewcode-block" id="pop"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.stack.pop">[docs]</a><span class="k">def</span> <span class="nf">pop</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="n">number</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Pop number arguments from stack.&#39;&#39;&#39;</span>
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">number</span><span class="p">):</span>
         <span class="n">item</span><span class="p">,</span> <span class="n">stack</span> <span class="o">=</span> <span class="n">stack</span> <span class="c"># pop</span>
@@ -71,19 +71,19 @@
     <span class="k">yield</span> <span class="n">stack</span>
 
 </div>
-<div class="viewcode-block" id="iterStack"><a class="viewcode-back" href="../../user_interface.html#xerblin.stack.iterStack">[docs]</a><span class="k">def</span> <span class="nf">iterStack</span><span class="p">(</span><span class="n">stack</span><span class="p">):</span>
+<div class="viewcode-block" id="iterStack"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.stack.iterStack">[docs]</a><span class="k">def</span> <span class="nf">iterStack</span><span class="p">(</span><span class="n">stack</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Iterate through the items on the stack.&#39;&#39;&#39;</span>
     <span class="k">while</span> <span class="n">stack</span><span class="p">:</span>
         <span class="n">item</span><span class="p">,</span> <span class="n">stack</span> <span class="o">=</span> <span class="n">stack</span>
         <span class="k">yield</span> <span class="n">item</span>
 
 </div>
-<div class="viewcode-block" id="lenStack"><a class="viewcode-back" href="../../user_interface.html#xerblin.stack.lenStack">[docs]</a><span class="k">def</span> <span class="nf">lenStack</span><span class="p">(</span><span class="n">stack</span><span class="p">):</span>
+<div class="viewcode-block" id="lenStack"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.stack.lenStack">[docs]</a><span class="k">def</span> <span class="nf">lenStack</span><span class="p">(</span><span class="n">stack</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;Return the number of items on the stack.&#39;&#39;&#39;</span>
     <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="mi">1</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">iterStack</span><span class="p">(</span><span class="n">stack</span><span class="p">))</span>
 
 </div>
-<div class="viewcode-block" id="pick_"><a class="viewcode-back" href="../../user_interface.html#xerblin.stack.pick_">[docs]</a><span class="k">def</span> <span class="nf">pick_</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+<div class="viewcode-block" id="pick_"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.stack.pick_">[docs]</a><span class="k">def</span> <span class="nf">pick_</span><span class="p">(</span><span class="n">stack</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Find the nth item on the stack and duplicate it to TOS. (Pick with</span>
 <span class="sd">    zero is the same as &quot;dup&quot;.)</span>
@@ -106,7 +106,7 @@
       <div class="bottomnav">
       
         <p>
-        <a class="uplink" href="../../index.html">Contents</a>
+        <a class="uplink" href="../../../index.html">Contents</a>
         </p>
 
       </div>

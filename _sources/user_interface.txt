@@ -32,14 +32,14 @@ computer protects you.
 
 
 
-.. automodule:: xerblin.stack
+.. automodule:: pigeon.xerblin.stack
 
-.. automodule:: xerblin.btree
+.. automodule:: pigeon.xerblin.btree
 
-.. automodule:: xerblin.base
+.. automodule:: pigeon.xerblin.base
 
-.. automodule:: xerblin.world
+.. automodule:: pigeon.xerblin.world
 
-.. automodule:: xerblin.library
+.. automodule:: pigeon.xerblin.library
 
 

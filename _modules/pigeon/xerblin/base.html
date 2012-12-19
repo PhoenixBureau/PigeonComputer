@@ -8,44 +8,44 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>xerblin.base &mdash; Pigeon Computer 0.1 documentation</title>
+    <title>pigeon.xerblin.base &mdash; Pigeon Computer 0.1 documentation</title>
     
-    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
+        URL_ROOT:    '../../../',
         VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
-    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" /> 
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
-      <div class="header"><h1 class="heading"><a href="../../index.html">
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
           <span>Pigeon Computer 0.1 documentation</span></a></h1>
-        <h2 class="heading"><span>xerblin.base</span></h2>
+        <h2 class="heading"><span>pigeon.xerblin.base</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        <a class="uplink" href="../../index.html">Contents</a>
+        <a class="uplink" href="../../../index.html">Contents</a>
         </p>
 
       </div>
       <div class="content">
         
         
-  <h1>Source code for xerblin.base</h1><div class="highlight"><pre>
+  <h1>Source code for pigeon.xerblin.base</h1><div class="highlight"><pre>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">Xerblin Base</span>
 <span class="sd">=================================</span>
@@ -101,7 +101,7 @@
 <span class="sd">^^^^^^^^^^^^^^^^^^</span>
 
 <span class="sd">&#39;&#39;&#39;</span>
-<span class="kn">from</span> <span class="nn">xerblin.btree</span> <span class="kn">import</span> <span class="n">get</span>
+<span class="kn">from</span> <span class="nn">pigeon.xerblin.btree</span> <span class="kn">import</span> <span class="n">get</span>
 
 
 <span class="k">def</span> <span class="nf">_pop_TOS</span><span class="p">(</span><span class="n">I</span><span class="p">):</span>
@@ -117,7 +117,7 @@
 
 <span class="c"># These three following functions process the three kinds of combo-words.</span>
 
-<div class="viewcode-block" id="handle_sequence"><a class="viewcode-back" href="../../user_interface.html#xerblin.base.handle_sequence">[docs]</a><span class="k">def</span> <span class="nf">handle_sequence</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">seq</span><span class="p">):</span>
+<div class="viewcode-block" id="handle_sequence"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.base.handle_sequence">[docs]</a><span class="k">def</span> <span class="nf">handle_sequence</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">seq</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Run a sequence and return the modified interpreter.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -126,7 +126,7 @@
     <span class="k">return</span> <span class="n">I</span>
 
 </div>
-<div class="viewcode-block" id="handle_branch"><a class="viewcode-back" href="../../user_interface.html#xerblin.base.handle_branch">[docs]</a><span class="k">def</span> <span class="nf">handle_branch</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">branch</span><span class="p">):</span>
+<div class="viewcode-block" id="handle_branch"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.base.handle_branch">[docs]</a><span class="k">def</span> <span class="nf">handle_branch</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">branch</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Check TOS and do one thing or another depending.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -135,7 +135,7 @@
     <span class="k">return</span> <span class="n">apply_func</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="handle_loop"><a class="viewcode-back" href="../../user_interface.html#xerblin.base.handle_loop">[docs]</a><span class="k">def</span> <span class="nf">handle_loop</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">loop</span><span class="p">):</span>
+<div class="viewcode-block" id="handle_loop"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.base.handle_loop">[docs]</a><span class="k">def</span> <span class="nf">handle_loop</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">loop</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Check TOS and do body if it&#39;s true, repeat.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -147,7 +147,7 @@
     <span class="k">return</span> <span class="n">I</span>
 
 </div>
-<div class="viewcode-block" id="apply_func"><a class="viewcode-back" href="../../user_interface.html#xerblin.base.apply_func">[docs]</a><span class="k">def</span> <span class="nf">apply_func</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+<div class="viewcode-block" id="apply_func"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.base.apply_func">[docs]</a><span class="k">def</span> <span class="nf">apply_func</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Given an interpreter and a function or combo-word tuple, apply the</span>
 <span class="sd">    function or combo to the interpreter and return the modified</span>
@@ -163,7 +163,7 @@
 
 <span class="c"># This is the main point of this module.  It implements the system with</span>
 <span class="c"># the help of the apply_func() function.</span></div>
-<div class="viewcode-block" id="interpret"><a class="viewcode-back" href="../../user_interface.html#xerblin.base.interpret">[docs]</a><span class="k">def</span> <span class="nf">interpret</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
+<div class="viewcode-block" id="interpret"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.base.interpret">[docs]</a><span class="k">def</span> <span class="nf">interpret</span><span class="p">(</span><span class="n">I</span><span class="p">,</span> <span class="n">command</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Given an interpreter and a string command, interpret that string on</span>
 <span class="sd">    the interpreter and return the modified interpreter.</span>
@@ -201,7 +201,7 @@
       <div class="bottomnav">
       
         <p>
-        <a class="uplink" href="../../index.html">Contents</a>
+        <a class="uplink" href="../../../index.html">Contents</a>
         </p>
 
       </div>

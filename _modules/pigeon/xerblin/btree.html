@@ -8,44 +8,44 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>xerblin.btree &mdash; Pigeon Computer 0.1 documentation</title>
+    <title>pigeon.xerblin.btree &mdash; Pigeon Computer 0.1 documentation</title>
     
-    <link rel="stylesheet" href="../../_static/haiku.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../../_static/print.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../../',
+        URL_ROOT:    '../../../',
         VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../_static/theme_extras.js"></script>
-    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../../index.html" />
-    <link rel="up" title="Module code" href="../index.html" /> 
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
-      <div class="header"><h1 class="heading"><a href="../../index.html">
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
           <span>Pigeon Computer 0.1 documentation</span></a></h1>
-        <h2 class="heading"><span>xerblin.btree</span></h2>
+        <h2 class="heading"><span>pigeon.xerblin.btree</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        <a class="uplink" href="../../index.html">Contents</a>
+        <a class="uplink" href="../../../index.html">Contents</a>
         </p>
 
       </div>
       <div class="content">
         
         
-  <h1>Source code for xerblin.btree</h1><div class="highlight"><pre>
+  <h1>Source code for pigeon.xerblin.btree</h1><div class="highlight"><pre>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">BTree</span>
 <span class="sd">=================================</span>
@@ -84,7 +84,7 @@
 <span class="sd">&#39;&#39;&#39;</span>
 
 
-<div class="viewcode-block" id="insert"><a class="viewcode-back" href="../../user_interface.html#xerblin.btree.insert">[docs]</a><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<div class="viewcode-block" id="insert"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.btree.insert">[docs]</a><span class="k">def</span> <span class="nf">insert</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return a tree with value stored under key. Replaces old value if any.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -102,7 +102,7 @@
     <span class="k">return</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">lower</span><span class="p">,</span> <span class="n">higher</span>
 
 </div>
-<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../user_interface.html#xerblin.btree.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="get"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.btree.get">[docs]</a><span class="k">def</span> <span class="nf">get</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return the value stored under key or raise KeyError if not found.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -117,7 +117,7 @@
     <span class="k">return</span> <span class="n">get</span><span class="p">(</span><span class="n">lower</span> <span class="k">if</span> <span class="n">key</span> <span class="o">&lt;</span> <span class="n">node_key</span> <span class="k">else</span> <span class="n">higher</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="delete"><a class="viewcode-back" href="../../user_interface.html#xerblin.btree.delete">[docs]</a><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+<div class="viewcode-block" id="delete"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.btree.delete">[docs]</a><span class="k">def</span> <span class="nf">delete</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Return a tree with the value (and key) removed or raise KeyError if</span>
 <span class="sd">    not found.</span>
@@ -163,7 +163,7 @@
 <span class="c"># just helper functions.</span>
 
 </div>
-<div class="viewcode-block" id="items"><a class="viewcode-back" href="../../user_interface.html#xerblin.btree.items">[docs]</a><span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
+<div class="viewcode-block" id="items"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.btree.items">[docs]</a><span class="k">def</span> <span class="nf">items</span><span class="p">(</span><span class="n">node</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Iterate in order over the (key, value) pairs in a tree.</span>
 <span class="sd">    &#39;&#39;&#39;</span>
@@ -208,7 +208,7 @@
         <span class="k">yield</span> <span class="n">high</span>
 
 
-<div class="viewcode-block" id="fill_tree"><a class="viewcode-back" href="../../user_interface.html#xerblin.btree.fill_tree">[docs]</a><span class="k">def</span> <span class="nf">fill_tree</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
+<div class="viewcode-block" id="fill_tree"><a class="viewcode-back" href="../../../user_interface.html#pigeon.xerblin.btree.fill_tree">[docs]</a><span class="k">def</span> <span class="nf">fill_tree</span><span class="p">(</span><span class="n">node</span><span class="p">,</span> <span class="n">items</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Add the (key, value) pairs in items to a btree in a balanced way.</span>
 
@@ -228,7 +228,7 @@
       <div class="bottomnav">
       
         <p>
-        <a class="uplink" href="../../index.html">Contents</a>
+        <a class="uplink" href="../../../index.html">Contents</a>
         </p>
 
       </div>

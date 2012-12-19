@@ -86,6 +86,34 @@ A simple high-level description like this::
     #END
 
 
+The compiler takes care of figuring out the control flow logic for us and
+we supply the runtime implementation of the switching functions::
+
+    def set_switch():
+      andi(reg, 1 << bit)
+
+    def call(addr):
+      if abs(here() - addr) < RELATIVE_CALL_LIMIT:
+        relative_call(addr)
+      else:
+        long_call(addr)
+
+    def if_not_switch_jmp_to(_):
+      sbrs(reg, bit)
+      jmp(_)
+
+    def if_switch_jmp_to(_):
+      sbrc(reg, bit)
+      jmp(_)
+
+    def expect(_):
+      pass # This would examine some buffer and set reg[bit] accordingly.
+
+This particular set of runtime macros uses a bit in a register (which ones
+are not defined here) as the switch to control program flow.  We could use
+other definitions of "switch", which opens up some interesting possibilities.
+
+
 Val Shorre’s Meta-II Metacompiler
 ---------------------------------
 
@@ -103,7 +131,7 @@ or crib a copy from someone else.)
 
 Here is the documentation on the Meta-II engine included in the Pigeon Computer project:
 
-.. automodule:: metaii
+.. automodule:: pigeon.metacompiler.metaii
 
 
 Language Design and Compiler Extentions

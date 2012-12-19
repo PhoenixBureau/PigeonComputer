@@ -8,44 +8,44 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>pyavrasm &mdash; Pigeon Computer 0.1 documentation</title>
+    <title>pigeon.assembler.pyavrasm &mdash; Pigeon Computer 0.1 documentation</title>
     
-    <link rel="stylesheet" href="../_static/haiku.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/print.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/haiku.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/print.css" type="text/css" />
     
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
-        URL_ROOT:    '../',
+        URL_ROOT:    '../../../',
         VERSION:     '0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true
       };
     </script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/theme_extras.js"></script>
-    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../index.html" />
-    <link rel="up" title="Module code" href="index.html" /> 
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../../_static/theme_extras.js"></script>
+    <link rel="top" title="Pigeon Computer 0.1 documentation" href="../../../index.html" />
+    <link rel="up" title="Module code" href="../../index.html" /> 
   </head>
   <body>
-      <div class="header"><h1 class="heading"><a href="../index.html">
+      <div class="header"><h1 class="heading"><a href="../../../index.html">
           <span>Pigeon Computer 0.1 documentation</span></a></h1>
-        <h2 class="heading"><span>pyavrasm</span></h2>
+        <h2 class="heading"><span>pigeon.assembler.pyavrasm</span></h2>
       </div>
       <div class="topnav">
       
         <p>
-        <a class="uplink" href="../index.html">Contents</a>
+        <a class="uplink" href="../../../index.html">Contents</a>
         </p>
 
       </div>
       <div class="content">
         
         
-  <h1>Source code for pyavrasm</h1><div class="highlight"><pre>
+  <h1>Source code for pigeon.assembler.pyavrasm</h1><div class="highlight"><pre>
 <span class="c">#!/usr/bin/env python</span>
 <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">====================</span>
@@ -72,13 +72,13 @@
   <span class="p">)</span>
 
 
-<div class="viewcode-block" id="DirectivesMixin"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin">[docs]</a><span class="k">class</span> <span class="nc">DirectivesMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectivesMixin"><a class="viewcode-back" href="../../../pyavrasm.html#pigeon.assembler.pyavrasm.DirectivesMixin">[docs]</a><span class="k">class</span> <span class="nc">DirectivesMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
   <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">  These are *directives*, assembler functions that don&#39;t correspond to op</span>
 <span class="sd">  codes but instead do some sort of other function.</span>
 <span class="sd">  &#39;&#39;&#39;</span>
 
-<div class="viewcode-block" id="DirectivesMixin.define"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin.define">[docs]</a>  <span class="k">def</span> <span class="nf">define</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">defs</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectivesMixin.define"><a class="viewcode-back" href="../../../pyavrasm.html#pigeon.assembler.pyavrasm.DirectivesMixin.define">[docs]</a>  <span class="k">def</span> <span class="nf">define</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">defs</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Update one or more names in the execution namespace.  The main</span>
 <span class="sd">    difference between using this function and simply setting a variable</span>
@@ -94,7 +94,7 @@
       <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;defining </span><span class="si">%s</span><span class="s"> = </span><span class="si">%#x</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">defs</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DirectivesMixin.org"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin.org">[docs]</a>  <span class="k">def</span> <span class="nf">org</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectivesMixin.org"><a class="viewcode-back" href="../../../pyavrasm.html#pigeon.assembler.pyavrasm.DirectivesMixin.org">[docs]</a>  <span class="k">def</span> <span class="nf">org</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Set the current output address of the assembly process to</span>
 <span class="sd">    ``address``.  If ``address`` isn&#39;t an ``intbv`` it is converted to</span>
@@ -108,7 +108,7 @@
     <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s">&#39;setting org to </span><span class="si">%#06x</span><span class="s">&#39;</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
     <span class="n">update</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">here</span><span class="p">,</span> <span class="n">address</span><span class="p">)</span>
 </div>
-<div class="viewcode-block" id="DirectivesMixin.label"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin.label">[docs]</a>  <span class="k">def</span> <span class="nf">label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_thunk</span><span class="p">,</span> <span class="n">reserves</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectivesMixin.label"><a class="viewcode-back" href="../../../pyavrasm.html#pigeon.assembler.pyavrasm.DirectivesMixin.label">[docs]</a>  <span class="k">def</span> <span class="nf">label</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_thunk</span><span class="p">,</span> <span class="n">reserves</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Create a symbolic label at the current output address of the assembly</span>
 <span class="sd">    process. If ``reserves`` is given (and greater than zero) that many</span>
@@ -143,7 +143,7 @@
       <span class="k">assert</span> <span class="n">reserves</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">repr</span><span class="p">(</span><span class="n">reserves</span><span class="p">)</span>
       <span class="bp">self</span><span class="o">.</span><span class="n">here</span> <span class="o">+=</span> <span class="n">reserves</span>
 </div>
-<div class="viewcode-block" id="DirectivesMixin.dw"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin.dw">[docs]</a>  <span class="k">def</span> <span class="nf">dw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectivesMixin.dw"><a class="viewcode-back" href="../../../pyavrasm.html#pigeon.assembler.pyavrasm.DirectivesMixin.dw">[docs]</a>  <span class="k">def</span> <span class="nf">dw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Lay down unsigned 16-bit integer values in the program image.</span>
 
@@ -159,7 +159,7 @@
     <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">addr</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="s">&#39;dw&#39;</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">here</span> <span class="o">+=</span> <span class="n">nbytes</span>
 </div>
-<div class="viewcode-block" id="DirectivesMixin.db"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.DirectivesMixin.db">[docs]</a>  <span class="k">def</span> <span class="nf">db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">):</span>
+<div class="viewcode-block" id="DirectivesMixin.db"><a class="viewcode-back" href="../../../pyavrasm.html#pigeon.assembler.pyavrasm.DirectivesMixin.db">[docs]</a>  <span class="k">def</span> <span class="nf">db</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">values</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Lay down bytes in the program image. Integers 0 &lt;= n &lt;= 255 and</span>
 <span class="sd">    strings are accepted.</span>
@@ -183,7 +183,7 @@
       <span class="k">yield</span> <span class="n">n</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
 
 </div>
-<div class="viewcode-block" id="AVRAssembly"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.AVRAssembly">[docs]</a><span class="k">class</span> <span class="nc">AVRAssembly</span><span class="p">(</span><span class="n">InstructionsMixin</span><span class="p">,</span> <span class="n">DirectivesMixin</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="AVRAssembly"><a class="viewcode-back" href="../../../pyavrasm.html#pigeon.assembler.pyavrasm.AVRAssembly">[docs]</a><span class="k">class</span> <span class="nc">AVRAssembly</span><span class="p">(</span><span class="n">InstructionsMixin</span><span class="p">,</span> <span class="n">DirectivesMixin</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
   <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">  This is the primary assembler object.  It is created out of the</span>
 <span class="sd">  InstructionsMixin and DirectivesMixin, which together define the</span>
@@ -261,7 +261,7 @@
     <span class="c">#: created in ``pass2()``.</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">accumulator</span> <span class="o">=</span> <span class="p">{}</span>
 
-<div class="viewcode-block" id="AVRAssembly.assemble"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.AVRAssembly.assemble">[docs]</a>  <span class="k">def</span> <span class="nf">assemble</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
+<div class="viewcode-block" id="AVRAssembly.assemble"><a class="viewcode-back" href="../../../pyavrasm.html#pigeon.assembler.pyavrasm.AVRAssembly.assemble">[docs]</a>  <span class="k">def</span> <span class="nf">assemble</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">text</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Assemble the string asm source code.</span>
 
@@ -273,7 +273,7 @@
     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s">&#39;__builtins__&#39;</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">pass2</span><span class="p">()</span>
 </div>
-<div class="viewcode-block" id="AVRAssembly.assemble_file"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.AVRAssembly.assemble_file">[docs]</a>  <span class="k">def</span> <span class="nf">assemble_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
+<div class="viewcode-block" id="AVRAssembly.assemble_file"><a class="viewcode-back" href="../../../pyavrasm.html#pigeon.assembler.pyavrasm.AVRAssembly.assemble_file">[docs]</a>  <span class="k">def</span> <span class="nf">assemble_file</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">filename</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Assemble asm source code from a named file.</span>
 
@@ -285,7 +285,7 @@
     <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">context</span><span class="p">[</span><span class="s">&#39;__builtins__&#39;</span><span class="p">]</span>
     <span class="bp">self</span><span class="o">.</span><span class="n">pass2</span><span class="p">()</span>
 </div>
-<div class="viewcode-block" id="AVRAssembly.pass2"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.AVRAssembly.pass2">[docs]</a>  <span class="k">def</span> <span class="nf">pass2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="AVRAssembly.pass2"><a class="viewcode-back" href="../../../pyavrasm.html#pigeon.assembler.pyavrasm.AVRAssembly.pass2">[docs]</a>  <span class="k">def</span> <span class="nf">pass2</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Second pass of the assembly process.</span>
 
@@ -367,7 +367,7 @@
   <span class="k">def</span> <span class="nf">_adjust</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">op</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">addr</span><span class="p">):</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">ibv</span><span class="p">(</span><span class="n">args</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">addr</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),)</span>
 
-<div class="viewcode-block" id="AVRAssembly.to_hex"><a class="viewcode-back" href="../pyavrasm.html#pyavrasm.AVRAssembly.to_hex">[docs]</a>  <span class="k">def</span> <span class="nf">to_hex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+<div class="viewcode-block" id="AVRAssembly.to_hex"><a class="viewcode-back" href="../../../pyavrasm.html#pigeon.assembler.pyavrasm.AVRAssembly.to_hex">[docs]</a>  <span class="k">def</span> <span class="nf">to_hex</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
     <span class="sd">&#39;&#39;&#39;</span>
 <span class="sd">    Convert the assembled machine code to Intel HEX file format.</span>
 
@@ -410,7 +410,7 @@
       <div class="bottomnav">
       
         <p>
-        <a class="uplink" href="../index.html">Contents</a>
+        <a class="uplink" href="../../../index.html">Contents</a>
         </p>
 
       </div>

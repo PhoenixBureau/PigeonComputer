@@ -129,6 +129,32 @@ tuesday = day ( night | .EMPTY ) | cake ;
 <span class="c">#END</span>
 </pre></div>
 </div>
+<p>The compiler takes care of figuring out the control flow logic for us and
+we supply the runtime implementation of the switching functions:</p>
+<div class="highlight-python"><div class="highlight"><pre><span class="k">def</span> <span class="nf">set_switch</span><span class="p">():</span>
+  <span class="n">andi</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">bit</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">call</span><span class="p">(</span><span class="n">addr</span><span class="p">):</span>
+  <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">here</span><span class="p">()</span> <span class="o">-</span> <span class="n">addr</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">RELATIVE_CALL_LIMIT</span><span class="p">:</span>
+    <span class="n">relative_call</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+  <span class="k">else</span><span class="p">:</span>
+    <span class="n">long_call</span><span class="p">(</span><span class="n">addr</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">if_not_switch_jmp_to</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+  <span class="n">sbrs</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">bit</span><span class="p">)</span>
+  <span class="n">jmp</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">if_switch_jmp_to</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+  <span class="n">sbrc</span><span class="p">(</span><span class="n">reg</span><span class="p">,</span> <span class="n">bit</span><span class="p">)</span>
+  <span class="n">jmp</span><span class="p">(</span><span class="n">_</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">expect</span><span class="p">(</span><span class="n">_</span><span class="p">):</span>
+  <span class="k">pass</span> <span class="c"># This would examine some buffer and set reg[bit] accordingly.</span>
+</pre></div>
+</div>
+<p>This particular set of runtime macros uses a bit in a register (which ones
+are not defined here) as the switch to control program flow.  We could use
+other definitions of &#8220;switch&#8221;, which opens up some interesting possibilities.</p>
 </div>
 <div class="section" id="val-shorres-meta-ii-metacompiler">
 <h2>Val Shorre’s Meta-II Metacompiler<a class="headerlink" href="#val-shorres-meta-ii-metacompiler" title="Permalink to this headline">¶</a></h2>
@@ -139,7 +165,7 @@ it uses to compile the assembly source file.</p>
 time?  You must emulate the engine in your mind and compile it by hand,
 or crib a copy from someone else.)</p>
 <p>Here is the documentation on the Meta-II engine included in the Pigeon Computer project:</p>
-<span class="target" id="module-metaii"></span><div class="section" id="meta-ii-meta-compiler-python-engine">
+<span class="target" id="module-pigeon.metacompiler.metaii"></span><div class="section" id="meta-ii-meta-compiler-python-engine">
 <h3>Meta II Meta-Compiler (Python Engine)<a class="headerlink" href="#meta-ii-meta-compiler-python-engine" title="Permalink to this headline">¶</a></h3>
 <p>This is a Python implementation of Val Shorre&#8217;s <a class="reference external" href="http://en.wikipedia.org/wiki/META_II">Meta II metacompiler</a>.</p>
 <p>It is just the engine, the Meta-II machine, <em>not</em> a self-regenerating
@@ -154,8 +180,8 @@ into assembly code and then use the assembler to generate HEX files to
 load on our chips, giving us a simple but powerful <em>toolchain</em> for
 developing code for our micro-controllers.</p>
 <dl class="class">
-<dt id="metaii.MetaII">
-<em class="property">class </em><tt class="descclassname">metaii.</tt><tt class="descname">MetaII</tt><a class="reference internal" href="_modules/metaii.html#MetaII"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII">
+<em class="property">class </em><tt class="descclassname">pigeon.metacompiler.metaii.</tt><tt class="descname">MetaII</tt><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>Implementation of Val Shorre&#8217;s Meta II metacompiler.
 (see <a class="reference external" href="http://en.wikipedia.org/wiki/META_II">http://en.wikipedia.org/wiki/META_II</a>)</p>
@@ -181,146 +207,146 @@ metaii.asm).</td></tr>
 </dd>
 </dl>
 <dl class="method">
-<dt id="metaii.MetaII.ADR">
-<tt class="descname">ADR</tt><big>(</big><em>ident</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.ADR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.ADR" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.ADR">
+<tt class="descname">ADR</tt><big>(</big><em>ident</em><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.ADR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.ADR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set PC to the given label/address.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.B">
-<tt class="descname">B</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.B"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.B" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.B">
+<tt class="descname">B</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.B"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.B" title="Permalink to this definition">¶</a></dt>
 <dd><p>Unconditional branch to <tt class="docutils literal"><span class="pre">addr</span></tt>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.BE">
-<tt class="descname">BE</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.BE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.BE" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.BE">
+<tt class="descname">BE</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.BE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.BE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Branch to error. Terminates compilation and (by default) prints a bit
 of debugging information.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.BF">
-<tt class="descname">BF</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.BF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.BF" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.BF">
+<tt class="descname">BF</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.BF"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.BF" title="Permalink to this definition">¶</a></dt>
 <dd><p>Branch to <tt class="docutils literal"><span class="pre">addr</span></tt> if switch is clear.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.BT">
-<tt class="descname">BT</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.BT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.BT" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.BT">
+<tt class="descname">BT</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.BT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.BT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Branch to <tt class="docutils literal"><span class="pre">addr</span></tt> if switch is set.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.CI">
-<tt class="descname">CI</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.CI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.CI" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.CI">
+<tt class="descname">CI</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.CI"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.CI" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copy <tt class="docutils literal"><span class="pre">last</span></tt> buffer contents to output buffer.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.CL">
-<tt class="descname">CL</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.CL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.CL" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.CL">
+<tt class="descname">CL</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.CL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.CL" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copy literal to output buffer.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.CLL">
-<tt class="descname">CLL</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.CLL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.CLL" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.CLL">
+<tt class="descname">CLL</tt><big>(</big><em>addr</em><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.CLL"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.CLL" title="Permalink to this definition">¶</a></dt>
 <dd><p>Call the subroutine at <tt class="docutils literal"><span class="pre">addr</span></tt>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.END">
-<tt class="descname">END</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.END"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.END" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.END">
+<tt class="descname">END</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.END"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.END" title="Permalink to this definition">¶</a></dt>
 <dd><p>Terminate compilation normally.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.GN1">
-<tt class="descname">GN1</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.GN1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.GN1" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.GN1">
+<tt class="descname">GN1</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.GN1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.GN1" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate and output label for current subroutine cell 1.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.GN2">
-<tt class="descname">GN2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.GN2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.GN2" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.GN2">
+<tt class="descname">GN2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.GN2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.GN2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate and output label for current subroutine cell 2.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.ID">
-<tt class="descname">ID</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.ID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.ID" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.ID">
+<tt class="descname">ID</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.ID"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.ID" title="Permalink to this definition">¶</a></dt>
 <dd><p>Strip all leading whitespace and scan for an identifier.  If found
 consume it, store it in the <tt class="docutils literal"><span class="pre">last</span></tt> buffer and set switch, otherwise
 reset the switch.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.LB">
-<tt class="descname">LB</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.LB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.LB" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.LB">
+<tt class="descname">LB</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.LB"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.LB" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set up output buffer for a label (as opposed to an instruction.)</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.NUM">
-<tt class="descname">NUM</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.NUM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.NUM" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.NUM">
+<tt class="descname">NUM</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.NUM"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.NUM" title="Permalink to this definition">¶</a></dt>
 <dd><p>Strip all leading whitespace and scan for a number.  If found consume
 it, store it in the <tt class="docutils literal"><span class="pre">last</span></tt> buffer and set switch, otherwise reset
 the switch.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.OUT">
-<tt class="descname">OUT</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.OUT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.OUT" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.OUT">
+<tt class="descname">OUT</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.OUT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.OUT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Copy output buffer to output stream, appending a newline character,
 then reset output buffer for next line.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.R">
-<tt class="descname">R</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.R"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.R" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.R">
+<tt class="descname">R</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.R"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.R" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return from a subroutine.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.SET">
-<tt class="descname">SET</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.SET"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.SET" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.SET">
+<tt class="descname">SET</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.SET"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.SET" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set switch.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.SR">
-<tt class="descname">SR</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.SR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.SR" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.SR">
+<tt class="descname">SR</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.SR"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.SR" title="Permalink to this definition">¶</a></dt>
 <dd><p>Strip all leading whitespace and scan for a string (enclosed in
 single quotes.)  If found consume it, store it in the <tt class="docutils literal"><span class="pre">last</span></tt> buffer
 and set switch, otherwise reset the switch.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.TST">
-<tt class="descname">TST</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.TST"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.TST" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.TST">
+<tt class="descname">TST</tt><big>(</big><em>string</em><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.TST"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.TST" title="Permalink to this definition">¶</a></dt>
 <dd><p>Look for and consume the string in the input text, setting switch if
 found, otherwise consume nothing (but leading whitespace) and reset
 switch.  Strips all leading whitespace.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.assemble">
-<tt class="descname">assemble</tt><big>(</big><em>program_source</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.assemble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.assemble" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.assemble">
+<tt class="descname">assemble</tt><big>(</big><em>program_source</em><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.assemble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.assemble" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assemble the provided Meta II assembly source text and become the
 machine (compiler) defined by that program.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.assemble_line">
-<tt class="descname">assemble_line</tt><big>(</big><em>op</em>, <em>arg=None</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.assemble_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.assemble_line" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.assemble_line">
+<tt class="descname">assemble_line</tt><big>(</big><em>op</em>, <em>arg=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.assemble_line"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.assemble_line" title="Permalink to this definition">¶</a></dt>
 <dd><p>Used by the <tt class="docutils literal"><span class="pre">assemble()</span></tt> method to process each non-label input
 line in the assembly source text.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.compile">
-<tt class="descname">compile</tt><big>(</big><em>input_text</em><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.compile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.compile" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.compile">
+<tt class="descname">compile</tt><big>(</big><em>input_text</em><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.compile"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.compile" title="Permalink to this definition">¶</a></dt>
 <dd><p>Once a compiler assembly source text has been assembled (using the
 <tt class="docutils literal"><span class="pre">assemble()</span></tt> method) you can pass source code in the compiler&#8217;s
 language to this method to compile it.</p>
@@ -338,16 +364,16 @@ machine passed to the <tt class="docutils literal"><span class="pre">assemble()<
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.info">
-<tt class="descname">info</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.info" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.info">
+<tt class="descname">info</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.info"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.info" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print out some useful information about the current state of the
 assembler/compiler.  Used for debugging and after errors to report,
 uh, errors.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metaii.MetaII.print_program">
-<tt class="descname">print_program</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#MetaII.print_program"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.MetaII.print_program" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.MetaII.print_program">
+<tt class="descname">print_program</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#MetaII.print_program"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.MetaII.print_program" title="Permalink to this definition">¶</a></dt>
 <dd><p>Print out a dump of the assembled compiler machine&#8217;s program.  Used
 for debugging.</p>
 </dd></dl>
@@ -355,8 +381,8 @@ for debugging.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="metaii.label_generator">
-<tt class="descclassname">metaii.</tt><tt class="descname">label_generator</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/metaii.html#label_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metaii.label_generator" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.metacompiler.metaii.label_generator">
+<tt class="descclassname">pigeon.metacompiler.metaii.</tt><tt class="descname">label_generator</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/metacompiler/metaii.html#label_generator"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.metacompiler.metaii.label_generator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generator of string labels: &#8216;L1&#8217;, &#8216;L2&#8217;, &#8216;L3&#8217;, &#8216;L4&#8217;, &#8216;L5&#8217;, ...</p>
 </dd></dl>
 

@@ -64,13 +64,13 @@ generate the proper binary op codes.  Addresses of labels are available
 for things like adjusting the target addresses of relative instructions.</p>
 <div class="section" id="first-pass">
 <h2>First Pass<a class="headerlink" href="#first-pass" title="Permalink to this headline">¶</a></h2>
-<p>The <a class="reference internal" href="#pyavrasm.AVRAssembly.assemble" title="pyavrasm.AVRAssembly.assemble"><tt class="xref py py-meth docutils literal"><span class="pre">pyavrasm.AVRAssembly.assemble()</span></tt></a> and
-<a class="reference internal" href="#pyavrasm.AVRAssembly.assemble_file" title="pyavrasm.AVRAssembly.assemble_file"><tt class="xref py py-meth docutils literal"><span class="pre">pyavrasm.AVRAssembly.assemble_file()</span></tt></a> methods read an
+<p>The <a class="reference internal" href="#pigeon.assembler.pyavrasm.AVRAssembly.assemble" title="pigeon.assembler.pyavrasm.AVRAssembly.assemble"><tt class="xref py py-meth docutils literal"><span class="pre">pigeon.assembler.pyavrasm.AVRAssembly.assemble()</span></tt></a> and
+<a class="reference internal" href="#pigeon.assembler.pyavrasm.AVRAssembly.assemble_file" title="pigeon.assembler.pyavrasm.AVRAssembly.assemble_file"><tt class="xref py py-meth docutils literal"><span class="pre">pigeon.assembler.pyavrasm.AVRAssembly.assemble_file()</span></tt></a> methods read an
 assembly-in-python source file (for example, the <a class="reference internal" href="pigeon_firmware.html#pigeon-firmware"><em>Pigeon Firmware</em></a>.)</p>
 <p>Any of the instruction methods defined in the
-<a class="reference internal" href="instructions.html#instructions.InstructionsMixin" title="instructions.InstructionsMixin"><tt class="xref py py-class docutils literal"><span class="pre">instructions.InstructionsMixin</span></tt></a> that are called in the source
+<a class="reference internal" href="instructions.html#pigeon.assembler.instructions.InstructionsMixin" title="pigeon.assembler.instructions.InstructionsMixin"><tt class="xref py py-class docutils literal"><span class="pre">pigeon.assembler.instructions.InstructionsMixin</span></tt></a> that are called in the source
 file will create an entry in the assembler&#8217;s
-<a class="reference internal" href="#pyavrasm.AVRAssembly.data" title="pyavrasm.AVRAssembly.data"><tt class="xref py py-attr docutils literal"><span class="pre">pyavrasm.AVRAssembly.data</span></tt></a> dictionary.  These entries consist
+<a class="reference internal" href="#pigeon.assembler.pyavrasm.AVRAssembly.data" title="pigeon.assembler.pyavrasm.AVRAssembly.data"><tt class="xref py py-attr docutils literal"><span class="pre">pigeon.assembler.pyavrasm.AVRAssembly.data</span></tt></a> dictionary.  These entries consist
 of the name of the op (instruction) and the arguments that were passed to
 the instruction methods.</p>
 </div>
@@ -79,20 +79,20 @@ the instruction methods.</p>
 </div>
 <div class="section" id="second-pass">
 <h2>Second Pass<a class="headerlink" href="#second-pass" title="Permalink to this headline">¶</a></h2>
-<p>When you call <a class="reference internal" href="#pyavrasm.AVRAssembly.pass2" title="pyavrasm.AVRAssembly.pass2"><tt class="xref py py-meth docutils literal"><span class="pre">pyavrasm.AVRAssembly.pass2()</span></tt></a> the assembler goes
-through the <a class="reference internal" href="#pyavrasm.AVRAssembly.data" title="pyavrasm.AVRAssembly.data"><tt class="xref py py-attr docutils literal"><span class="pre">pyavrasm.AVRAssembly.data</span></tt></a> dictionary and calls the
+<p>When you call <a class="reference internal" href="#pigeon.assembler.pyavrasm.AVRAssembly.pass2" title="pigeon.assembler.pyavrasm.AVRAssembly.pass2"><tt class="xref py py-meth docutils literal"><span class="pre">pigeon.assembler.pyavrasm.AVRAssembly.pass2()</span></tt></a> the assembler goes
+through the <a class="reference internal" href="#pigeon.assembler.pyavrasm.AVRAssembly.data" title="pigeon.assembler.pyavrasm.AVRAssembly.data"><tt class="xref py py-attr docutils literal"><span class="pre">pigeon.assembler.pyavrasm.AVRAssembly.data</span></tt></a> dictionary and calls the
 bit-pattern-generating op functions with the associated arguments.  The
 returned binary strings are compiled into another dictionary, keyed by
 their target addresses.</p>
-<p>This dictionary is used by the <a class="reference internal" href="#pyavrasm.AVRAssembly.to_hex" title="pyavrasm.AVRAssembly.to_hex"><tt class="xref py py-meth docutils literal"><span class="pre">pyavrasm.AVRAssembly.to_hex()</span></tt></a>
+<p>This dictionary is used by the <a class="reference internal" href="#pigeon.assembler.pyavrasm.AVRAssembly.to_hex" title="pigeon.assembler.pyavrasm.AVRAssembly.to_hex"><tt class="xref py py-meth docutils literal"><span class="pre">pigeon.assembler.pyavrasm.AVRAssembly.to_hex()</span></tt></a>
 method to generate the HEX format output.</p>
-<span class="target" id="module-pyavrasm"></span><div class="section" id="python-avr-assembler">
+<span class="target" id="module-pigeon.assembler.pyavrasm"></span><div class="section" id="python-avr-assembler">
 <h3>Python AVR Assembler<a class="headerlink" href="#python-avr-assembler" title="Permalink to this headline">¶</a></h3>
 <p>This is the Pigeon Assembler.</p>
 <dl class="class">
-<dt id="pyavrasm.AVRAssembly">
-<em class="property">class </em><tt class="descclassname">pyavrasm.</tt><tt class="descname">AVRAssembly</tt><big>(</big><em>initial_context=None</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#AVRAssembly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.AVRAssembly" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="instructions.html#instructions.InstructionsMixin" title="instructions.InstructionsMixin"><tt class="xref py py-class docutils literal"><span class="pre">instructions.InstructionsMixin</span></tt></a>, <a class="reference internal" href="#pyavrasm.DirectivesMixin" title="pyavrasm.DirectivesMixin"><tt class="xref py py-class docutils literal"><span class="pre">pyavrasm.DirectivesMixin</span></tt></a>, <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
+<dt id="pigeon.assembler.pyavrasm.AVRAssembly">
+<em class="property">class </em><tt class="descclassname">pigeon.assembler.pyavrasm.</tt><tt class="descname">AVRAssembly</tt><big>(</big><em>initial_context=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/pyavrasm.html#AVRAssembly"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.pyavrasm.AVRAssembly" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="instructions.html#pigeon.assembler.instructions.InstructionsMixin" title="pigeon.assembler.instructions.InstructionsMixin"><tt class="xref py py-class docutils literal"><span class="pre">pigeon.assembler.instructions.InstructionsMixin</span></tt></a>, <a class="reference internal" href="#pigeon.assembler.pyavrasm.DirectivesMixin" title="pigeon.assembler.pyavrasm.DirectivesMixin"><tt class="xref py py-class docutils literal"><span class="pre">pigeon.assembler.pyavrasm.DirectivesMixin</span></tt></a>, <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>This is the primary assembler object.  It is created out of the
 InstructionsMixin and DirectivesMixin, which together define the
 functions that you use in your assembly code, and the methods in this
@@ -109,7 +109,7 @@ at those addresses.</p>
 <p>Then you&#8217;re probably going to want to call the <tt class="docutils literal"><span class="pre">to_hex()</span></tt> method to
 get that binary data out as (the contents of) a hex file, suitable for
 writing to your ATmega328P.</p>
-<p>When you create an <a class="reference internal" href="#pyavrasm.AVRAssembly" title="pyavrasm.AVRAssembly"><tt class="xref py py-class docutils literal"><span class="pre">AVRAssembly</span></tt></a> object you can pass an
+<p>When you create an <a class="reference internal" href="#pigeon.assembler.pyavrasm.AVRAssembly" title="pigeon.assembler.pyavrasm.AVRAssembly"><tt class="xref py py-class docutils literal"><span class="pre">AVRAssembly</span></tt></a> object you can pass an
 initial_context object, a <tt class="docutils literal"><span class="pre">dict</span></tt> or anything that can be passed to
 <tt class="docutils literal"><span class="pre">dict.update()</span></tt>, and it will be added to the execution context for
 your asm code.  Typically you would pass <tt class="xref py py-obj docutils literal"><span class="pre">m328P_def.defs</span></tt> to
@@ -126,15 +126,15 @@ useful functions for example.)</td>
 </tbody>
 </table>
 <dl class="attribute">
-<dt id="pyavrasm.AVRAssembly.accumulator">
-<tt class="descname">accumulator</tt><em class="property"> = None</em><a class="headerlink" href="#pyavrasm.AVRAssembly.accumulator" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.AVRAssembly.accumulator">
+<tt class="descname">accumulator</tt><em class="property"> = None</em><a class="headerlink" href="#pigeon.assembler.pyavrasm.AVRAssembly.accumulator" title="Permalink to this definition">¶</a></dt>
 <dd><p>Internal output data structure.  This holds the byte strings
 created in <tt class="docutils literal"><span class="pre">pass2()</span></tt>.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyavrasm.AVRAssembly.assemble">
-<tt class="descname">assemble</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#AVRAssembly.assemble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.AVRAssembly.assemble" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.AVRAssembly.assemble">
+<tt class="descname">assemble</tt><big>(</big><em>text</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/pyavrasm.html#AVRAssembly.assemble"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.pyavrasm.AVRAssembly.assemble" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assemble the string asm source code.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -149,8 +149,8 @@ created in <tt class="docutils literal"><span class="pre">pass2()</span></tt>.</
 </dd></dl>
 
 <dl class="method">
-<dt id="pyavrasm.AVRAssembly.assemble_file">
-<tt class="descname">assemble_file</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#AVRAssembly.assemble_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.AVRAssembly.assemble_file" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.AVRAssembly.assemble_file">
+<tt class="descname">assemble_file</tt><big>(</big><em>filename</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/pyavrasm.html#AVRAssembly.assemble_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.pyavrasm.AVRAssembly.assemble_file" title="Permalink to this definition">¶</a></dt>
 <dd><p>Assemble asm source code from a named file.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -165,8 +165,8 @@ created in <tt class="docutils literal"><span class="pre">pass2()</span></tt>.</
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pyavrasm.AVRAssembly.context">
-<tt class="descname">context</tt><em class="property"> = None</em><a class="headerlink" href="#pyavrasm.AVRAssembly.context" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.AVRAssembly.context">
+<tt class="descname">context</tt><em class="property"> = None</em><a class="headerlink" href="#pigeon.assembler.pyavrasm.AVRAssembly.context" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is the execution context for your assembly file.  It is used
 as the namespace for <tt class="docutils literal"><span class="pre">exec</span></tt> or <tt class="docutils literal"><span class="pre">execfile</span></tt> for parsing and
 running your code.</p>
@@ -182,22 +182,22 @@ assemble the proper bit patterns in <tt class="docutils literal"><span class="pr
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pyavrasm.AVRAssembly.data">
-<tt class="descname">data</tt><em class="property"> = None</em><a class="headerlink" href="#pyavrasm.AVRAssembly.data" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.AVRAssembly.data">
+<tt class="descname">data</tt><em class="property"> = None</em><a class="headerlink" href="#pigeon.assembler.pyavrasm.AVRAssembly.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Internal intermediate data structure.  This holds the output of
 the methods in the <tt class="docutils literal"><span class="pre">InstructionsMixin</span></tt> used to create the byte
 strings in <tt class="docutils literal"><span class="pre">pass2()</span></tt>.</p>
 </dd></dl>
 
 <dl class="attribute">
-<dt id="pyavrasm.AVRAssembly.here">
-<tt class="descname">here</tt><em class="property"> = None</em><a class="headerlink" href="#pyavrasm.AVRAssembly.here" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.AVRAssembly.here">
+<tt class="descname">here</tt><em class="property"> = None</em><a class="headerlink" href="#pigeon.assembler.pyavrasm.AVRAssembly.here" title="Permalink to this definition">¶</a></dt>
 <dd><p>Current output address of the assembly process.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyavrasm.AVRAssembly.pass2">
-<tt class="descname">pass2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#AVRAssembly.pass2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.AVRAssembly.pass2" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.AVRAssembly.pass2">
+<tt class="descname">pass2</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/pyavrasm.html#AVRAssembly.pass2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.pyavrasm.AVRAssembly.pass2" title="Permalink to this definition">¶</a></dt>
 <dd><p>Second pass of the assembly process.</p>
 <p>Once the asm source code has been assembled into the intermediate
 form (by <tt class="docutils literal"><span class="pre">assemble()</span></tt> or <tt class="docutils literal"><span class="pre">assemble_file()</span></tt>) this method converts
@@ -216,8 +216,8 @@ chip.</td>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyavrasm.AVRAssembly.to_hex">
-<tt class="descname">to_hex</tt><big>(</big><em>f</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#AVRAssembly.to_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.AVRAssembly.to_hex" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.AVRAssembly.to_hex">
+<tt class="descname">to_hex</tt><big>(</big><em>f</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/pyavrasm.html#AVRAssembly.to_hex"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.pyavrasm.AVRAssembly.to_hex" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert the assembled machine code to Intel HEX file format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -232,14 +232,14 @@ chip.</td>
 </dd></dl>
 
 <dl class="class">
-<dt id="pyavrasm.DirectivesMixin">
-<em class="property">class </em><tt class="descclassname">pyavrasm.</tt><tt class="descname">DirectivesMixin</tt><a class="reference internal" href="_modules/pyavrasm.html#DirectivesMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.DirectivesMixin" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.DirectivesMixin">
+<em class="property">class </em><tt class="descclassname">pigeon.assembler.pyavrasm.</tt><tt class="descname">DirectivesMixin</tt><a class="reference internal" href="_modules/pigeon/assembler/pyavrasm.html#DirectivesMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.pyavrasm.DirectivesMixin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <p>These are <em>directives</em>, assembler functions that don&#8217;t correspond to op
 codes but instead do some sort of other function.</p>
 <dl class="method">
-<dt id="pyavrasm.DirectivesMixin.db">
-<tt class="descname">db</tt><big>(</big><em>*values</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#DirectivesMixin.db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.DirectivesMixin.db" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.DirectivesMixin.db">
+<tt class="descname">db</tt><big>(</big><em>*values</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/pyavrasm.html#DirectivesMixin.db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.pyavrasm.DirectivesMixin.db" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lay down bytes in the program image. Integers 0 &lt;= n &lt;= 255 and
 strings are accepted.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -255,8 +255,8 @@ strings are accepted.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyavrasm.DirectivesMixin.define">
-<tt class="descname">define</tt><big>(</big><em>**defs</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#DirectivesMixin.define"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.DirectivesMixin.define" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.DirectivesMixin.define">
+<tt class="descname">define</tt><big>(</big><em>**defs</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/pyavrasm.html#DirectivesMixin.define"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.pyavrasm.DirectivesMixin.define" title="Permalink to this definition">¶</a></dt>
 <dd><p>Update one or more names in the execution namespace.  The main
 difference between using this function and simply setting a variable
 in your asm code is that this function automatically converts
@@ -274,8 +274,8 @@ integer value(s) into <tt class="docutils literal"><span class="pre">intbv</span
 </dd></dl>
 
 <dl class="method">
-<dt id="pyavrasm.DirectivesMixin.dw">
-<tt class="descname">dw</tt><big>(</big><em>*values</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#DirectivesMixin.dw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.DirectivesMixin.dw" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.DirectivesMixin.dw">
+<tt class="descname">dw</tt><big>(</big><em>*values</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/pyavrasm.html#DirectivesMixin.dw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.pyavrasm.DirectivesMixin.dw" title="Permalink to this definition">¶</a></dt>
 <dd><p>Lay down unsigned 16-bit integer values in the program image.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -290,8 +290,8 @@ integer value(s) into <tt class="docutils literal"><span class="pre">intbv</span
 </dd></dl>
 
 <dl class="method">
-<dt id="pyavrasm.DirectivesMixin.label">
-<tt class="descname">label</tt><big>(</big><em>label_thunk</em>, <em>reserves=0</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#DirectivesMixin.label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.DirectivesMixin.label" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.DirectivesMixin.label">
+<tt class="descname">label</tt><big>(</big><em>label_thunk</em>, <em>reserves=0</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/pyavrasm.html#DirectivesMixin.label"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.pyavrasm.DirectivesMixin.label" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a symbolic label at the current output address of the assembly
 process. If <tt class="docutils literal"><span class="pre">reserves</span></tt> is given (and greater than zero) that many
 bytes are reserved by adding the value to the current output address.</p>
@@ -325,8 +325,8 @@ output address of the assembly process.</li>
 </dd></dl>
 
 <dl class="method">
-<dt id="pyavrasm.DirectivesMixin.org">
-<tt class="descname">org</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/pyavrasm.html#DirectivesMixin.org"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pyavrasm.DirectivesMixin.org" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.pyavrasm.DirectivesMixin.org">
+<tt class="descname">org</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/pyavrasm.html#DirectivesMixin.org"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.pyavrasm.DirectivesMixin.org" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the current output address of the assembly process to
 <tt class="docutils literal"><span class="pre">address</span></tt>.  If <tt class="docutils literal"><span class="pre">address</span></tt> isn&#8217;t an <tt class="docutils literal"><span class="pre">intbv</span></tt> it is converted to
 one.</p>

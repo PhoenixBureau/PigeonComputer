@@ -52,566 +52,520 @@
 <p>Currently forty-three instructions are implemented.</p>
 <p>It&#8217;s not hard to add the rest, it&#8217;s just those are the ones I needed
 to get the firmware running.</p>
-<p>The following instructions are implemented so far:</p>
-<ul class="simple">
-<li>add</li>
-<li>adiw</li>
-<li>andi</li>
-<li>brcc</li>
-<li>breq</li>
-<li>brlo</li>
-<li>brne</li>
-<li>brsh</li>
-<li>cli</li>
-<li>clr</li>
-<li>cp</li>
-<li>cpc</li>
-<li>cpi</li>
-<li>cpse</li>
-<li>dec</li>
-<li>ijmp</li>
-<li>inc</li>
-<li>jmp</li>
-<li>ld_post_incr</li>
-<li>ld_pre_decr</li>
-<li>ldi</li>
-<li>lds</li>
-<li>lpm</li>
-<li>lpm_post_incr</li>
-<li>lsl</li>
-<li>lsr</li>
-<li>mov</li>
-<li>movw</li>
-<li>mul</li>
-<li><a href="#id1"><span class="problematic" id="id2">or_</span></a></li>
-<li>out</li>
-<li>pop</li>
-<li>push</li>
-<li>rcall</li>
-<li>ret</li>
-<li>rjmp</li>
-<li>sbiw</li>
-<li>sbrs</li>
-<li>sei</li>
-<li>st_post_incr</li>
-<li>sts</li>
-<li>subi</li>
-<li>swap</li>
-</ul>
-<span class="target" id="module-instructions"></span><dl class="class">
-<dt id="instructions.InstructionsMixin">
-<em class="property">class </em><tt class="descclassname">instructions.</tt><tt class="descname">InstructionsMixin</tt><a class="reference internal" href="_modules/instructions.html#InstructionsMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-pigeon.assembler.instructions"></span><dl class="class">
+<dt id="pigeon.assembler.instructions.InstructionsMixin">
+<em class="property">class </em><tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">InstructionsMixin</tt><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <tt class="xref py py-class docutils literal"><span class="pre">object</span></tt></p>
 <dl class="method">
-<dt id="instructions.InstructionsMixin.add">
-<tt class="descname">add</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.add" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.add">
+<tt class="descname">add</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.add" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.adiw">
-<tt class="descname">adiw</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.adiw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.adiw" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.adiw">
+<tt class="descname">adiw</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.adiw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.adiw" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.andi">
-<tt class="descname">andi</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.andi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.andi" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.andi">
+<tt class="descname">andi</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.andi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.andi" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.brcc">
-<tt class="descname">brcc</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.brcc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.brcc" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.brcc">
+<tt class="descname">brcc</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.brcc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.brcc" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.breq">
-<tt class="descname">breq</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.breq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.breq" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.breq">
+<tt class="descname">breq</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.breq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.breq" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.brlo">
-<tt class="descname">brlo</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.brlo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.brlo" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.brlo">
+<tt class="descname">brlo</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.brlo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.brlo" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.brne">
-<tt class="descname">brne</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.brne"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.brne" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.brne">
+<tt class="descname">brne</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.brne"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.brne" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.brsh">
-<tt class="descname">brsh</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.brsh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.brsh" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.brsh">
+<tt class="descname">brsh</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.brsh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.brsh" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.cli">
-<tt class="descname">cli</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.cli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.cli" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.cli">
+<tt class="descname">cli</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.cli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.cli" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.clr">
-<tt class="descname">clr</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.clr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.clr" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.clr">
+<tt class="descname">clr</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.clr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.clr" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.cp">
-<tt class="descname">cp</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.cp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.cp" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.cp">
+<tt class="descname">cp</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.cp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.cp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.cpc">
-<tt class="descname">cpc</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.cpc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.cpc" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.cpc">
+<tt class="descname">cpc</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.cpc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.cpc" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.cpi">
-<tt class="descname">cpi</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.cpi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.cpi" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.cpi">
+<tt class="descname">cpi</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.cpi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.cpi" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.cpse">
-<tt class="descname">cpse</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.cpse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.cpse" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.cpse">
+<tt class="descname">cpse</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.cpse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.cpse" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.dec">
-<tt class="descname">dec</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.dec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.dec" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.dec">
+<tt class="descname">dec</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.dec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.dec" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.ijmp">
-<tt class="descname">ijmp</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.ijmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.ijmp" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.ijmp">
+<tt class="descname">ijmp</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.ijmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.ijmp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.inc">
-<tt class="descname">inc</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.inc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.inc" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.inc">
+<tt class="descname">inc</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.inc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.inc" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.jmp">
-<tt class="descname">jmp</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.jmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.jmp" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.jmp">
+<tt class="descname">jmp</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.jmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.jmp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.ld_post_incr">
-<tt class="descname">ld_post_incr</tt><big>(</big><em>ptr</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.ld_post_incr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.ld_post_incr" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.ld_post_incr">
+<tt class="descname">ld_post_incr</tt><big>(</big><em>ptr</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.ld_post_incr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.ld_post_incr" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.ld_pre_decr">
-<tt class="descname">ld_pre_decr</tt><big>(</big><em>ptr</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.ld_pre_decr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.ld_pre_decr" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.ld_pre_decr">
+<tt class="descname">ld_pre_decr</tt><big>(</big><em>ptr</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.ld_pre_decr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.ld_pre_decr" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.ldi">
-<tt class="descname">ldi</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.ldi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.ldi" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.ldi">
+<tt class="descname">ldi</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.ldi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.ldi" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.lds">
-<tt class="descname">lds</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.lds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.lds" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.lds">
+<tt class="descname">lds</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.lds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.lds" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.lpm">
-<tt class="descname">lpm</tt><big>(</big><em>target</em>, <em>source</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.lpm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.lpm" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.lpm">
+<tt class="descname">lpm</tt><big>(</big><em>target</em>, <em>source</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.lpm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.lpm" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.lpm_post_incr">
-<tt class="descname">lpm_post_incr</tt><big>(</big><em>ptr</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.lpm_post_incr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.lpm_post_incr" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.lpm_post_incr">
+<tt class="descname">lpm_post_incr</tt><big>(</big><em>ptr</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.lpm_post_incr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.lpm_post_incr" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.lsl">
-<tt class="descname">lsl</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.lsl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.lsl" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.lsl">
+<tt class="descname">lsl</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.lsl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.lsl" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.lsr">
-<tt class="descname">lsr</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.lsr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.lsr" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.lsr">
+<tt class="descname">lsr</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.lsr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.lsr" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.mov">
-<tt class="descname">mov</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.mov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.mov" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.mov">
+<tt class="descname">mov</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.mov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.mov" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.movw">
-<tt class="descname">movw</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.movw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.movw" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.movw">
+<tt class="descname">movw</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.movw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.movw" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.mul">
-<tt class="descname">mul</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.mul"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.mul" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.mul">
+<tt class="descname">mul</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.mul"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.mul" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="instructions.InstructionsMixin.ops">
-<tt class="descname">ops</tt><em class="property"> = {'brsh': &lt;function brsh at 0x321b050&gt;, 'rcall': &lt;function rcall at 0x3219398&gt;, 'cpse': &lt;function cpse at 0x321ade8&gt;, 'lsl': &lt;function lsl at 0x321a7d0&gt;, 'pop': &lt;function pop at 0x321b5f0&gt;, 'lds': &lt;function lds at 0x3219848&gt;, 'lsr': &lt;function lsr at 0x321a6e0&gt;, 'ijmp': &lt;function ijmp at 0x321ac08&gt;, 'movw': &lt;function movw at 0x321b140&gt;, 'cp': &lt;function cp at 0x321acf8&gt;, 'dec': &lt;function dec at 0x321ab90&gt;, 'ld_pre_decr_Z': &lt;function ld_pre_decr_Z at 0x321a050&gt;, 'ld_pre_decr_Y': &lt;function ld_pre_decr_Y at 0x3219cf8&gt;, 'out': &lt;function out at 0x32192a8&gt;, 'andi': &lt;function andi at 0x321b230&gt;, 'cli': &lt;function cli at 0x32190c8&gt;, 'st_post_incr_Z': &lt;function st_post_incr_Z at 0x3219c08&gt;, 'ret': &lt;function ret at 0x3219668&gt;, 'add': &lt;function add at 0x321a8c0&gt;, 'sei': &lt;function sei at 0x32195f0&gt;, 'mul': &lt;function mul at 0x321bb90&gt;, 'inc': &lt;function inc at 0x321aaa0&gt;, 'ldi': &lt;function ldi at 0x32191b8&gt;, 'clr': &lt;function clr at 0x321b410&gt;, 'rjmp': &lt;function rjmp at 0x3219758&gt;, 'swap': &lt;function swap at 0x321b7d0&gt;, 'adiw': &lt;function adiw at 0x321b8c0&gt;, 'jmp': &lt;function jmp at 0x3219050&gt;, 'db': &lt;function db at 0x3219a28&gt;, 'mov': &lt;function mov at 0x3219578&gt;, 'lpm_post_incr_Z': &lt;function lpm_post_incr_Z at 0x321a230&gt;, 'ld_post_incr_X': &lt;function ld_post_incr_X at 0x3219de8&gt;, 'ld_post_incr_Z': &lt;function ld_post_incr_Z at 0x3219ed8&gt;, 'brne': &lt;function brne at 0x321a410&gt;, 'dw': &lt;function dw at 0x32199b0&gt;, 'brlo': &lt;function brlo at 0x321a5f0&gt;, 'subi': &lt;function subi at 0x321baa0&gt;, 'or_': &lt;function or_ at 0x321b6e0&gt;, 'cpi': &lt;function cpi at 0x321a320&gt;, 'cpc': &lt;function cpc at 0x321aed8&gt;, 'st_post_incr_Y': &lt;function st_post_incr_Y at 0x3219b18&gt;, 'lpm': &lt;function lpm at 0x321a140&gt;, 'sbrs': &lt;function sbrs at 0x3219938&gt;, 'sts': &lt;function sts at 0x3219488&gt;, 'push': &lt;function push at 0x321b500&gt;, 'brcc': &lt;function brcc at 0x321a9b0&gt;, 'sbiw': &lt;function sbiw at 0x321b9b0&gt;, 'breq': &lt;function breq at 0x321a500&gt;, 'sbis': &lt;function sbis at 0x321b320&gt;}</em><a class="headerlink" href="#instructions.InstructionsMixin.ops" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.ops">
+<tt class="descname">ops</tt><em class="property"> = {'brsh': &lt;function brsh at 0x3259938&gt;, 'rcall': &lt;function rcall at 0x3257c80&gt;, 'cpse': &lt;function cpse at 0x3259758&gt;, 'lsl': &lt;function lsl at 0x3259140&gt;, 'pop': &lt;function pop at 0x3259ed8&gt;, 'lds': &lt;function lds at 0x32581b8&gt;, 'lsr': &lt;function lsr at 0x3259050&gt;, 'ijmp': &lt;function ijmp at 0x3259578&gt;, 'movw': &lt;function movw at 0x3259a28&gt;, 'cp': &lt;function cp at 0x3259668&gt;, 'dec': &lt;function dec at 0x3259500&gt;, 'ld_pre_decr_Z': &lt;function ld_pre_decr_Z at 0x3258938&gt;, 'ld_pre_decr_Y': &lt;function ld_pre_decr_Y at 0x3258668&gt;, 'out': &lt;function out at 0x3257b90&gt;, 'andi': &lt;function andi at 0x3259b18&gt;, 'cli': &lt;function cli at 0x32579b0&gt;, 'st_post_incr_Z': &lt;function st_post_incr_Z at 0x3258578&gt;, 'ret': &lt;function ret at 0x3257f50&gt;, 'add': &lt;function add at 0x3259230&gt;, 'sei': &lt;function sei at 0x3257ed8&gt;, 'mul': &lt;function mul at 0x325a500&gt;, 'inc': &lt;function inc at 0x3259410&gt;, 'ldi': &lt;function ldi at 0x3257aa0&gt;, 'clr': &lt;function clr at 0x3259cf8&gt;, 'rjmp': &lt;function rjmp at 0x32580c8&gt;, 'swap': &lt;function swap at 0x325a140&gt;, 'adiw': &lt;function adiw at 0x325a230&gt;, 'jmp': &lt;function jmp at 0x3257938&gt;, 'db': &lt;function db at 0x3258398&gt;, 'mov': &lt;function mov at 0x3257e60&gt;, 'lpm_post_incr_Z': &lt;function lpm_post_incr_Z at 0x3258b18&gt;, 'ld_post_incr_X': &lt;function ld_post_incr_X at 0x3258758&gt;, 'ld_post_incr_Z': &lt;function ld_post_incr_Z at 0x3258848&gt;, 'brne': &lt;function brne at 0x3258cf8&gt;, 'dw': &lt;function dw at 0x3258320&gt;, 'brlo': &lt;function brlo at 0x3258ed8&gt;, 'subi': &lt;function subi at 0x325a410&gt;, 'or_': &lt;function or_ at 0x325a050&gt;, 'cpi': &lt;function cpi at 0x3258c08&gt;, 'cpc': &lt;function cpc at 0x3259848&gt;, 'st_post_incr_Y': &lt;function st_post_incr_Y at 0x3258488&gt;, 'lpm': &lt;function lpm at 0x3258a28&gt;, 'sbrs': &lt;function sbrs at 0x32582a8&gt;, 'sts': &lt;function sts at 0x3257d70&gt;, 'push': &lt;function push at 0x3259de8&gt;, 'brcc': &lt;function brcc at 0x3259320&gt;, 'sbiw': &lt;function sbiw at 0x325a320&gt;, 'breq': &lt;function breq at 0x3258de8&gt;, 'sbis': &lt;function sbis at 0x3259c08&gt;}</em><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.ops" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.or_">
-<tt class="descname">or_</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.or_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.or_" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.or_">
+<tt class="descname">or_</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.or_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.or_" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.out">
-<tt class="descname">out</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.out" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.out">
+<tt class="descname">out</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.out" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.pop">
-<tt class="descname">pop</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.pop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.pop" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.pop">
+<tt class="descname">pop</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.pop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.pop" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.push">
-<tt class="descname">push</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.push"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.push" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.push">
+<tt class="descname">push</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.push"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.push" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.rcall">
-<tt class="descname">rcall</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.rcall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.rcall" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.rcall">
+<tt class="descname">rcall</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.rcall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.rcall" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.ret">
-<tt class="descname">ret</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.ret"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.ret" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.ret">
+<tt class="descname">ret</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.ret"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.ret" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.rjmp">
-<tt class="descname">rjmp</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.rjmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.rjmp" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.rjmp">
+<tt class="descname">rjmp</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.rjmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.rjmp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.sbiw">
-<tt class="descname">sbiw</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.sbiw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.sbiw" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.sbiw">
+<tt class="descname">sbiw</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.sbiw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.sbiw" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.sbrs">
-<tt class="descname">sbrs</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.sbrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.sbrs" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.sbrs">
+<tt class="descname">sbrs</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.sbrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.sbrs" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.sei">
-<tt class="descname">sei</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.sei"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.sei" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.sei">
+<tt class="descname">sei</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.sei"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.sei" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.st_post_incr">
-<tt class="descname">st_post_incr</tt><big>(</big><em>ptr</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.st_post_incr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.st_post_incr" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.st_post_incr">
+<tt class="descname">st_post_incr</tt><big>(</big><em>ptr</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.st_post_incr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.st_post_incr" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.sts">
-<tt class="descname">sts</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.sts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.sts" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.sts">
+<tt class="descname">sts</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.sts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.sts" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.subi">
-<tt class="descname">subi</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.subi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.subi" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.subi">
+<tt class="descname">subi</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.subi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.subi" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
-<dt id="instructions.InstructionsMixin.swap">
-<tt class="descname">swap</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/instructions.html#InstructionsMixin.swap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.InstructionsMixin.swap" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.InstructionsMixin.swap">
+<tt class="descname">swap</tt><big>(</big><em>arg0=None</em>, <em>arg1=None</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#InstructionsMixin.swap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.InstructionsMixin.swap" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.add">
-<tt class="descclassname">instructions.</tt><tt class="descname">add</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.add" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.add">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">add</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#add"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.add" title="Permalink to this definition">¶</a></dt>
 <dd><p>0000 11rd dddd rrrr</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.adiw">
-<tt class="descclassname">instructions.</tt><tt class="descname">adiw</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#adiw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.adiw" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.adiw">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">adiw</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#adiw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.adiw" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 0110 KKdd KKKK</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.andi">
-<tt class="descclassname">instructions.</tt><tt class="descname">andi</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#andi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.andi" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.andi">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">andi</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#andi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.andi" title="Permalink to this definition">¶</a></dt>
 <dd><p>0111 KKKK dddd KKKK</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.brcc">
-<tt class="descclassname">instructions.</tt><tt class="descname">brcc</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#brcc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.brcc" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.brcc">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">brcc</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#brcc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.brcc" title="Permalink to this definition">¶</a></dt>
 <dd><p>1111 01kk kkkk k000</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.breq">
-<tt class="descclassname">instructions.</tt><tt class="descname">breq</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#breq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.breq" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.breq">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">breq</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#breq"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.breq" title="Permalink to this definition">¶</a></dt>
 <dd><p>1111 00kk kkkk k001</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.brlo">
-<tt class="descclassname">instructions.</tt><tt class="descname">brlo</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#brlo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.brlo" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.brlo">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">brlo</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#brlo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.brlo" title="Permalink to this definition">¶</a></dt>
 <dd><p>1111 00kk kkkk k000</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.brne">
-<tt class="descclassname">instructions.</tt><tt class="descname">brne</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#brne"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.brne" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.brne">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">brne</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#brne"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.brne" title="Permalink to this definition">¶</a></dt>
 <dd><p>1111 01kk kkkk k001</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.brsh">
-<tt class="descclassname">instructions.</tt><tt class="descname">brsh</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#brsh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.brsh" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.brsh">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">brsh</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#brsh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.brsh" title="Permalink to this definition">¶</a></dt>
 <dd><p>1111 01kk kkkk k000</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.cli">
-<tt class="descclassname">instructions.</tt><tt class="descname">cli</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/instructions.html#cli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.cli" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.cli">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">cli</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#cli"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.cli" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="instructions.clr">
-<tt class="descclassname">instructions.</tt><tt class="descname">clr</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#clr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.clr" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.clr">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">clr</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#clr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.clr" title="Permalink to this definition">¶</a></dt>
 <dd><p>0010 01rd dddd rrrr</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.cp">
-<tt class="descclassname">instructions.</tt><tt class="descname">cp</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#cp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.cp" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.cp">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">cp</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#cp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.cp" title="Permalink to this definition">¶</a></dt>
 <dd><p>0001 01rd dddd rrrr</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.cpc">
-<tt class="descclassname">instructions.</tt><tt class="descname">cpc</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#cpc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.cpc" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.cpc">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">cpc</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#cpc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.cpc" title="Permalink to this definition">¶</a></dt>
 <dd><p>0000 01rd dddd rrrr</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.cpi">
-<tt class="descclassname">instructions.</tt><tt class="descname">cpi</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#cpi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.cpi" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.cpi">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">cpi</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#cpi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.cpi" title="Permalink to this definition">¶</a></dt>
 <dd><p>0011 KKKK dddd KKKK</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.cpse">
-<tt class="descclassname">instructions.</tt><tt class="descname">cpse</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#cpse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.cpse" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.cpse">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">cpse</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#cpse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.cpse" title="Permalink to this definition">¶</a></dt>
 <dd><p>0001 00rd dddd rrrr</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.db">
-<tt class="descclassname">instructions.</tt><tt class="descname">db</tt><big>(</big><em>values</em>, <em>data</em><big>)</big><a class="reference internal" href="_modules/instructions.html#db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.db" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.db">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">db</tt><big>(</big><em>values</em>, <em>data</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#db"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.db" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="instructions.dec">
-<tt class="descclassname">instructions.</tt><tt class="descname">dec</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#dec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.dec" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.dec">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">dec</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#dec"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.dec" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 010d dddd 1010</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.dw">
-<tt class="descclassname">instructions.</tt><tt class="descname">dw</tt><big>(</big><em>values</em>, <em>data</em><big>)</big><a class="reference internal" href="_modules/instructions.html#dw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.dw" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.dw">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">dw</tt><big>(</big><em>values</em>, <em>data</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#dw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.dw" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="instructions.ijmp">
-<tt class="descclassname">instructions.</tt><tt class="descname">ijmp</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/instructions.html#ijmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ijmp" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.ijmp">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">ijmp</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#ijmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.ijmp" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="instructions.inc">
-<tt class="descclassname">instructions.</tt><tt class="descname">inc</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#inc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.inc" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.inc">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">inc</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#inc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.inc" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 010d dddd 0011</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.jmp">
-<tt class="descclassname">instructions.</tt><tt class="descname">jmp</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#jmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.jmp" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.jmp">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">jmp</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#jmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.jmp" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 010k kkkk 110k
 kkkk kkkk kkkk kkkk</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.ld_post_incr_X">
-<tt class="descclassname">instructions.</tt><tt class="descname">ld_post_incr_X</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#ld_post_incr_X"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ld_post_incr_X" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.ld_post_incr_X">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">ld_post_incr_X</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#ld_post_incr_X"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.ld_post_incr_X" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 000d dddd 1101</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.ld_post_incr_Z">
-<tt class="descclassname">instructions.</tt><tt class="descname">ld_post_incr_Z</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#ld_post_incr_Z"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ld_post_incr_Z" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.ld_post_incr_Z">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">ld_post_incr_Z</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#ld_post_incr_Z"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.ld_post_incr_Z" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 000d dddd 0001</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.ld_pre_decr_Y">
-<tt class="descclassname">instructions.</tt><tt class="descname">ld_pre_decr_Y</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#ld_pre_decr_Y"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ld_pre_decr_Y" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.ld_pre_decr_Y">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">ld_pre_decr_Y</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#ld_pre_decr_Y"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.ld_pre_decr_Y" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 000d dddd 1010</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.ld_pre_decr_Z">
-<tt class="descclassname">instructions.</tt><tt class="descname">ld_pre_decr_Z</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#ld_pre_decr_Z"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ld_pre_decr_Z" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.ld_pre_decr_Z">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">ld_pre_decr_Z</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#ld_pre_decr_Z"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.ld_pre_decr_Z" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 000d dddd 0010</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.ldi">
-<tt class="descclassname">instructions.</tt><tt class="descname">ldi</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#ldi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ldi" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.ldi">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">ldi</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#ldi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.ldi" title="Permalink to this definition">¶</a></dt>
 <dd><p>1110 KKKK dddd KKKK</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.lds">
-<tt class="descclassname">instructions.</tt><tt class="descname">lds</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#lds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.lds" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.lds">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">lds</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#lds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.lds" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 000d dddd 0000
 kkkk kkkk kkkk kkkk</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.lpm">
-<tt class="descclassname">instructions.</tt><tt class="descname">lpm</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#lpm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.lpm" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.lpm">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">lpm</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#lpm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.lpm" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 000d dddd 0100</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.lpm_post_incr_Z">
-<tt class="descclassname">instructions.</tt><tt class="descname">lpm_post_incr_Z</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#lpm_post_incr_Z"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.lpm_post_incr_Z" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.lpm_post_incr_Z">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">lpm_post_incr_Z</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#lpm_post_incr_Z"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.lpm_post_incr_Z" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 000d dddd 0101</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.lsl">
-<tt class="descclassname">instructions.</tt><tt class="descname">lsl</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#lsl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.lsl" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.lsl">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">lsl</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#lsl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.lsl" title="Permalink to this definition">¶</a></dt>
 <dd><p>0000 11rd dddd rrrr</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.lsr">
-<tt class="descclassname">instructions.</tt><tt class="descname">lsr</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#lsr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.lsr" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.lsr">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">lsr</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#lsr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.lsr" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 010d dddd 0110</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.mov">
-<tt class="descclassname">instructions.</tt><tt class="descname">mov</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#mov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.mov" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.mov">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">mov</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#mov"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.mov" title="Permalink to this definition">¶</a></dt>
 <dd><p>0010 11rd dddd rrrr</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.movw">
-<tt class="descclassname">instructions.</tt><tt class="descname">movw</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#movw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.movw" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.movw">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">movw</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#movw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.movw" title="Permalink to this definition">¶</a></dt>
 <dd><p>0000 0001 dddd rrrr</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.mul">
-<tt class="descclassname">instructions.</tt><tt class="descname">mul</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#mul"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.mul" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.mul">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">mul</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#mul"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.mul" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 11rd dddd rrrr</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.or_">
-<tt class="descclassname">instructions.</tt><tt class="descname">or_</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#or_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.or_" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.or_">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">or_</tt><big>(</big><em>Rd</em>, <em>Rr</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#or_"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.or_" title="Permalink to this definition">¶</a></dt>
 <dd><p>0010 10rd dddd rrrr</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.out">
-<tt class="descclassname">instructions.</tt><tt class="descname">out</tt><big>(</big><em>io_port</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/instructions.html#out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.out" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.out">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">out</tt><big>(</big><em>io_port</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#out"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.out" title="Permalink to this definition">¶</a></dt>
 <dd><p>1011 1AAr rrrr AAAA</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.pop">
-<tt class="descclassname">instructions.</tt><tt class="descname">pop</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#pop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.pop" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.pop">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">pop</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#pop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.pop" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 000d dddd 1111</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.push">
-<tt class="descclassname">instructions.</tt><tt class="descname">push</tt><big>(</big><em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#push"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.push" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.push">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">push</tt><big>(</big><em>Rr</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#push"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.push" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 001r rrrr 1111</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.rcall">
-<tt class="descclassname">instructions.</tt><tt class="descname">rcall</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#rcall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.rcall" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.rcall">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">rcall</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#rcall"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.rcall" title="Permalink to this definition">¶</a></dt>
 <dd><p>1101 kkkk kkkk kkkk</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.ret">
-<tt class="descclassname">instructions.</tt><tt class="descname">ret</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/instructions.html#ret"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.ret" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.ret">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">ret</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#ret"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.ret" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="instructions.rjmp">
-<tt class="descclassname">instructions.</tt><tt class="descname">rjmp</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#rjmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.rjmp" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.rjmp">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">rjmp</tt><big>(</big><em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#rjmp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.rjmp" title="Permalink to this definition">¶</a></dt>
 <dd><p>1100 kkkk kkkk kkkk</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.sbis">
-<tt class="descclassname">instructions.</tt><tt class="descname">sbis</tt><big>(</big><em>register</em>, <em>bit</em><big>)</big><a class="reference internal" href="_modules/instructions.html#sbis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.sbis" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.sbis">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">sbis</tt><big>(</big><em>register</em>, <em>bit</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#sbis"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.sbis" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 1011 AAAA Abbb</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.sbiw">
-<tt class="descclassname">instructions.</tt><tt class="descname">sbiw</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#sbiw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.sbiw" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.sbiw">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">sbiw</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#sbiw"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.sbiw" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 0111 KKdd KKKK</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.sbrs">
-<tt class="descclassname">instructions.</tt><tt class="descname">sbrs</tt><big>(</big><em>Rr</em>, <em>bit</em><big>)</big><a class="reference internal" href="_modules/instructions.html#sbrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.sbrs" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.sbrs">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">sbrs</tt><big>(</big><em>Rr</em>, <em>bit</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#sbrs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.sbrs" title="Permalink to this definition">¶</a></dt>
 <dd><p>1111 111r rrrr 0bbb</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.sei">
-<tt class="descclassname">instructions.</tt><tt class="descname">sei</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/instructions.html#sei"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.sei" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.sei">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">sei</tt><big>(</big><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#sei"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.sei" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="function">
-<dt id="instructions.st_post_incr_Y">
-<tt class="descclassname">instructions.</tt><tt class="descname">st_post_incr_Y</tt><big>(</big><em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#st_post_incr_Y"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.st_post_incr_Y" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.st_post_incr_Y">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">st_post_incr_Y</tt><big>(</big><em>Rr</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#st_post_incr_Y"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.st_post_incr_Y" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 001r rrrr 1001</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.st_post_incr_Z">
-<tt class="descclassname">instructions.</tt><tt class="descname">st_post_incr_Z</tt><big>(</big><em>Rr</em><big>)</big><a class="reference internal" href="_modules/instructions.html#st_post_incr_Z"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.st_post_incr_Z" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.st_post_incr_Z">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">st_post_incr_Z</tt><big>(</big><em>Rr</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#st_post_incr_Z"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.st_post_incr_Z" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 001r rrrr 0001</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.sts">
-<tt class="descclassname">instructions.</tt><tt class="descname">sts</tt><big>(</big><em>address</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/instructions.html#sts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.sts" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.sts">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">sts</tt><big>(</big><em>address</em>, <em>register</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#sts"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.sts" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 001d dddd 0000
 kkkk kkkk kkkk kkkk</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.subi">
-<tt class="descclassname">instructions.</tt><tt class="descname">subi</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/instructions.html#subi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.subi" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.subi">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">subi</tt><big>(</big><em>register</em>, <em>address</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#subi"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.subi" title="Permalink to this definition">¶</a></dt>
 <dd><p>0101 KKKK dddd KKKK</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="instructions.swap">
-<tt class="descclassname">instructions.</tt><tt class="descname">swap</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/instructions.html#swap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#instructions.swap" title="Permalink to this definition">¶</a></dt>
+<dt id="pigeon.assembler.instructions.swap">
+<tt class="descclassname">pigeon.assembler.instructions.</tt><tt class="descname">swap</tt><big>(</big><em>Rd</em><big>)</big><a class="reference internal" href="_modules/pigeon/assembler/instructions.html#swap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pigeon.assembler.instructions.swap" title="Permalink to this definition">¶</a></dt>
 <dd><p>1001 010d dddd 0010</p>
 </dd></dl>
 
