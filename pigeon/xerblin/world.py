@@ -89,7 +89,7 @@ Code Documentation
 ^^^^^^^^^^^^^^^^^^
 
 '''
-import pickle, pprint, StringIO
+import pickle, pprint, StringIO, os
 from pigeon.xerblin.btree import fill_tree, items
 from pigeon.xerblin.library import words
 from pigeon.xerblin.base import interpret
@@ -139,12 +139,10 @@ class World(object):
 
         initial -- An interpreter to use as the initial state of the
             system.  It defaults to ROOT.
-        
+
         save_file -- A file or file-like object open for writing, or a
             string file name which is then opened for writing. If not
-            given a StringIO object is used and its getvalue() method is
-            made available on the World object as the attribute
-            "_getvalue".
+            given a StringIO object is used.
 
         '''
         if initial is None:
@@ -152,7 +150,6 @@ class World(object):
 
         if save_file is None:
             save_file = StringIO.StringIO()
-            self._getvalue = save_file.getvalue # We're gonna want this.
 
         elif isinstance(save_file, basestring):
             save_file = open(save_file, 'w')
@@ -266,8 +263,10 @@ class Serializer:
 
     def __init__(self, initial_state, stream):
         self.stream = stream
+        self._setup_flushers(stream)
         self.pickler = pickle.Pickler(stream)
         self.pickler.dump(initial_state)
+        self.flush()
 
     def post(self, command, resultant_state):
         '''
@@ -277,12 +276,18 @@ class Serializer:
         '''
         self.pickler.dump(command)
         self.pickler.dump(resultant_state)
-        try:
-            f = self.stream.flush
-        except AttributeError:
-            pass
-        else:
+        self.flush()
+
+    def flush(self):
+        for f in self._flushers:
             f()
+
+    def _setup_flushers(self, stream):
+        self._flushers = []
+        if hasattr(stream, 'flush'):
+            self._flushers.append(stream.flush)
+        if hasattr(stream, 'fileno'):
+            self._flushers.append(lambda n=stream.fileno(): os.fsync(n))
 
 
 # This is a proof-of-concept frame for interacting with
