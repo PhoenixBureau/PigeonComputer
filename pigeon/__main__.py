@@ -51,7 +51,7 @@ while True:
 
 # Create a commit_thing to let us save our state to the git repo after
 # changes.
-from pigeon.gitstore import make_commit_thing
+from pigeon.xerblin.gitstore import make_commit_thing
 commit_thing = make_commit_thing(args.roost, ['log', 'system.pickle'])
 
 

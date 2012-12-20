@@ -59,15 +59,7 @@ def initialize_repo(path, state, text, create_default_config=True):
     config_file_name = join(path, 'config.py')
     open(config_file_name, 'w').write('''\
 from operator import attrgetter
-import pigeon.xerblin.gitstorage
 import pigeon.xerblin.TextViewer
-
-# Respect the command line option for home dir ("roost", sorry.)
-pigeon.xerblin.gitstorage.GIT_ROOT = args.roost
-
-# Modify the default Git settings.
-pigeon.xerblin.gitstorage.AUTHOR = 'J. Smith <jsmith@example.com>'
-pigeon.xerblin.gitstorage.TZ = '-0800'
 
 
 # Add some text widget keybindings.

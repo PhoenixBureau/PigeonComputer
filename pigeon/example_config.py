@@ -1,12 +1,5 @@
 from operator import attrgetter
-import pigeon.xerblin.gitstorage
 import pigeon.xerblin.TextViewer
-
-
-# Modify the default Git settings.
-pigeon.xerblin.gitstorage.GIT_ROOT = args.roost
-pigeon.xerblin.gitstorage.AUTHOR = 'Simon Forman <simon@pigeoncomputer.org>'
-pigeon.xerblin.gitstorage.TZ = '-0800'
 
 
 # Add some text widget keybindings.
