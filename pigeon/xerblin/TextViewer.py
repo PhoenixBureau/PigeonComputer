@@ -14,7 +14,6 @@ import re
 from time import time
 from traceback import format_exc
 from pigeon.xerblin.btree import get
-from pigeon.xerblin.gitstorage import save_state
 
 
 class TextViewerWorldMixin(object):

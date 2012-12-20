@@ -8,7 +8,6 @@ This is the Pigeon Assembler.
 '''
 import pprint, logging
 log = logging.getLogger('ASM')
-logging.basicConfig(filename='hello-there.log', level=logging.DEBUG)
 from collections import defaultdict
 from struct import pack
 from myhdl import intbv

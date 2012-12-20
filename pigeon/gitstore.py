@@ -5,9 +5,6 @@ from dulwich.repo import Repo, NotGitRepository
 from pigeon.xerblin.btree import items
 
 
-logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
-
-
 def make_commit_thing(path, files):
   log = logging.getLogger('COMMIT')
   try:

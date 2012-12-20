@@ -1,6 +1,10 @@
 from os.path import expanduser, exists, join
 from argparse import ArgumentParser
 from pickle import Unpickler
+import logging, sys
+
+
+logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
 # First parse command line args if any.
