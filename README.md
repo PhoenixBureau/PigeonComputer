@@ -38,8 +38,8 @@ sections still to be filled in but I'm actively improving it.)
 If you have Python (and Tkinter) installed then the only dependencies are:
 
 * MyHDL
-* IntelHex
-* Dulwich
+* IntelHex http://www.bialix.com/intelhex/ http://pypi.python.org/pypi/IntelHex/1.4
+* Dulwich https://www.samba.org/~jelmer/dulwich/ http://pypi.python.org/pypi/dulwich
 * pexpect
 
 It is recommended to use Pip and Virtualenv to set up the working environment.
