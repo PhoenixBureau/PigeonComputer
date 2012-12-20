@@ -45,6 +45,12 @@ while True:
     break
 
 
+# Create a commit_thing to let us save our state to the git repo after
+# changes.
+from pigeon.gitstore import make_commit_thing
+commit_thing = make_commit_thing(args.roost, ['log', 'system.pickle'])
+
+
 # Now that the config_file has had a chance to do its thing, import the
 # system and run.
 from pigeon.xerblin.tkworld import TkShell, TextViewerWorld
@@ -55,10 +61,12 @@ main(
   TkShell,
   TextViewerWorld,
   text=text,
+  text_file_name=text_file_name,
   initial=state,
   save_file=state_file_name, # This will cause the state_file to immediately
                              # be overwritten with the (pickled) state, thus
                              # clearing previous stored states in the saved
                              # state_file and re-starting it rooted at the
                              # current (last-saved) state.
+  commit_thing=commit_thing,
   )

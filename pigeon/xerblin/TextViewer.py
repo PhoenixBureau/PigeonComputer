@@ -22,6 +22,7 @@ class TextViewerWorldMixin(object):
     def __init__(self, tv, *a, **b):
         self.tv = tv
         tv.world = WorldWrapper(self)
+        self.commit_thing = b.pop('commit_thing')
         super(TextViewerWorldMixin, self).__init__(*a, **b)
 
     def setCurrentState(self, state):
@@ -29,10 +30,7 @@ class TextViewerWorldMixin(object):
         self.save('set state')
 
     def save(self, message='auto-save'):
-        contents = self.tv.get_contents()
-##        data = self.serializer.stream.getvalue()
-        message += ' ' + str(int(time()))
-##        save_state({'system': data, 'log': contents}, message)
+        self.commit_thing(message + ' ' + str(time()))
 
 
 class WorldWrapper:
@@ -306,6 +304,9 @@ class TextViewerWidget(Text, mousebindingsmixin):
 
     def __init__(self, master=None,  **kw):
 
+        # Get the filename associated with this widget's contents, if any.
+        self.filename = kw.pop('filename', False)
+
         #Turn on undo, but don't override a passed-in setting.
         kw.setdefault('undo', True)
 
@@ -329,7 +330,6 @@ class TextViewerWidget(Text, mousebindingsmixin):
         #file to affect the key bindings and whatnot here.
         for event_sequence, callback_finder in text_bindings.iteritems():
             callback = callback_finder(self)
-            print event_sequence, '=>', callback
             self.bind(event_sequence, callback)
 
         self.tk.call(self._w, 'edit', 'modified', 0)
@@ -364,8 +364,14 @@ class TextViewerWidget(Text, mousebindingsmixin):
 
     def _saveFunc(self):
         self._save = None
+        if not self.filename:
+            return
         self['state'] = DISABLED
         try:
+            text = self.get_contents()
+            with open(self.filename, 'w') as f:
+                f.write(text)
+                f.flush()
             self.world.save()
         finally:
             self['state'] = NORMAL

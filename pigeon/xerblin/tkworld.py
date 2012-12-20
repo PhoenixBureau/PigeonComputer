@@ -15,8 +15,8 @@ class TextViewerWorld(TextViewerWorldMixin, World, object):
 
 class TkShell:
 
-    def __init__(self, root):
-        self._create_widgets(root)
+    def __init__(self, root, text_file_name):
+        self._create_widgets(root, text_file_name)
         self.words = []
 
     def view(self, (stack, dictionary)):
@@ -30,10 +30,10 @@ class TkShell:
         listbox.delete(0, END)
         listbox.insert(0, *contents)
 
-    def _create_widgets(self, root):
+    def _create_widgets(self, root, text_file_name):
         self.stack_view = Listbox(root, width=64)
         self.stack_view.pack(side=LEFT, expand=True, fill=BOTH)
-        self.text = TextViewerWidget(root)
+        self.text = TextViewerWidget(root, filename=text_file_name)
         self.text.pack(side=LEFT, expand=True, fill=BOTH)
 
 

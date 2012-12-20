@@ -8,6 +8,24 @@ from pigeon.xerblin.btree import items
 logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 
+def make_commit_thing(path, files):
+  log = logging.getLogger('COMMIT')
+  try:
+    repo = Repo(path)
+  except NotGitRepository:
+    log.critical("%r isn't a repository!", path)
+    raise ValueError("%r isn't a repository!" % (path,))
+
+  # Note that we bind the args as defaults rather than via a closure so
+  # you can override them later if you want.
+  def commit(message, files=files, repo=repo, log=log):
+    repo.stage(files)
+    commit_sha = repo.do_commit(message)
+    log.info('commit %s %s', commit_sha, message[:100])
+
+  return commit
+
+
 def list_words(dictionary):
   words = sorted(name for name, value in items(dictionary))
   return 'Words: ' + '   '.join(words) + '\n'
@@ -74,10 +92,12 @@ pigeon.xerblin.TextViewer.text_bindings.update({
   commit = repo.do_commit('Initial commit.')
   log.info('Initial commit done. %s', commit)
 
-from pigeon.xerblin.world import ROOT
-initialize_repo(
-  '/home/sforman/.pigeon',
-  ROOT,
-  list_words(ROOT[1]),
-  False,
-  )
+
+if __name__ == "__main__":
+  from pigeon.xerblin.world import ROOT
+  initialize_repo(
+    '/home/sforman/.pigeon',
+    ROOT,
+    list_words(ROOT[1]),
+    False,
+    )
