@@ -2,11 +2,11 @@ from Tkinter import Tk, END
 from pigeon.xerblin.btree import items
 
 
-def main(title, shell, world, text=None, initial=None):
+def main(title, shell, world, text=None, initial=None, save_file=None):
   tk = Tk()
   tk.title(title)
   t = shell(tk)
-  w = world(t.text, t.view, initial=initial)
+  w = world(t.text, t.view, initial=initial, save_file=save_file)
 
   if text is None:
     stack, dictionary = w.getCurrentState()

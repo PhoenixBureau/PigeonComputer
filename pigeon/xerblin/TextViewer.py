@@ -30,9 +30,9 @@ class TextViewerWorldMixin(object):
 
     def save(self, message='auto-save'):
         contents = self.tv.get_contents()
-        data = self.serializer.stream.getvalue()
+##        data = self.serializer.stream.getvalue()
         message += ' ' + str(int(time()))
-        save_state({'system': data, 'log': contents}, message)
+##        save_state({'system': data, 'log': contents}, message)
 
 
 class WorldWrapper:

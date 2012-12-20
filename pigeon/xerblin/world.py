@@ -131,7 +131,7 @@ class World(object):
 
     '''
 
-    def __init__(self, view=nullView, initial=ROOT, save_file=None):
+    def __init__(self, view=nullView, initial=None, save_file=None):
         '''
         Create a World object with the given view function.
 
@@ -147,6 +147,8 @@ class World(object):
             "_getvalue".
 
         '''
+        if initial is None:
+            initial = ROOT
 
         if save_file is None:
             save_file = StringIO.StringIO()
@@ -275,6 +277,12 @@ class Serializer:
         '''
         self.pickler.dump(command)
         self.pickler.dump(resultant_state)
+        try:
+            f = self.stream.flush
+        except AttributeError:
+            pass
+        else:
+            f()
 
 
 # This is a proof-of-concept frame for interacting with
