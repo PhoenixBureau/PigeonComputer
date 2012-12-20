@@ -1,4 +1,4 @@
-import os
+import os, pickle
 from time import time
 from dulwich.repo import Repo, NotGitRepository
 from dulwich.objects import Blob, Tree, Commit, parse_timezone
@@ -12,7 +12,7 @@ TZ = '-0800'
 def get_repo(root=None):
   if root is None:
     root = GIT_ROOT
-  print 'wdfs', root
+  print 'repository at', root
   try:
     return Repo(root)
   except NotGitRepository:
@@ -63,6 +63,15 @@ def save_state(files, message, repo=None):
   c = create_commit(tree, message, parents=parents)
   a(c)
   repo.refs['refs/heads/master'] = c.id
+
+
+def retrieve_head(repo_path=None):
+  repo = get_repo(repo_path)
+  commit = repo.get_object(repo.head())
+  tree = repo.get_object(commit.tree)
+  log_contents = repo.get_object(tree['log'][1])
+  system_pickle = repo.get_object(tree['system'][1])
+  return str(log_contents), pickle.loads(str(system_pickle))
 
 
 if __name__ == '__main__':

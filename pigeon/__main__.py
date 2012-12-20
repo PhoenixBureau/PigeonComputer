@@ -1,7 +1,7 @@
 from os.path import expanduser, exists, join
 from argparse import ArgumentParser
 
-
+# First parse command line args if any.
 parser = ArgumentParser()
 
 parser.add_argument(
@@ -17,6 +17,7 @@ parser.add_argument(
 
 args = parser.parse_args()
 
+# Execute the config file.
 config_file = join(args.roost, args.config)
 
 if not exists(config_file):
@@ -28,5 +29,6 @@ if exists(config_file):
 # Now that the config_file has had a chance to do its thing, import the
 # system and run.
 from pigeon.xerblin.tkworld import TkShell, TextViewerWorld
+from pigeon.xerblin.gitstorage import retrieve_head
 from pigeon import main
-main('Pigeon Computer', TkShell, TextViewerWorld)
+main('Pigeon Computer', TkShell, TextViewerWorld, *retrieve_head())

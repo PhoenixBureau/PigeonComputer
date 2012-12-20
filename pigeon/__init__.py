@@ -6,7 +6,7 @@ def main(title, shell, world, text=None, initial=None):
   tk = Tk()
   tk.title(title)
   t = shell(tk)
-  w = world(t.text, t.view)
+  w = world(t.text, t.view, initial=initial)
 
   if text is None:
     stack, dictionary = w.getCurrentState()
