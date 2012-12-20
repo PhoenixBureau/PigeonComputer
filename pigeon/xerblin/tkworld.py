@@ -2,7 +2,6 @@
 '''
 A simple Tkinter GUI.
 '''
-from shlex import split
 from Tkinter import Tk, Listbox, N, END, Entry, LEFT, BOTH, Y
 from pigeon.xerblin.btree import items
 from pigeon.xerblin.stack import iterStack
