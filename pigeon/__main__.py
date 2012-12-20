@@ -13,7 +13,8 @@ parser = ArgumentParser()
 parser.add_argument(
   '-r', '--roost',
   default=expanduser('~/.pigeon'),
-  help='Use this directory as home for the Pigeon system. (default: %(default)s).',
+  help=('Use this directory as home for the Pigeon system. (default: %(default)s).\n'
+        '(I apologize for the terrible pun.)'),
   )
 
 parser.add_argument(
@@ -38,15 +39,16 @@ text_file_name = join(args.roost, 'log')
 text = open(text_file_name).read()
 
 state_file_name = join(args.roost, 'system.pickle')
-up = Unpickler(open(state_file_name))
-# Pull out all the sequentially saved state, command, state, ... data.
-# This loop will break after the last saved state is loaded leaving
-# the last saved state in the 'state' variable
-while True:
-  try:
-    state = up.load()
-  except EOFError:
-    break
+with open(state_file_name) as f:
+  up = Unpickler(f)
+  # Pull out all the sequentially saved state, command, state, ... data.
+  # This loop will break after the last saved state is loaded leaving
+  # the last saved state in the 'state' variable
+  while True:
+    try:
+      state = up.load()
+    except EOFError:
+      break
 
 
 # Create a commit_thing to let us save our state to the git repo after
