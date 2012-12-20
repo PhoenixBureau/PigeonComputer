@@ -10,7 +10,7 @@ from Tkinter import (
     DISABLED,
     NORMAL,
     )
-import re
+import re, os
 from time import time
 from traceback import format_exc
 from pigeon.xerblin.btree import get
@@ -39,13 +39,7 @@ class WorldWrapper:
         self.world = world
 
     def do_lookup(self, name):
-        stack, dictionary = self.world.getCurrentState()
-        try:
-            it = get(dictionary, name)
-        except KeyError:
-            return
-        stack = it, stack
-        self.world.setCurrentState((stack, dictionary))
+        self.world.step(['"%s"' % (name,), 'lookup'])
 
     def do_opendoc(self, name):
         self.do_lookup(name)
@@ -57,10 +51,8 @@ class WorldWrapper:
         self.world.step(['drop'])
 
     def push(self, it):
-        it = str(it)
-        stack, dictionary = self.world.getCurrentState()
-        stack = it, stack
-        self.world.setCurrentState((stack, dictionary))
+        it = '"%s"' % it.encode('utf8')
+        self.world.step([it])
 
     def peek(self):
         stack, dictionary = self.world.getCurrentState()
@@ -371,6 +363,7 @@ class TextViewerWidget(Text, mousebindingsmixin):
             with open(self.filename, 'w') as f:
                 f.write(text)
                 f.flush()
+                os.fsync(f.fileno())
             self.world.save()
         finally:
             self['state'] = NORMAL
@@ -508,8 +501,6 @@ class TextViewerWidget(Text, mousebindingsmixin):
 
     def cut(self, event):
         '''Cut selection to stack.'''
-        print 'CUT!!', event
-        print
 
         #Get the indices of the current selection if any.
         select_indices = self.tag_ranges(SEL)
