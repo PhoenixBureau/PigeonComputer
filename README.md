@@ -60,9 +60,16 @@ Pip to install the rest of the requirements automatically:
 
 Then run with:
 
-    python -m pigeon
+    python -m pigeon --init
 
-(The module's `__main__.py` file is the main script.)
+(Leave off the "--init" switch after the first time, it just initialize 
+the "roost" directory and isn't needed except for the first time you run
+the program.)
+
+The system will use a "roost" directory to store your saved history. The
+default directory is `$HOME/.pigeon` but you can choose another location
+with the "--roost" switch.
+
 
 #### Generating the Pigeon Firmware ASM File (Optional)
 

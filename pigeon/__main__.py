@@ -28,52 +28,95 @@ logging.basicConfig(stream=sys.stdout, level=logging.DEBUG)
 
 # First parse command line args if any.
 parser = ArgumentParser()
-
 parser.add_argument(
   '-r', '--roost',
   default=expanduser('~/.pigeon'),
   help=('Use this directory as home for the Pigeon system. (default: %(default)s).\n'
         '(I apologize for the terrible pun.)'),
   )
-
 parser.add_argument(
   '-c', '--config',
   default=expanduser('config.py'),
-  help='Use this config file.')
-
+  help='Use this config file.',
+  )
+parser.add_argument(
+  '-i', '--init',
+  default=False,
+  action='store_true',
+  help=('Initialize the "roost" directory with git repo, log, system.pickle '
+        'and default config file.  '
+        "If '--no-config' is passed the default config file will NOT be "
+        'created.)'
+        ),
+  )
+parser.add_argument(
+  '--no-config',
+  default=False,
+  action='store_true',
+  help=("If '--init' is used and '--no-config' is passed the default "
+        'config file will NOT be created.)'
+        ),
+  )
 args = parser.parse_args()
+
+
+if not exists(args.roost):
+  print "Roost directory %r doesn't exist!" % (args.roost,)
+  sys.exit(2)
+
+
+# Initialize the "roost" directory if requested.
+if args.init:
+  from pigeon.xerblin.gitstore import initialize_repo, list_words
+  from pigeon.xerblin.world import ROOT
+  text = list_words(ROOT[1])
+  initialize_repo(args.roost, ROOT, text, not args.no_config)
+
 
 # Execute the config file.
 config_file = join(args.roost, args.config)
-
 if not exists(config_file):
   config_file = config_file + '.py'
-
 if exists(config_file):
   execfile(config_file)
 
 
 # Open and read the last saved state.
 text_file_name = join(args.roost, 'log')
-text = open(text_file_name).read()
+try:
+  text = open(text_file_name).read()
+except IOError, e:
+  print e
+  print 'Did you initialize roost? (Use "--init" command.)'
+  sys.exit(e.errno)
 
 state_file_name = join(args.roost, 'system.pickle')
-with open(state_file_name) as f:
-  up = Unpickler(f)
-  # Pull out all the sequentially saved state, command, state, ... data.
-  # This loop will break after the last saved state is loaded leaving
-  # the last saved state in the 'state' variable
-  while True:
-    try:
-      state = up.load()
-    except EOFError:
-      break
+try:
+  with open(state_file_name) as f:
+    up = Unpickler(f)
+    # Pull out all the sequentially saved state, command, state, ... data.
+    # This loop will break after the last saved state is loaded leaving
+    # the last saved state in the 'state' variable
+    while True:
+      try:
+        state = up.load()
+      except EOFError:
+        break
+except IOError, e:
+  print e
+  print 'Did you initialize roost? (Use "--init" command.)'
+  sys.exit(e.errno)
 
 
 # Create a commit_thing to let us save our state to the git repo after
 # changes.
 from pigeon.xerblin.gitstore import make_commit_thing
-commit_thing = make_commit_thing(args.roost, ['log', 'system.pickle'])
+try:
+  commit_thing = make_commit_thing(args.roost, ['log', 'system.pickle'])
+except ValueError, e:
+  print e
+  print 'Did you initialize roost? (Use "--init" command.)'
+  sys.exit(2)
 
 
 # Now that the config_file has had a chance to do its thing, import the
