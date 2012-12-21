@@ -37,11 +37,11 @@ Or, one of three kinds of tuple.  The kind of the tuple is indicated
 by its first member, which is a handler function, and the rest of the
 tuple consists in its body as indicated:
 
-    (SEQUENCE HANDLER, func0, func1, func2)
-    
+    (:py:func:`handle_sequence`, func0, func1, func2, ...)
+
     (BRANCH HANDLER, true_func, false_func)
-    
-    (LOOP HANDLER, func0, func1, func2)
+
+    (LOOP HANDLER, func0, func1, func2, ...)
 
 where any of the functions can be themselves SEQ, BRANCH, LOOP, or
 plain functions as described above.
@@ -73,6 +73,7 @@ Code Documentation
 
 '''
 from pigeon.xerblin.btree import get
+from pigeon.xerblin.stack import push
 
 
 def _pop_TOS(I):
@@ -116,6 +117,16 @@ def handle_loop(I, loop):
             break
         I = handle_sequence(I, loop)
     return I
+
+
+# This primitive permits us to create a sort of "constant" in the dictionary.
+
+def enstacken((stack, dictionary), stack_us):
+    '''
+    Push the items in the body onto the stack.
+    '''
+    stack = push(stack, *stack_us[1:])
+    return stack, dictionary
 
 
 def apply_func(I, func):
