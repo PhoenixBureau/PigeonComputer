@@ -62,7 +62,7 @@ Then run with:
 
     python -m pigeon --init
 
-(Leave off the "--init" switch after the first time, it just initialize 
+(Leave off the "--init" switch after the first time, it just initializes
 the "roost" directory and isn't needed except for the first time you run
 the program.)
 
