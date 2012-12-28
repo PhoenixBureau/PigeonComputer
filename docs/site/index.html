@@ -35,15 +35,29 @@
 
   <h2><a name="huh">What is a Computer Anyway?</a></h2>
 
-  <p>My name is Simon Forman and I've been a computer programmer and
-  enthusiast since childhood.  I wanted to create a way for regular,
-  every-day people who aren't computer geeks like me, which includes most
-  of my friends and family, to understand the fundamental phenomenon of
-  machine logic.
+  <p>The Pigeon Computer is a simple but sophisticated system for learning
+and exploring the fundamentals of computers and programming.
 
-  <p>The concepts involved are not actually very complex.  Deep 
-  and elegant, yes, but any child who can solve a Sudoku puzzle already has
-  the mental development to grasp the core of computing.
+  <p>It is written to support a course or class (as yet pending) to learn
+programming from the bit to the compiler.
+
+  <p>There is a <a href="http://phoenixbureau.github.com/PigeonComputer/">DRAFT manual</a> and a Pigeon User Interface that includes:
+
+  <ul>
+  <li>An assembler for the ATmega328P micro-controller.
+  <li>A polymorphic meta-compiler.
+  <li>Forth-like firmware in assembly.
+  <li>Simple high-level language for assembly control structures.
+  <li>A virtual computer that illustrates Functional Programming.
+  </ul>
+
+  <p><a href="https://github.com/PhoenixBureau/PigeonComputer">Source code is released under the GPL (v3) and is hosted on Github</a>
+
+  <p><a href="http://phoenixbureau.github.com/PigeonComputer/">The manual is online in HTML form here</a>
+
+  <p><a href="https://groups.google.com/d/forum/pigeoncomputer">Mailing list</a>
+
+  <p>
 
   <p>I suspect that most of the trouble teaching
   computers to normal people stems directly from the immense leaps
@@ -169,6 +183,97 @@
   <h3>Parsing, Grammar, Compiling.</h3>
 
   <p>Ahem, some about that.
+
+  <p>The Pigeon User Interface (PUI) is a simple and elegant IDE that
+presents the user with a very simple but powerful stack-based virtual
+computer that includes commands for assembling object code for the
+ATmega328P and compiling high-level languages to assembly.
+
+  <p>To get the students into assembly language the Pigeon Computer system
+includes a tiny Forth-like firmware that implements a command
+interpreter on the serial port (on-chip USART peripheral) in less than
+a kilobyte of object code.
+
+  <p>The firmware is a stub. It is meant to be understood and extended by
+the students rather than used as-is.  I have written some commands for
+it that give it the ability to use the TWI (I2C) subsystem of the
+ATmega328P to communicate with other devices, and used that to talk to
+an Inertial Motion Unit and get gyro and accelerometer readings, so
+there's that.
+
+  <p>Once students are comfortable with assembly, the PUI includes a tiny,
+powerful, and extremely flexible meta-compiler: Val Shorre's Meta-II
+(implemented in Python.)  This amazing bit of software is polymorphic
+in the sense that you can feed it different compiler descriptions and
+it becomes different compilers.
+
+  <p>The underlying Meta-II virtual machine works just like an assembler to
+read and "become" a compiler description, then it operates as a
+syntax-driven compiler for the language described in the compiler
+description.
+
+  <p>It is simple enough to be understood by someone willing to take the
+time, yet powerful enough to be used in earnest to develop "little
+languages" for use in real projects.  The PUI includes a simple
+compiler (a description in Meta-II) that generates control-flow
+constructs for the firmware commands, illustrating the path from
+hand-coded assembly to high-level languages.
+
+  <p>(Those interested in further information regarding these issues are
+urged to examine the work of the Viewpoints Research Institute.)
+
+<hr>
+
+  <p>Last but not least, the virtual computer in the PUI is a stack-based
+Forth-like fully Functional Programming not-quite-language.  It mimics
+the operation of the firmware but goes far beyond what that code is
+capable of as it has the whole of Python and the host machine to work
+with.
+
+  <p>When you start the PUI it creates a "roost" directory (I apologize for
+the pun) where it writes a Git repository (using a pure-Python Git
+implementation called Dulwich) and two files: 'log' and
+'system.pickle'.
+
+  <p>Then the GUI starts and the user sees a window with two panes. On the
+left is a listbox that shows the contents of the stack and on the
+right is a text editor.
+
+  <p>The 'log' file is kept in sync with the contents of the text
+(auto-saved two seconds after the last edit) and the 'system.pickle'
+file keeps a copy of the serialized state of the PUI and is updated
+after every change to the virtual computer's state.  When either of
+these files change a commit is made to the git repository.
+
+  <p>This ensures that you never have to save (ever!) and you can never
+lose your work (ever!).  When you re-open the PUI it reads the last
+state and log from the "roost" directory and loads them, seamlessly
+putting you in the exact spot where you left off.
+
+  <p>You can use standard Git tools to examine and check out previous
+history.  (Still to do: I want to add means for examining and
+replaying histories as well as "cherry picking" objects and data from
+previous states into the current one.)
+
+  <p>In addition to the above automatic save mechanism, the text widget
+includes undo/redo commands.
+
+  <p>The stack-based virtual computer has a "dictionary" of command words
+(like Forth) each of which operates solely on the stack and has no
+side effects.  The virtual computer uses only those Python types that
+are immutable (string/unicode, numbers, tuples) and this together with
+the purely Functional command words means that the entire virtual
+machine is pure Functional-Programming-style.
+
+  <p>(One effect of this is that the whole machine state forms one
+"persistent" data structure that captures the whole previous history
+of every computation the machine performs as the user uses it to e.g.
+write code for their chip(s).  This history is kept, serialized in the
+'system.pickle' file, and could be made available to the user,
+although at the moment it is discarded from the running PUI.  This
+whole persistence mechanism is separate and orthogonal to the
+git-based history store mentioned above.)
+
 
   </div>
   <div class="grid-4">
