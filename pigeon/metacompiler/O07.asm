@@ -624,59 +624,48 @@ L175
 L176
 L170
 	R
-DeclarationSequence
-	TST 'CONST'
-	BF L177
-	CL 'const'
-	OUT
+CD
 	CLL ConstantDeclaration
-	BF L178
+	BF L177
 	TST ';'
 	BE
-L178
-L179
-	BF L180
-L180
-	BT L181
-	SET
-	BF L182
-L182
-L181
-	BE
 L177
+L178
+	BF L179
+L179
+	BT L180
+	SET
+	BF L181
+L181
+L180
+	R
+DeclarationSequence
+	TST 'CONST'
+	BF L182
+	CL 'const'
+	OUT
+	CLL CD
+	BE
+L182
 L183
 	BF L184
-L184
-	BT L185
-	SET
-	BF L186
-L186
-L185
-	BF L187
 	TST 'TYPE'
-	BF L188
+	BF L185
 	CL 'types'
 	OUT
 	CLL TypeDeclaration
 	BE
 	TST ';'
 	BE
-L188
-L189
-	BF L190
-L190
-	BT L191
-	SET
-	BF L192
-L192
-L191
+L185
+L186
 	BE
+L184
 L187
-L193
 	R
 PROGRAM
 	TST 'MODULE'
-	BF L194
+	BF L188
 	CLL ident
 	BE
 	TST ';'
@@ -693,8 +682,8 @@ PROGRAM
 	BE
 	CL 'end_module'
 	OUT
-L194
-L195
+L188
+L189
 	R
 	END
 

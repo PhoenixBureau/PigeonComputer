@@ -1,0 +1,80 @@
+.SYNTAX PROGRAM
+
+digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' ;
+
+hexDigit = digit | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' ;
+
+ident = .ID .OUT('ident '*) ;
+
+qualident = ( ( ident '.' ) | .EMPTY ) ident .OUT('qualident') ;
+
+identdef = ident ( '*' .OUT(' export') | .EMPTY ) ;
+
+integer = ( digit $ digit ) | ( digit $ hexDigit 'H' ) ;
+
+real = digit $ digit '.' $ digit ( ScaleFactor | .EMPTY ) ;
+
+ScaleFactor = ( 'E' | 'D' ) ( ( '+' | '-' ) | .EMPTY ) digit $ digit ;
+
+number = ( integer | real ) .OUT('number');
+
+string = ( '"' .STRING '"' ) | ( digit $ hexDigit 'H' ) ;
+
+ConstantDeclaration = identdef '=' ConstExpression ;
+
+ConstExpression = expression ;
+
+TypeDeclaration = identdef .OUT('TypeDeclaration')
+                  '=' StrucType .OUT('TypeDeclaration_Type') ;
+
+StrucType = ArrayType | RecordType | PointerType | ProcedureType ;
+
+type = qualident | StrucType ;
+
+ArrayType = 'ARRAY' length $ ( ',' length ) 'OF' type ;
+
+length = .NUMBER ;
+
+RecordType = 'RECORD' ( ( '(' BaseType ')' ) | .EMPTY ) 
+             ( FieldListSequence | .EMPTY ) 'END' ;
+
+BaseType = qualident ;
+
+FieldListSequence = FieldList $ ( ';' FieldList ) ;
+
+FieldList = IdentList ':' type ;
+
+IdentList = identdef $ ( ',' identdef ) ;
+
+PointerType = 'POINTER' 'TO' type ;
+
+ProcedureType = 'PROCEDURE' ( 'FormalParameters' | .EMPTY ) ;
+
+VariableDeclaration = IdentList ':' type ;
+
+expression = SimpleExpression $ ( relation SimpleExpression ) ;
+
+relation = '=' | '#' | '<' | '<=' | '>' | '>=' | 'IN' | 'IS' ;
+
+SimpleExpression = ( ( '+' | '-' ) | .EMPTY ) term $ ( AddOperator term ) ;
+
+AddOperator = '+' | '-' | 'OR' ;
+
+term = factor $ ( MulOperator factor ) ;
+
+MulOperator = '*' | '/' | 'DIV' | 'MOD' | '&' ;
+
+factor = number | string | 'NIL' | 'TRUE' | 'FALSE' | '(' expression ')'
+        | '~' factor ;
+
+CD = ( ConstantDeclaration ';' ) | .EMPTY ;
+
+DeclarationSequence = ( 'CONST' .OUT('const') CD )
+                      ( 'TYPE' .OUT('types') TypeDeclaration ';' ) ;
+
+PROGRAM = 'MODULE' ident ';' .OUT('module')
+          DeclarationSequence
+          'END' ident '.' .OUT('end_module') ;
+
+.END
+
