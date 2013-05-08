@@ -1,0 +1,15 @@
+.SYNTAX PROGRAM
+
+string = .STRING .OUT('ast = send(ast_vt, "allocate");send(ast, "init", LIT, '*');frame.append(ast)') ;
+number = .NUMBER .OUT('ast = send(ast_vt, "allocate");send(ast, "init", LIT, '*');frame.append(ast)');
+symbol = .ID .OUT('frame.append("'*'");frame=[];stack.append(frame)') ;
+
+term = string | number | symbol ;
+
+PROGRAM = .OUT('frame = []')
+          .OUT('stack = [frame]')
+          term $ term '.'
+          .OUT('return stack') ;
+
+.END
+

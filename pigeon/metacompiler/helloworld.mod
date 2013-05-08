@@ -1,6 +1,6 @@
 MODULE Wow;
 CONST
-  dog = -7;
+  dog = -72;
 TYPE
 songwriter = POINTER TO Billy.Joel;
 END Wow.
