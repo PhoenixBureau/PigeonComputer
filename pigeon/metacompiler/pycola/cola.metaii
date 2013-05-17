@@ -1,0 +1,27 @@
+.SYNTAX PROGRAM
+
+string = .STRING .OUT('ast = send(ast_vt, "allocate")')
+                 .OUT('send(ast, "init", LIT, '*')')
+                 .OUT('frame.append(ast)') ;
+
+number = .NUMBER .OUT('ast = send(ast_vt, "allocate")')
+                 .OUT('send(ast, "init", LIT, '*')')
+                 .OUT('frame.append(ast)') ;
+
+symbol = .ID .OUT('frame.append("'*'")') ;
+
+pound = '#' .OUT('stack[-1]=tuple(reversed(stack[-1]))')
+            .OUT('frame=[]')
+            .OUT('stack.append(frame)') ;
+
+bang = '!' .OUT('frame.append(stack.pop(-2))') ;
+
+term = string | number | symbol | pound | bang ;
+
+PROGRAM = .OUT('frame = []')
+          .OUT('stack = [frame]')
+          term $ term '.' .OUT('stack[-1]=tuple(reversed(stack[-1]))')
+          .OUT('return stack') ;
+
+.END
+
