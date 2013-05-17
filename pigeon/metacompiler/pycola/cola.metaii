@@ -8,9 +8,13 @@ number = .NUMBER .OUT('ast = send(ast_vt, "allocate")')
                  .OUT('send(ast, "init", LIT, '*')')
                  .OUT('frame.append(ast)') ;
 
-symbol = .ID .OUT('frame.append("'*'")') ;
+symbol = .ID .OUT('ast = send(ast_vt, "allocate")')
+             .OUT('send(ast, "init", WORD, "'*'")')
+             .OUT('frame.append(ast)') ;
 
-pound = '#' .OUT('stack[-1]=tuple(reversed(stack[-1]))')
+pound = '#' .OUT('ast = send(ast_vt, "allocate")')
+            .OUT('send(ast, "init", SEQ, tuple(reversed(stack[-1])))')
+            .OUT('stack[-1] = ast')
             .OUT('frame=[]')
             .OUT('stack.append(frame)') ;
 
@@ -20,7 +24,7 @@ term = string | number | symbol | pound | bang ;
 
 PROGRAM = .OUT('frame = []')
           .OUT('stack = [frame]')
-          term $ term '.' .OUT('stack[-1]=tuple(reversed(stack[-1]))')
+          term $ term '.' .OUT('if stack[-1] == []: del stack[-1]')
           .OUT('return stack') ;
 
 .END
