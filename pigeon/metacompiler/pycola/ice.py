@@ -8,43 +8,38 @@ symbol_vt, ast_vt = setUpTransformEngine(object_vt, vtvt)
 LIT = send(symbol_vt, 'allocate')
 send(LIT, 'setName', 'literal')
 
-EVAL = send(symbol_vt, 'allocate')
-send(EVAL, 'setName', 'eval')
 
-ast = send(ast_vt, 'allocate')
-send(ast, 'init', LIT, 23)
-
-e = send(ast_vt, 'allocate')
-send(e, 'init', EVAL, ast)
+if __name__ == '__main__':
+    from metaii import comp
+    from pprint import pprint
 
 
-context_vt = send(vtvt, 'delegated')
+    machine = open('metaii.asm').read()
+    cola_metaii = open('cola.metaii').read()
 
-def emit(thing, context):
-    print thing.data
-send(context_vt, 'addMethod', 'literal', emit)
+    cola_machine = comp(cola_metaii, machine)
+    source = '''
+    two four add #
+    baz bar foo seq #
+    second first ! #
+    !!k .
+    '''
 
-send(context_vt, 'addMethod', 'eval',
-     lambda thing, context: send(ast, 'eval', context))
+    [('k',
+  ('add', 'four', 'two'),
+  (('seq', 'foo', 'bar', 'baz'), 'first', 'second'))]
 
+##    'b' 23 Hi ! #
+##    add
+##    Say goodnight Gracie #
+##    Goodnight Gracie ! .
+##    '''
+##    
+##    Goodnight Gracie !
+##    ! ! c
+##    .
+##    '''
 
-print ast.symbol.name, ast.data
-print e.symbol.name, e.data
-
-send(ast, 'eval', context_vt)
-send(e, 'eval', context_vt)
-
-
-
-
-def a():
-	frame = []
-	stack = [frame]
-	ast = send(ast_vt, "allocate");send(ast, "init", LIT, 23);frame.append(ast)
-	ast = send(ast_vt, "allocate");send(ast, "init", LIT, 18);frame.append(ast)
-	frame.append("add");frame=[];stack.append(frame)
-	ast = send(ast_vt, "allocate");send(ast, "init", LIT, 'b');frame.append(ast)
-	ast = send(ast_vt, "allocate");send(ast, "init", LIT, 23);frame.append(ast)
-	frame.append("Hi");frame=[];stack.append(frame)
-	frame.append("c");frame=[];stack.append(frame)
-	return stack
+    body = 'def a():\n' + comp(source, cola_machine)
+    exec body
+    pprint(a())
