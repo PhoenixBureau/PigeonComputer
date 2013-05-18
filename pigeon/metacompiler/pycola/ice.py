@@ -14,6 +14,14 @@ send(WORD, 'setName', 'word')
 SEQ = send(symbol_vt, 'allocate')
 send(SEQ, 'setName', 'sequence')
 
+def literal(frame, value, symbol=LIT):
+  ast = send(ast_vt, 'allocate')
+  send(ast, 'init', symbol, value)
+  frame.append(ast)
+
+def word(frame, name):
+  literal(frame, name, WORD)
+
 
 CONTEXT = send(object_vt, 'delegated')
 CONTEXT.indent = 0
@@ -23,7 +31,7 @@ def emit_lit(ast, context):
 send(CONTEXT, 'addMethod', 'literal', emit_lit)
 
 def emit_word(ast, context):
-  print ' ' * context.indent, '<.%s.>' % (ast.data,)
+  print ' ' * context.indent, '< %s >' % (ast.data,)
 send(CONTEXT, 'addMethod', 'word', emit_word)
 
 def eval_seq(ast, context):
@@ -51,17 +59,6 @@ if __name__ == '__main__':
     second ! first #
     !!k # .
     '''
-
-##    'b' 23 Hi ! #
-##    add
-##    Say goodnight Gracie #
-##    Goodnight Gracie ! .
-##    '''
-##    
-##    Goodnight Gracie !
-##    ! ! c
-##    .
-##    '''
 
     body = 'def a():\n' + comp(source, cola_machine)
     print body

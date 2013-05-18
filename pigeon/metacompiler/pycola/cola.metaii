@@ -1,21 +1,15 @@
 .SYNTAX PROGRAM
 
-string = .STRING .OUT('ast = send(ast_vt, "allocate")')
-                 .OUT('send(ast, "init", LIT, '*')')
-                 .OUT('frame.append(ast)') ;
+string = .STRING .OUT('literal(frame, '*')') ;
 
-number = .NUMBER .OUT('ast = send(ast_vt, "allocate")')
-                 .OUT('send(ast, "init", LIT, '*')')
-                 .OUT('frame.append(ast)') ;
+number = .NUMBER .OUT('literal(frame, '*')') ;
 
-symbol = .ID .OUT('ast = send(ast_vt, "allocate")')
-             .OUT('send(ast, "init", WORD, "'*'")')
-             .OUT('frame.append(ast)') ;
+symbol = .ID .OUT('word(frame, "'*'")') ;
 
 pound = '#' .OUT('ast = send(ast_vt, "allocate")')
             .OUT('send(ast, "init", SEQ, tuple(reversed(frame)))')
             .OUT('stack[-1] = ast')
-            .OUT('frame=[]')
+            .OUT('frame = []')
             .OUT('stack.append(frame)') ;
 
 bang = '!' .OUT('frame.append(stack.pop(-2))') ;
