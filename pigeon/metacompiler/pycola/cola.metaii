@@ -1,20 +1,18 @@
 .SYNTAX PROGRAM
 
-string = .STRING .OUT('literal(frame, '*')') ;
-
-number = .NUMBER .OUT('literal(frame, '*')') ;
+literal = ( .STRING | .NUMBER ) .OUT('literal(frame, '*')') ;
 
 symbol = .ID .OUT('word(frame, "'*'")') ;
 
-pound = '#' .OUT('ast = send(ast_vt, "allocate")')
+seq = '}' .OUT('ast = send(ast_vt, "allocate")')
             .OUT('send(ast, "init", SEQ, tuple(reversed(frame)))')
             .OUT('stack[-1] = ast')
             .OUT('frame = []')
             .OUT('stack.append(frame)') ;
 
-bang = '!' .OUT('frame.append(stack.pop(-2))') ;
+pull = '^' .OUT('frame.append(stack.pop(-2))') ;
 
-term = string | number | symbol | pound | bang ;
+term = literal | symbol | seq | pull ;
 
 PROGRAM = .OUT('frame = []')
           .OUT('stack = [frame]')

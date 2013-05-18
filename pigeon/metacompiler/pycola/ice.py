@@ -54,10 +54,10 @@ if __name__ == '__main__':
 
     cola_machine = comp(cola_metaii, machine)
     source = '''
-    2 4 add #
-    baz 'bar' foo q #
-    second ! first #
-    !!k # .
+    2 4 add }
+    baz 'bar' foo q }
+    second ^ first }
+    ^^k } .
     '''
 
     body = 'def a():\n' + comp(source, cola_machine)
