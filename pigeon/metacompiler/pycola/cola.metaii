@@ -1,23 +1,24 @@
 .SYNTAX PROGRAM
 
-literal = ( .STRING | .NUMBER ) .OUT('literal(frame, '*')') ;
+args = term .OUT(', ') $ ( term .OUT(', ') ) ;
 
-symbol = .ID .OUT('word(frame, "'*'")') ;
+sending = '[' .OUT('send(') term .OUT(', ')
+              '<-'
+              .ID .OUT('"'*'",')
+              ( args | .EMPTY )
+          ']' .OUT(')') ;
 
-seq = '}' .OUT('ast = send(ast_vt, "allocate")')
-            .OUT('send(ast, "init", SEQ, tuple(reversed(frame)))')
-            .OUT('stack[-1] = ast')
-            .OUT('frame = []')
-            .OUT('stack.append(frame)') ;
+literal = ( .STRING | .NUMBER ) .OUT('('*')') ;
 
-pull = '^' .OUT('frame.append(stack.pop(-2))') ;
+symbol = .ID .OUT(*) ;
 
-term = literal | symbol | seq | pull ;
+term = sending | literal | symbol ;
 
-PROGRAM = .OUT('frame = []')
-          .OUT('stack = [frame]')
-          term $ term '.' .OUT('if stack[-1] == []: del stack[-1]')
-          .OUT('return stack') ;
+store = '!' .ID .OUT(*' = \') term ;
+
+it = store | term ;
+
+PROGRAM = it $ it '.' .OUT('return locals()') ;
 
 .END
 
