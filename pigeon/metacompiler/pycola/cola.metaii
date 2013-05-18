@@ -13,7 +13,7 @@ symbol = .ID .OUT('ast = send(ast_vt, "allocate")')
              .OUT('frame.append(ast)') ;
 
 pound = '#' .OUT('ast = send(ast_vt, "allocate")')
-            .OUT('send(ast, "init", SEQ, tuple(reversed(stack[-1])))')
+            .OUT('send(ast, "init", SEQ, tuple(reversed(frame)))')
             .OUT('stack[-1] = ast')
             .OUT('frame=[]')
             .OUT('stack.append(frame)') ;

@@ -36,30 +36,20 @@ from co import send
 
 def Eval(tree, context):
     symbol = send(tree, 'typeOf')
-    if symbol is None:
-        return
     method = send(symbol, 'transform', context)
-    assert method is not None
     new_tree = method(tree, context)
-    if new_tree is None:
-        return
-    return send(new_tree, 'eval', context)
+    if new_tree is not None:
+        return send(new_tree, 'eval', context)
 
 def setName(symbol, name): symbol.name = name
 def getName(symbol): return symbol.name
 def setSymbol(symbol, thing): thing.symbol = symbol
+def getSymbol(obj): return obj.symbol # aka typeOf
+
 
 def transform(symbol, context):
-    name = send(symbol, 'getName')
-    method = send(context, 'lookup', name)
-    assert method is not None
-    return method
+    return send(context, 'lookup', send(symbol, 'getName'))
 
-def typeOf(obj):
-    try:
-        return obj.symbol
-    except AttributeError:
-        pass
 
 def init_ast(ast, symbol, value):
     ast.data = value
@@ -70,6 +60,7 @@ def init_ast(ast, symbol, value):
 # some cruft to work though: ASTs and symbols to attach to the ASTs.
 
 def setUpTransformEngine(object_vt, vtvt):
+
     # Create a Symbol object type.
     symbol_vt = send(vtvt, 'delegated')
 
@@ -78,7 +69,7 @@ def setUpTransformEngine(object_vt, vtvt):
 
     send(object_vt, 'addMethod', 'eval', Eval)
     send(object_vt, 'addMethod', 'transform', Eval)
-    send(object_vt, 'addMethod', 'typeOf', typeOf)
+    send(object_vt, 'addMethod', 'typeOf', getSymbol)
 
     send(symbol_vt, 'addMethod', 'setName', setName)
     send(symbol_vt, 'addMethod', 'getName', getName)
@@ -88,4 +79,3 @@ def setUpTransformEngine(object_vt, vtvt):
     send(ast_vt, 'addMethod', 'init', init_ast)
 
     return symbol_vt, ast_vt
-

@@ -16,18 +16,23 @@ send(SEQ, 'setName', 'sequence')
 
 
 CONTEXT = send(object_vt, 'delegated')
+CONTEXT.indent = 0
 
 def emit_lit(ast, context):
-  print repr(ast.data)
+  print ' ' * context.indent, repr(ast.data)
 send(CONTEXT, 'addMethod', 'literal', emit_lit)
 
 def emit_word(ast, context):
-  print '<%s>' % (ast.data,)
+  print ' ' * context.indent, '<.%s.>' % (ast.data,)
 send(CONTEXT, 'addMethod', 'word', emit_word)
 
 def eval_seq(ast, context):
-    for item in ast.data:
-        send(item, 'eval', context)
+  context.indent += 3
+  print ' ' * context.indent, '/----\\'
+  for item in ast.data:
+      send(item, 'eval', context)
+  print ' ' * context.indent, '\\____/'
+  context.indent -= 3
 send(CONTEXT, 'addMethod', 'sequence', eval_seq)
 
 
@@ -43,13 +48,9 @@ if __name__ == '__main__':
     source = '''
     2 4 add #
     baz 'bar' foo q #
-    second first ! #
+    second ! first #
     !!k # .
     '''
-
-##    [('k',
-##  ('add', 'four', 'two'),
-##  (('seq', 'foo', 'bar', 'baz'), 'first', 'second'))]
 
 ##    'b' 23 Hi ! #
 ##    add
@@ -67,5 +68,6 @@ if __name__ == '__main__':
     exec body
     ast = a()
     pprint(ast)
-    print
-    send(ast[0], 'eval', CONTEXT)
+    a = ast[0]
+    print; print 'Evaluating', a
+    send(a, 'eval', CONTEXT)
