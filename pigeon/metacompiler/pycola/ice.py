@@ -68,9 +68,9 @@ def seq_append(seq, *things):
 
 object_code = compile_('''
 
-  LIT := [ symbol_vt <- allocate ] [ LIT <- setName 'literal' ]
-  WORD := [ symbol_vt <- allocate ] [ WORD <- setName 'word' ]
-  SEQ := [ symbol_vt <- allocate ] [ SEQ <- setName 'sequence' ]
+  LIT := [ [ symbol_vt <- allocate ] <- setName 'literal' ]
+  WORD := [ [ symbol_vt <- allocate ] <- setName 'word' ]
+  SEQ := [ [ symbol_vt <- allocate ] <- setName 'sequence' ]
 
   context := [ object_vt <- delegated ]
   [ context <- addMethod 'literal' emit_lit ]
@@ -98,12 +98,19 @@ if __name__ == '__main__':
   seq_vt := [ ast_vt <- delegated ]
   [ seq_vt <- addMethod 'append' seq_append ]
 
-  d := [ ast_vt <- allocate ] [ d <- init LIT 'Danny' ]
+  s := [[ seq_vt <- allocate ] <- init SEQ +* ]
 
-  n := [ ast_vt <- allocate ] [ n <- init LIT 23 ]
+  [ s <- append
+    [[ ast_vt <- allocate ] <- init WORD 'age' ]
+    [[ ast_vt <- allocate ] <- init LIT 'Danny' ]
+    [[ ast_vt <- allocate ] <- init LIT 23 ]
+    [[[ seq_vt <- allocate ] <- init SEQ +* ] <- append
+      [[ ast_vt <- allocate ] <- init LIT 1 ]
+      [[ ast_vt <- allocate ] <- init LIT 2 ]
+      [[ ast_vt <- allocate ] <- init LIT 3 ]
+    ]
+  ]
 
-  s := [ seq_vt <- allocate ] [ s <- init SEQ +* ]
-  [ s <- append d n ]
   [ s <- eval CONTEXT ]
   .
   '''
@@ -111,6 +118,3 @@ if __name__ == '__main__':
   a = compile_(source)
   ast = a()
   pprint(ast)
-##    a = ast[0]
-##    print; print 'Evaluating', a
-##    send(a, 'eval', CONTEXT)

@@ -41,9 +41,16 @@ def Eval(tree, context):
     if new_tree is not None:
         return send(new_tree, 'eval', context)
 
-def setName(symbol, name): symbol.name = name
+
+def setName(symbol, name):
+    symbol.name = name
+    return symbol
 def getName(symbol): return symbol.name
-def setSymbol(symbol, thing): thing.symbol = symbol
+
+
+def setSymbol(symbol, thing):
+    thing.symbol = symbol
+    return symbol
 def getSymbol(obj): return obj.symbol # aka typeOf
 
 
@@ -54,6 +61,7 @@ def transform(symbol, context):
 def init_ast(ast, symbol, value):
     ast.data = value
     send(symbol, 'setSymbol', ast)
+    return ast
 
 
 # At this point the basic eval/transform widgetry is done. It still needs
