@@ -36,8 +36,8 @@ from co import send
 
 def Eval(tree, context):
     symbol = send(tree, 'typeOf')
-    method = send(symbol, 'transform', context)
-    new_tree = method(tree, context)
+    closure = send(symbol, 'transform', context)
+    new_tree = closure(tree, context)
     if new_tree is not None:
         return send(new_tree, 'eval', context)
 

@@ -11,7 +11,7 @@ cola_metaii = r'''
 
   .SYNTAX PROGRAM
 
-  args = term .OUT(', ') $ ( term .OUT(', ') ) ;
+  args = $ ( term .OUT(', ') ) ;
 
   sending = '[' .OUT('send(') term .OUT(', ')
                 '<-'
@@ -23,11 +23,13 @@ cola_metaii = r'''
 
   symbol = .ID .OUT(*) ;
 
-  term = sending | literal | symbol ;
+  new_list = '+*' .OUT('[]') ;
 
-  store = '!' .ID .OUT(*' = \') term ;
+  term = sending | literal | symbol | new_list ;
 
-  it = store | term ;
+  store = .ID .OUT(*' = \') ':=' term ;
+
+  it = store | sending ;
 
   PROGRAM = it $ it '.' .OUT('return locals()') ;
 
@@ -59,14 +61,18 @@ def eval_seq(ast, context):
   print ' ' * context.indent, '\\____/'
   context.indent -= 3
 
+def seq_append(seq, *things):
+  seq.data.extend(things)
+  return seq
+
 
 object_code = compile_('''
 
-  ! LIT [ symbol_vt <- allocate ] [ LIT <- setName 'literal' ]
-  ! WORD [ symbol_vt <- allocate ] [ WORD <- setName 'word' ]
-  ! SEQ [ symbol_vt <- allocate ] [ SEQ <- setName 'sequence' ]
+  LIT := [ symbol_vt <- allocate ] [ LIT <- setName 'literal' ]
+  WORD := [ symbol_vt <- allocate ] [ WORD <- setName 'word' ]
+  SEQ := [ symbol_vt <- allocate ] [ SEQ <- setName 'sequence' ]
 
-  ! context [ object_vt <- delegated ]
+  context := [ object_vt <- delegated ]
   [ context <- addMethod 'literal' emit_lit ]
   [ context <- addMethod 'word' emit_word ]
   [ context <- addMethod 'sequence' eval_seq ] 
@@ -89,8 +95,16 @@ if __name__ == '__main__':
   from pprint import pprint
 
   source = '''
-  ! ast [ ast_vt <- allocate ] [ ast <- init LIT 'Danny' ]
-  [ ast <- eval CONTEXT ]
+  seq_vt := [ ast_vt <- delegated ]
+  [ seq_vt <- addMethod 'append' seq_append ]
+
+  d := [ ast_vt <- allocate ] [ d <- init LIT 'Danny' ]
+
+  n := [ ast_vt <- allocate ] [ n <- init LIT 23 ]
+
+  s := [ seq_vt <- allocate ] [ s <- init SEQ +* ]
+  [ s <- append d n ]
+  [ s <- eval CONTEXT ]
   .
   '''
 
