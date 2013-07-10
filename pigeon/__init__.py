@@ -45,7 +45,7 @@ def main(
 
   if text is None:
     stack, dictionary = w.getCurrentState()
-    words = sorted(name for name, value in items(dictionary))
+    words = (name for name, value in items(dictionary))
     text = 'Words: ' + ' '.join(words) + '\n'
 
   t.text.insert(END, text)
