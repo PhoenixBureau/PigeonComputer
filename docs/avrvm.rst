@@ -1014,8 +1014,8 @@ And a command to toggle the pin to turn the light on and off::
       ret
 
 
-Motor Driver I
-~~~~~~~~~~~~~~
+Motor Driver I & II
+~~~~~~~~~~~~~~~~~~~
 
 The Pololu Baby Orangutan has two timers wired up to a motor controller.
 These commands set up the timer0 to drive the motor1 outputs (see
@@ -1054,6 +1054,39 @@ http://www.pololu.com/docs/0J15/5 )::
       out OCR0A, TOS
       ret
 
+    M2_ON:
+      .dw M1_REVERSE
+      .db 4, "m2on"
+    M2_ON_PFA:
+      ldi Working, 0b11110011
+      out TCCR2A, Working
+      ldi Working, 0b00000010
+      out TCCR2B, Working
+      clr Working
+      out OCR2A, Working
+      out OCR2B, Working
+      sbi DDRD, DDD5
+      sbi DDRD, DDD6
+      ret
+
+    M2_FORWARD:
+      .dw M2_ON
+      .db 3, "m2f"
+    M2_FORWARD_PFA:
+      clr Working
+      out OCR2A, Working
+      out OCR2B, TOS
+      ret
+
+    M2_REVERSE:
+      .dw M2_FORWARD
+      .db 3, "m2r"
+    M2_REVERSE_PFA:
+      clr Working
+      out OCR2B, Working
+      out OCR2A, TOS
+      ret
+
 
 Analog Input
 ~~~~~~~~~~~~
@@ -1061,7 +1094,7 @@ Analog Input
 Read any of the first eight analog inputs (see Datasheet)::
 
     READ_ANALOG:
-      .dw M1_REVERSE
+      .dw M2_REVERSE
       .db 7, "analog>"
     READ_ANALOG_PFA:
 
