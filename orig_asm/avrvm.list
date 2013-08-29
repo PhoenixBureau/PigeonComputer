@@ -1,0 +1,1177 @@
+
+AVRASM ver. 2.1.42  avrvm.asm Wed Aug 28 19:13:19 2013
+
+avrvm.asm(3): Including file 'm328Pdef.inc'
+avrvm.asm(7): warning: Register r27 already defined by the .DEF directive
+avrvm.asm(8): warning: Register r26 already defined by the .DEF directive
+                 
+                 
+                 .list
+                 .listmac
+                 
+                 .def TOS = r27 ; XH
+                 .def TOSL = r26 ; XL
+                 
+                 .def Working = r16
+                 
+                 .def word_counter = r17
+                 
+                 .def Base = r8
+                 
+                 .def number_pointer = r9
+                 
+                 .def find_buffer_char = r10
+                 .def find_name_char = r11
+                 
+                 .def temp_length = r12
+                 
+                 .def twi = r18
+                 
+                 .dseg
+                 .org SRAM_START
+                 
+000100           buffer: .byte 0x40
+                 
+                 data_stack: .org 0x0140 ; SRAM_START + buffer
+                 
+                 .MACRO popup
+                   ld TOSL, -Y
+                 .ENDMACRO
+                 
+                 .MACRO pushdownw
+                   st Y+, TOSL
+                   st Y+, TOS
+                 .ENDMACRO
+                 
+                 .MACRO popupw
+                   ld TOS, -Y
+                   ld TOSL, -Y
+                 .ENDMACRO
+                 
+                 .cseg
+                 
+                 .org 0x0000
+000000 940c 0036   jmp RESET
+000002 940c 0034   jmp BAD_INTERUPT ; INT0 External Interrupt Request 0
+000004 940c 0034   jmp BAD_INTERUPT ; INT1 External Interrupt Request 1
+000006 940c 0034   jmp BAD_INTERUPT ; PCINT0 Pin Change Interrupt Request 0
+000008 940c 0034   jmp BAD_INTERUPT ; PCINT1 Pin Change Interrupt Request 1
+00000a 940c 0034   jmp BAD_INTERUPT ; PCINT2 Pin Change Interrupt Request 2
+00000c 940c 0034   jmp BAD_INTERUPT ; WDT Watchdog Time-out Interrupt
+00000e 940c 0034   jmp BAD_INTERUPT ; TIMER2 COMPA Timer/Counter2 Compare Match A
+000010 940c 0034   jmp BAD_INTERUPT ; TIMER2 COMPB Timer/Counter2 Compare Match B
+000012 940c 0034   jmp BAD_INTERUPT ; TIMER2 OVF Timer/Counter2 Overflow
+000014 940c 0034   jmp BAD_INTERUPT ; TIMER1 CAPT Timer/Counter1 Capture Event
+000016 940c 0034   jmp BAD_INTERUPT ; TIMER1 COMPA Timer/Counter1 Compare Match A
+000018 940c 0034   jmp BAD_INTERUPT ; TIMER1 COMPB Timer/Coutner1 Compare Match B
+00001a 940c 0034   jmp BAD_INTERUPT ; TIMER1 OVF Timer/Counter1 Overflow
+00001c 940c 0034   jmp BAD_INTERUPT ; TIMER0 COMPA Timer/Counter0 Compare Match A
+00001e 940c 0034   jmp BAD_INTERUPT ; TIMER0 COMPB Timer/Counter0 Compare Match B
+000020 940c 0034   jmp BAD_INTERUPT ; TIMER0 OVF Timer/Counter0 Overflow
+000022 940c 0034   jmp BAD_INTERUPT ; SPI, STC SPI Serial Transfer Complete
+000024 940c 0034   jmp BAD_INTERUPT ; USART, RX USART Rx Complete
+000026 940c 0034   jmp BAD_INTERUPT ; USART, UDRE USART, Data Register Empty
+000028 940c 0034   jmp BAD_INTERUPT ; USART, TX USART, Tx Complete
+00002a 940c 0034   jmp BAD_INTERUPT ; ADC ADC Conversion Complete
+00002c 940c 0034   jmp BAD_INTERUPT ; EE READY EEPROM Ready
+00002e 940c 0034   jmp BAD_INTERUPT ; ANALOG COMP Analog Comparator
+000030 940c 0034   jmp BAD_INTERUPT ; TWI 2-wire Serial Interface
+000032 940c 0034   jmp BAD_INTERUPT ; SPM READY Store Program Memory Ready
+                 BAD_INTERUPT:
+000034 940c 0000   jmp 0x0000
+                 
+                 RESET:
+000036 94f8        cli
+                 
+000037 ef0f      ldi Working, low(RAMEND)
+000038 bf0d      out SPL, Working
+000039 e008      ldi Working, high(RAMEND)
+00003a bf0e      out SPH, Working
+                 
+00003b e4c0      ldi YL, low(data_stack)
+00003c e0d1      ldi YH, high(data_stack)
+                 
+00003d d00c      rcall UART_INIT
+                 
+00003e e107      ldi Working, 23
+00003f 9300 00b8 sts TWBR, Working ; set bitrate
+000041 e001      ldi Working, 1
+000042 9300 00b9 sts TWSR, Working ; set prescaler
+                 
+000044 e00a      ldi Working, 10
+000045 2e80      mov Base, Working
+                 
+000046 9478      sei
+                 
+                 MAIN:
+000047 d10e        rcall INTERPRET_PFA
+000048 d0a1        rcall DOTESS_PFA
+000049 cffd        rjmp MAIN
+                 
+                 UART_INIT:
+00004a e012        ldi r17, high(520) ; 2400 baud w/ 20Mhz osc
+00004b e008        ldi r16, low(520)  ; See Datasheet
+00004c 9310 00c5   sts UBRR0H, r17
+00004e 9300 00c4   sts UBRR0L, r16
+                   ; The chip defaults to 8N1 so we won't set it here even though we
+                   ; should.
+000050 e108        ldi r16, (1 << TXEN0) | (1 << RXEN0) ; Enable transmit/receive
+000051 9300 00c1   sts UCSR0B, r16
+000053 9508        ret
+                 
+                 KEY:
+000054 0000        .dw 0x0000
+000055 6b03
+000056 7965        .db 3, "key"
+                 
+                 KEY_PFA:
+000057 9100 00c0   lds Working, UCSR0A
+000059 ff07        sbrs Working, RXC0
+00005a cffc        rjmp KEY_PFA
+                 
+00005b d007      rcall DUP_PFA
+00005c 91b0 00c6 lds TOS, UDR0
+                 
+00005e d012      rcall ECHO_PFA
+00005f 9508      ret
+                 
+                 DUP:
+000060 0054        .dw KEY
+000061 6403
+000062 7075        .db 3, "dup"
+                 DUP_PFA:
+000063 93a9        st Y+, TOSL ; push TOSL onto data stack
+000064 2fab        mov TOSL, TOS
+000065 9508        ret
+                 
+                 EMIT:
+000066 0060        .dw DUP
+000067 6504
+000068 696d
+avrvm.asm(142): warning: .cseg .db misalignment - padding zero byte
+000069 0074        .db 4, "emit"
+                 EMIT_PFA:
+00006a d006        rcall ECHO_PFA
+00006b d010        rcall DROP_PFA
+00006c 9508        ret
+                 
+                 ECHO:
+00006d 0066        .dw EMIT
+00006e 6504
+00006f 6863
+avrvm.asm(150): warning: .cseg .db misalignment - padding zero byte
+000070 006f        .db 4, "echo"
+                 
+                 ECHO_PFA:
+000071 9100 00c0   lds Working, UCSR0A
+000073 ff05        sbrs Working, UDRE0
+000074 cffc        rjmp ECHO_PFA
+                 
+000075 93b0 00c6 sts UDR0, TOS
+000077 9508      ret
+                 
+                 DROP:
+000078 006d        .dw ECHO
+000079 6404
+00007a 6f72
+avrvm.asm(162): warning: .cseg .db misalignment - padding zero byte
+00007b 0070        .db 4, "drop"
+                 DROP_PFA:
+00007c 2fba        mov TOS, TOSL
+                +
+00007d 91aa     +ld TOSL , - Y
+                   popup
+00007e 9508        ret
+                 
+                 WORD:
+00007f 0078        .dw DROP
+000080 7704
+000081 726f
+avrvm.asm(170): warning: .cseg .db misalignment - padding zero byte
+000082 0064        .db 4, "word"
+                 WORD_PFA:
+                 
+000083 dfd3      rcall KEY_PFA
+                 
+000084 32b0      cpi TOS, ' '
+000085 f411      brne _a_key
+                 
+000086 dff5      rcall DROP_PFA
+000087 cffb      rjmp WORD_PFA
+                 
+                 _a_key:
+000088 e0e0        ldi ZL, low(buffer)
+000089 e0f1        ldi ZH, high(buffer)
+00008a e010        ldi word_counter, 0x00
+                 
+                 _find_length:
+00008b 3410        cpi word_counter, 0x40
+00008c f3d9        breq _a_key
+                 
+00008d 93b1      st Z+, TOS
+00008e dfed      rcall DROP_PFA
+00008f 9513      inc word_counter
+                 
+000090 dfc6      rcall KEY_PFA
+000091 32b0      cpi TOS, ' '
+000092 f7c1      brne _find_length
+                 
+000093 2fb1      mov TOS, word_counter
+000094 9508      ret
+                 
+                 NUMBER:
+000095 007f        .dw WORD
+000096 6e06
+000097 6d75
+000098 6562
+avrvm.asm(203): warning: .cseg .db misalignment - padding zero byte
+000099 0072        .db 6, "number"
+                 NUMBER_PFA:
+                 
+00009a e0e0      ldi ZL, low(buffer)
+00009b e0f1      ldi ZH, high(buffer)
+                 
+00009c 2e9b      mov number_pointer, TOS
+00009d e000      ldi Working, 0x00
+00009e 91b1      ld TOS, Z+
+00009f c003      rjmp _convert
+                 
+                 _convert_again:
+0000a0 9d08        mul Working, Base
+0000a1 2d00        mov Working, r0
+0000a2 91b1        ld TOS, Z+
+                 
+                 _convert:
+                 
+0000a3 33b0      cpi TOS, '0'
+0000a4 f028      brlo _num_err
+0000a5 33ba      cpi TOS, ':' ; the char after '9'
+0000a6 f008      brlo _decimal
+                 
+0000a7 c002      rjmp _num_err
+                 
+                 _decimal:
+0000a8 53b0        subi TOS, '0'
+0000a9 c004        rjmp _converted
+                 
+                 _num_err:
+0000aa 93a9        st Y+, TOSL
+0000ab 2fab        mov TOSL, TOS
+0000ac 2db9        mov TOS, number_pointer
+0000ad 9508        ret
+                 
+                 _converted:
+0000ae 0f0b        add Working, TOS
+0000af 949a        dec number_pointer
+0000b0 f779        brne _convert_again
+                 
+0000b1 93a9      st Y+, TOSL
+0000b2 2fa0      mov TOSL, Working
+0000b3 2db9      mov TOS, number_pointer
+0000b4 9508      ret
+                 
+                 LEFT_SHIFT_WORD:
+0000b5 0095        .dw NUMBER
+0000b6 3c03
+0000b7 773c        .db 3, "<<w"
+                 LEFT_SHIFT_WORD_PFA:
+0000b8 2f0b        mov Working, TOS
+0000b9 27bb        clr TOS
+0000ba 0faa        lsl TOSL
+                 
+0000bb f408        brcc _lslw0
+0000bc 95b3        inc TOS ; copy carry flag to TOS[0]
+                 _lslw0:
+0000bd 0f00        lsl Working
+0000be 2bb0        or TOS, Working
+                 
+0000bf 9508      ret
+                 
+0000c0 3130
+0000c1 3332
+0000c2 3534
+0000c3 3736
+0000c4 3938
+0000c5 6261
+0000c6 6463
+0000c7 6665      HEXDIGITS: .db "0123456789abcdef"
+                 
+                 EMIT_HEX:
+0000c8 00b5        .dw LEFT_SHIFT_WORD
+0000c9 6507
+0000ca 696d
+0000cb 6874
+0000cc 7865        .db 7, "emithex"
+                 EMIT_HEX_PFA:
+                 
+0000cd 93ff      push ZH
+0000ce 93ef      push ZL
+                 
+0000cf df93      rcall DUP_PFA
+0000d0 95b2      swap TOS
+0000d1 d004      rcall emit_nibble ; high
+0000d2 d003      rcall emit_nibble ; low
+                 
+0000d3 91ef      pop ZL
+0000d4 91ff      pop ZH
+0000d5 9508      ret
+                 
+                 emit_nibble:
+                 
+                +
+0000d6 93a9     +st Y + , TOSL
+0000d7 93b9     +st Y + , TOS
+                 pushdownw
+0000d8 e0b0      ldi TOS, high(HEXDIGITS)
+0000d9 eca0      ldi TOSL, low(HEXDIGITS)
+0000da dfdd      rcall LEFT_SHIFT_WORD_PFA
+0000db 01fd      movw Z, X
+                +
+0000dc 91ba     +ld TOS , - Y
+0000dd 91aa     +ld TOSL , - Y
+                 popupw
+                 
+0000de 70bf      andi TOS, 0x0f
+                 
+                 _eloop:
+0000df 30b0        cpi TOS, 0x00
+                 
+0000e0 f019      breq _edone
+0000e1 95ba      dec TOS
+                 
+0000e2 9631        adiw Z, 1
+0000e3 cffb        rjmp _eloop
+                 
+                 _edone:
+                 
+0000e4 91b4      lpm TOS, Z
+0000e5 df84      rcall EMIT_PFA
+0000e6 9508      ret
+                 
+                 DOTESS:
+0000e7 00c8        .dw EMIT_HEX
+0000e8 2e02
+avrvm.asm(311): warning: .cseg .db misalignment - padding zero byte
+0000e9 0073        .db 2, ".s"
+                 DOTESS_PFA:
+                 
+0000ea df78      rcall DUP_PFA
+                 
+0000eb e0bd      ldi TOS, 0x0d ; CR
+0000ec df84      rcall ECHO_PFA
+0000ed e0ba      ldi TOS, 0x0a ; LF
+0000ee df82      rcall ECHO_PFA
+0000ef e5bb      ldi TOS, '['
+0000f0 df80      rcall ECHO_PFA
+                 
+0000f1 2fba      mov TOS, TOSL
+0000f2 dfda      rcall EMIT_HEX_PFA
+                 
+0000f3 2f0a      mov Working, TOSL
+0000f4 df6e      rcall DUP_PFA      ; tos, tos, tosl
+0000f5 2fb0      mov TOS, Working   ; tosl, tos, tosl
+0000f6 df6c      rcall DUP_PFA      ; tosl, tosl, tos, tosl
+0000f7 e2bd      ldi TOS, '-'       ; '-', tosl, tos, tosl
+0000f8 df71      rcall EMIT_PFA     ; tosl, tos, tosl
+0000f9 dfd3      rcall EMIT_HEX_PFA ; tos, tosl
+                 
+0000fa df68      rcall DUP_PFA  ; tos, tos, tosl
+0000fb e2b0      ldi TOS, ' '   ; ' ', tos, tosl
+0000fc df6d      rcall EMIT_PFA ; tos, tosl
+                 
+0000fd 01fe        movw Z, Y
+0000fe df64        rcall DUP_PFA
+                 
+                 _inny:
+                 
+0000ff e400      ldi Working, low(data_stack)
+000100 17e0      cp ZL, Working
+000101 e001      ldi Working, high(data_stack)
+000102 07f0      cpc ZH, Working
+000103 f438      brsh _itsok
+                 
+000104 e5bd      ldi TOS, ']'
+000105 df6b      rcall ECHO_PFA
+000106 e0bd      ldi TOS, 0x0d ; CR
+000107 df69      rcall ECHO_PFA
+000108 e0ba      ldi TOS, 0x0a ; LF
+000109 df60      rcall EMIT_PFA
+00010a 9508      ret
+                 
+                 _itsok:
+00010b 91b2        ld TOS, -Z
+00010c dfc0        rcall EMIT_HEX_PFA
+00010d df55        rcall DUP_PFA
+00010e e2b0        ldi TOS, ' '
+00010f df61        rcall ECHO_PFA
+                 
+000110 cfee      rjmp _inny
+                 
+                 FIND:
+000111 00e7        .dw DOTESS
+000112 6604
+000113 6e69
+avrvm.asm(368): warning: .cseg .db misalignment - padding zero byte
+000114 0064        .db 4, "find"
+                 FIND_PFA:
+                 
+000115 2f1b      mov word_counter, TOS
+000116 93a9      st Y+, TOSL
+000117 eca9      ldi TOSL, low(READ_IMU)
+000118 e0b2      ldi TOS, high(READ_IMU)
+                 
+                 _look_up_word:
+000119 30a0        cpi TOSL, 0x00
+00011a f429        brne _non_zero
+00011b 13ab        cpse TOSL, TOS
+00011c c003        rjmp _non_zero
+                 
+00011d efbf      ldi TOS, 0xff
+00011e efaf      ldi TOSL, 0xff
+00011f 9508      ret
+                 
+                 _non_zero:
+                 
+                +
+000120 93a9     +st Y + , TOSL
+000121 93b9     +st Y + , TOS
+                 pushdownw
+                 
+000122 df95      rcall LEFT_SHIFT_WORD_PFA
+000123 01fd      movw Z, X
+000124 91a5      lpm TOSL, Z+
+000125 91b5      lpm TOS, Z+
+                 
+000126 9105      lpm Working, Z+
+000127 1701      cp Working, word_counter
+000128 f011      breq _same_length
+                 
+000129 9722      sbiw Y, 2
+00012a cfee      rjmp _look_up_word
+                 
+                 _same_length:
+                +
+00012b 93a9     +st Y + , TOSL
+00012c 93b9     +st Y + , TOS
+                   pushdownw
+00012d e0b1        ldi TOS, high(buffer)
+00012e e0a0        ldi TOSL, low(buffer)
+                 
+                 _compare_name_and_target_byte:
+00012f 90ad        ld find_buffer_char, X+ ; from buffer
+000130 90b5        lpm find_name_char, Z+ ; from program RAM
+000131 14ab        cp find_buffer_char, find_name_char
+000132 f021        breq _okay_dokay
+                 
+                +
+000133 91ba     +ld TOS , - Y
+000134 91aa     +ld TOSL , - Y
+                 popupw ; ditch search term address
+000135 9722      sbiw Y, 2 ; ditch LFA_current
+000136 cfe2      rjmp _look_up_word
+                 
+                 _okay_dokay:
+000137 950a        dec Working
+000138 f7b1        brne _compare_name_and_target_byte
+                 
+                +
+000139 91ba     +ld TOS , - Y
+00013a 91aa     +ld TOSL , - Y
+                 popupw ; ditch search term address
+                +
+00013b 91ba     +ld TOS , - Y
+00013c 91aa     +ld TOSL , - Y
+                 popupw ; ditch LFA_next
+00013d 9508      ret ; LFA_current
+                 
+                 TPFA:
+00013e 0111        .dw FIND
+00013f 3e04
+000140 6670
+avrvm.asm(427): warning: .cseg .db misalignment - padding zero byte
+000141 0061        .db 4, ">pfa"
+                 TPFA_PFA:
+                 
+000142 9611      adiw X, 1
+                +
+000143 93a9     +st Y + , TOSL
+000144 93b9     +st Y + , TOS
+                 pushdownw ; save address
+000145 df72      rcall LEFT_SHIFT_WORD_PFA
+                 
+000146 01fd      movw Z, X
+000147 9104      lpm Working, Z
+                +
+000148 91ba     +ld TOS , - Y
+000149 91aa     +ld TOSL , - Y
+                 popupw ; restore address
+                 
+00014a 9506        lsr Working
+00014b 9503        inc Working       ; n <- (n >> 1) + 1
+00014c 0fa0        add TOSL, Working ; Add the adjusted name length to our prog mem pointer.
+00014d f408        brcc _done_adding
+00014e 95b3        inc TOS           ; Account for the carry bit if set.
+                 _done_adding:
+00014f 9508        ret
+                 
+                 INTERPRET:
+000150 013e        .dw TPFA
+000151 6909
+000152 746e
+000153 7265
+000154 7270
+000155 7465        .db 9, "interpret"
+                 INTERPRET_PFA:
+                 
+000156 df2c      rcall WORD_PFA
+                 
+000157 2ecb      mov temp_length, TOS
+                 
+000158 df41      rcall NUMBER_PFA
+000159 30b0      cpi TOS, 0x00 ; all chars converted?
+00015a f419      brne _maybe_word
+                 
+00015b 2fba      mov TOS, TOSL
+                +
+00015c 91aa     +ld TOSL , - Y
+                 popup
+00015d 9508      ret
+                 
+                 _maybe_word:
+00015e 2dbc        mov TOS, temp_length
+                +
+00015f 91aa     +ld TOSL , - Y
+                   popup
+000160 dfb4        rcall FIND_PFA
+                 
+000161 3fbf      cpi TOS, 0xff
+000162 f421      brne _is_word
+                 
+                +
+000163 91aa     +ld TOSL , - Y
+                 popup
+000164 e3bf      ldi TOS, '?'
+000165 df04      rcall EMIT_PFA
+000166 9508      ret
+                 
+                 _is_word:
+000167 dfda        rcall TPFA_PFA
+000168 01fd        movw Z, X
+                +
+000169 91ba     +ld TOS , - Y
+00016a 91aa     +ld TOSL , - Y
+                   popupw
+00016b 9409        ijmp
+                 
+                 PB4_OUT:
+00016c 0150        .dw INTERPRET
+00016d 7004
+00016e 3462
+avrvm.asm(484): warning: .cseg .db misalignment - padding zero byte
+00016f 006f        .db 4, "pb4o"
+                 PB4_OUT_PFA:
+                 
+000170 9a24      sbi DDRB, DDB4
+                 
+000171 9a2c      sbi PORTB, PORTB4
+000172 9508      ret
+                 
+                 PB4_TOGGLE:
+000173 016c        .dw PB4_OUT
+000174 7004
+000175 3462
+avrvm.asm(494): warning: .cseg .db misalignment - padding zero byte
+000176 0074        .db 4, "pb4t"
+                 PB4_TOGGLE_PFA:
+000177 9a1c        sbi PINB, PINB4
+000178 9508        ret
+                 
+                 M1_ON:
+000179 0173        .dw PB4_TOGGLE
+00017a 6d04
+00017b 6f31
+avrvm.asm(501): warning: .cseg .db misalignment - padding zero byte
+00017c 006e        .db 4, "m1on"
+                 M1_ON_PFA:
+00017d ef03        ldi Working, 0b11110011
+00017e bd04        out TCCR0A, Working
+00017f e002        ldi Working, 0b00000010
+000180 bd05        out TCCR0B, Working
+000181 2700        clr Working
+000182 bd07        out OCR0A, Working
+000183 bd08        out OCR0B, Working
+000184 9a55        sbi DDRD, DDD5
+000185 9a56        sbi DDRD, DDD6
+000186 9508        ret
+                 
+                 M1_FORWARD:
+000187 0179        .dw M1_ON
+000188 6d03
+000189 6631        .db 3, "m1f"
+                 M1_FORWARD_PFA:
+00018a 2700        clr Working
+00018b bd07        out OCR0A, Working
+00018c bdb8        out OCR0B, TOS
+00018d 9508        ret
+                 
+                 M1_REVERSE:
+00018e 0187        .dw M1_FORWARD
+00018f 6d03
+000190 7231        .db 3, "m1r"
+                 M1_REVERSE_PFA:
+000191 2700        clr Working
+000192 bd08        out OCR0B, Working
+000193 bdb7        out OCR0A, TOS
+000194 9508        ret
+                 
+                 M2_ON:
+000195 018e        .dw M1_REVERSE
+000196 6d04
+000197 6f32
+avrvm.asm(534): warning: .cseg .db misalignment - padding zero byte
+000198 006e        .db 4, "m2on"
+                 M2_ON_PFA:
+000199 ef03        ldi Working, 0b11110011
+00019a 9300 00b0   sts TCCR2A, Working
+00019c e002        ldi Working, 0b00000010
+00019d 9300 00b1   sts TCCR2B, Working
+00019f 2700        clr Working
+0001a0 9300 00b3   sts OCR2A, Working
+0001a2 9300 00b4   sts OCR2B, Working
+0001a4 9a53        sbi DDRD, DDD3
+0001a5 9a23        sbi DDRB, DDB3
+0001a6 9508        ret
+                 
+                 M2_FORWARD:
+0001a7 0195        .dw M2_ON
+0001a8 6d03
+0001a9 6632        .db 3, "m2f"
+                 M2_FORWARD_PFA:
+0001aa 2700        clr Working
+0001ab 9300 00b3   sts OCR2A, Working
+0001ad 93b0 00b4   sts OCR2B, TOS
+0001af 9508        ret
+                 
+                 M2_REVERSE:
+0001b0 01a7        .dw M2_FORWARD
+0001b1 6d03
+0001b2 7232        .db 3, "m2r"
+                 M2_REVERSE_PFA:
+0001b3 2700        clr Working
+0001b4 9300 00b4   sts OCR2B, Working
+0001b6 93b0 00b3   sts OCR2A, TOS
+0001b8 9508        ret
+                 
+                 READ_ANALOG:
+0001b9 01b0        .dw M2_REVERSE
+0001ba 6107
+0001bb 616e
+0001bc 6f6c
+0001bd 3e67        .db 7, "analog>"
+                 READ_ANALOG_PFA:
+                 
+0001be e807      ldi Working, 0b10000111
+0001bf 9300 007a sts ADCSRA, Working
+                 
+0001c1 70b7      andi TOS, 0b00000111 ; mask to the first eight analog sources
+0001c2 e600      ldi Working, 0b01100000
+0001c3 2b0b      or Working, TOS
+0001c4 9300 007c sts ADMUX, Working
+                 
+0001c6 ec07      ldi Working, 0b10000111 | (1 << ADSC)
+0001c7 9300 007a sts ADCSRA, Working
+                 
+                 _anindone:
+0001c9 9100 007a   lds Working, ADCSRA
+0001cb fd06        sbrc Working, ADSC
+0001cc cffc        rjmp _anindone
+                 
+0001cd 91b0 0079 lds TOS, ADCH
+0001cf 9508      ret
+                 
+                 .EQU TWI_START = 0x08
+                 .EQU TWI_RSTART = 0x10
+                 .EQU TWI_SLA_ACK = 0x18
+                 .EQU TWI_SLA_NACK = 0x20
+                 .EQU TWI_DATA_ACK = 0x28
+                 .EQU TWI_ARB_LOST = 0x38
+                 .EQU TWI_SLAR_ACK = 0x40
+                 
+                 .EQU MAG_ADDRESS = 0b0011110 << 1 ; shift to make room for R/W bit
+                 .EQU MR_REG_M = 0x02
+                 
+                 .EQU ACCEL_ADDRESS = 0b0011000 << 1 ; shift to make room for R/W bit
+                 .EQU CTRL_REG1_A = 0x20 ; set to 0b00100111 see datasheet
+                 .EQU CTRL_REG4_A = 0x23 ; set to 0b10000000 see datasheet
+                 
+                 .EQU GYRO_ADDRESS = 0b1101001 << 1 ; shift to make room for R/W bit
+                 .EQU GYRO_CTRL_REG1 = 0x20
+                 
+                 _twinty:
+0001d0 9100 00bc   lds Working, TWCR
+0001d2 ff07        sbrs Working, TWINT
+0001d3 cffc        rjmp _twinty
+0001d4 9508        ret
+                 
+                 _twohno:
+0001d5 de8d        rcall DUP_PFA
+0001d6 e2b1        ldi TOS, '!'
+0001d7 de92        rcall EMIT_PFA
+0001d8 9508        ret
+                 
+                 .MACRO check_twi
+                   cpi twi, 0x00
+                   brne _twi_fail
+                 .ENDMACRO
+                 
+                 AFTER_SLA_W:
+0001d9 d026        rcall FETCH_TWSR
+0001da d03a        rcall EXPECT_TWI_SLA_ACK
+0001db d028        rcall TWI_OR
+0001dc d042        rcall EXPECT_TWI_SLA_NACK
+0001dd d026        rcall TWI_OR
+0001de d04b        rcall EXPECT_TWI_ARB_LOST
+0001df 9508        ret
+                 
+                 Send_START:
+                +
+0001e0 3020     +cpi twi , 0x00
+0001e1 f531     +brne _twi_fail
+                   check_twi
+0001e2 ea04        ldi Working, (1 << TWINT)|(1 << TWSTA)|(1 << TWEN)
+0001e3 9300 00bc   sts TWCR, Working
+0001e5 9508        ret
+                 
+                 Send_STOP:
+                +
+0001e6 3020     +cpi twi , 0x00
+0001e7 f501     +brne _twi_fail
+                   check_twi
+0001e8 e904        ldi Working, (1 << TWINT)|(1 << TWEN)|(1 << TWSTO)
+0001e9 9300 00bc   sts TWCR, Working
+0001eb 9508        ret
+                 
+                 Send_BYTE:
+                +
+0001ec 3020     +cpi twi , 0x00
+0001ed f4d1     +brne _twi_fail
+                   check_twi
+0001ee 9300 00bb   sts TWDR, Working
+0001f0 e804        ldi Working, (1 << TWINT)|(1 << TWEN)
+0001f1 9300 00bc   sts TWCR, Working
+0001f3 9508        ret
+                 
+                 ENABLE_ACK_TWI: ; Needed to receive bytes
+0001f4 ec04        ldi Working, (1 << TWINT)|(1 << TWEA)|(1 << TWEN)
+0001f5 9300 00bc   sts TWCR, Working
+0001f7 9508        ret
+                 
+                 Receive_BYTE_TWI:
+0001f8 de6a        rcall DUP_PFA
+0001f9 91b0 00bb   lds TOS, TWDR
+0001fb 9508        ret
+                 
+                 Send_NACK:
+0001fc e804        ldi Working, (1 << TWINT)|(1 << TWEN)
+0001fd 9300 00bc   sts TWCR, Working
+0001ff 9508        ret
+                 
+                 FETCH_TWSR:
+000200 9100 00b9   lds Working, TWSR
+000202 7f08        andi Working, 0b11111000 ; mask non-status bytes
+000203 9508        ret
+                 
+                 TWI_OR:
+000204 3020        cpi twi, 0x00  ; if success
+000205 f011        breq _twi_fail ; exit the calling routine
+000206 e020        ldi twi, 0     ; otherwise continue
+000207 9508        ret
+                 _twi_fail:
+000208 910f        pop Working
+000209 910f        pop Working ; remove caller's return location from the return stack
+00020a 9508        ret
+                 
+                 EXPECT_TWI_START:
+                +
+00020b 3020     +cpi twi , 0x00
+00020c f7d9     +brne _twi_fail
+                   check_twi
+00020d 3008        cpi Working, TWI_START
+00020e f509        brne _twi_false
+00020f 9508        ret
+                 
+                 EXPECT_TWI_RSTART:
+                +
+000210 3020     +cpi twi , 0x00
+000211 f7b1     +brne _twi_fail
+                   check_twi
+000212 3100        cpi Working, TWI_RSTART
+000213 f4e1        brne _twi_false
+000214 9508        ret
+                 
+                 EXPECT_TWI_SLA_ACK:
+                +
+000215 3020     +cpi twi , 0x00
+000216 f789     +brne _twi_fail
+                   check_twi
+000217 3108        cpi Working, TWI_SLA_ACK
+000218 f4b9        brne _twi_false
+000219 9508        ret
+                 
+                 EXPECT_TWI_DATA_ACK:
+                +
+00021a 3020     +cpi twi , 0x00
+00021b f761     +brne _twi_fail
+                   check_twi
+00021c 3208        cpi Working, TWI_DATA_ACK
+00021d f491        brne _twi_false
+00021e 9508        ret
+                 
+                 EXPECT_TWI_SLA_NACK:
+                +
+00021f 3020     +cpi twi , 0x00
+000220 f739     +brne _twi_fail
+                   check_twi
+000221 3200        cpi Working, TWI_SLA_NACK
+000222 f469        brne _twi_false
+                   ; this is a fail
+000223 e220        ldi twi, TWI_SLA_NACK ; mark failure
+000224 cfe3        rjmp _twi_fail ; exit caller
+                 
+                 EXPECT_TWI_SLAR_ACK:
+                +
+000225 3020     +cpi twi , 0x00
+000226 f709     +brne _twi_fail
+                   check_twi
+000227 3400        cpi Working, TWI_SLAR_ACK
+000228 f439        brne _twi_false
+000229 9508        ret
+                 
+                 EXPECT_TWI_ARB_LOST:
+                +
+00022a 3020     +cpi twi , 0x00
+00022b f6e1     +brne _twi_fail
+                   check_twi
+00022c 3308        cpi Working, TWI_ARB_LOST
+00022d f411        brne _twi_false
+                   ; this is a fail
+00022e e328        ldi twi, TWI_ARB_LOST ; mark failure
+00022f cfd8        rjmp _twi_fail ; exit caller
+                 
+                 _twi_false:
+000230 e021        ldi twi, 1
+000231 9508        ret
+                 
+                 _twi_start:
+000232 dfad        rcall Send_START
+000233 df9c        rcall _twinty
+000234 dfcb        rcall FETCH_TWSR
+000235 9508        ret
+                 
+                 TWI_START_it:
+000236 dffb        rcall _twi_start
+000237 dfd3        rcall EXPECT_TWI_START
+000238 9508        ret
+                 
+                 TWI_RSTART_it:
+000239 dff8        rcall _twi_start
+00023a dfd5        rcall EXPECT_TWI_RSTART
+00023b 9508        ret
+                 
+                 TWI_RECV_BYTE:
+00023c dfb7        rcall ENABLE_ACK_TWI
+00023d df92        rcall _twinty
+00023e dfb9        rcall Receive_BYTE_TWI
+00023f 9508        ret
+                 
+                 TWI_SEND_BYTE:
+000240 dfab        rcall Send_BYTE
+000241 df8e        rcall _twinty
+000242 dfbd        rcall FETCH_TWSR
+000243 dfd6        rcall EXPECT_TWI_DATA_ACK
+000244 9508        ret
+                 
+                 SET_MAGNETOMETER_MODE:
+000245 01b9        .dw READ_ANALOG
+000246 4904
+000247 414d
+avrvm.asm(763): warning: .cseg .db misalignment - padding zero byte
+000248 0047        .db 4, "IMAG"
+                 SET_MAGNETOMETER_MODE_PFA:
+                 
+000249 e020          ldi twi, 0x00
+                 
+00024a dfeb          rcall TWI_START_it
+                 
+00024b e30c          ldi Working, MAG_ADDRESS ; Magnetometer Address
+00024c df9f          rcall Send_BYTE
+00024d df82          rcall _twinty
+00024e df8a          rcall AFTER_SLA_W
+                 
+00024f e002          ldi Working, MR_REG_M ; Subaddress
+000250 dfef          rcall TWI_SEND_BYTE
+                 
+000251 e000          ldi Working, 0x00 ; Write Mode
+000252 dfed          rcall TWI_SEND_BYTE
+                 
+000253 df92          rcall Send_STOP
+000254 9508          ret
+                 
+                 
+                 READ_MAGNETOMETER:
+000255 0245        .dw SET_MAGNETOMETER_MODE
+000256 5204
+000257 414d
+avrvm.asm(787): warning: .cseg .db misalignment - padding zero byte
+000258 0047        .db 4, "RMAG"
+                 READ_MAGNETOMETER_PFA:
+                 
+000259 e020          ldi twi, 0x00
+                 
+00025a dfdb          rcall TWI_START_it
+                 
+00025b e30c          ldi Working, MAG_ADDRESS ; Magnetometer Address
+00025c df8f          rcall Send_BYTE
+00025d df72          rcall _twinty
+00025e df7a          rcall AFTER_SLA_W
+                 
+00025f e803          ldi Working, 0x03 | 0b10000000 ; first data byte | auto-increment
+000260 dfdf          rcall TWI_SEND_BYTE
+                 
+000261 dfd7          rcall TWI_RSTART_it ; Repeated Start
+                 
+000262 e30d          ldi Working, (MAG_ADDRESS | 1) ; Load Magnetometer Address with read bit
+000263 df88          rcall Send_BYTE
+000264 df6b          rcall _twinty
+000265 df9a          rcall FETCH_TWSR
+000266 dfbe          rcall EXPECT_TWI_SLAR_ACK ; SLA+R
+                 
+000267 dfd4          rcall TWI_RECV_BYTE
+000268 dfd3          rcall TWI_RECV_BYTE
+000269 dfd2          rcall TWI_RECV_BYTE
+00026a dfd1          rcall TWI_RECV_BYTE
+00026b dfd0          rcall TWI_RECV_BYTE
+00026c dfcf          rcall TWI_RECV_BYTE
+                 
+00026d df8e          rcall Send_NACK
+00026e df61          rcall _twinty
+                 
+00026f df76          rcall Send_STOP
+000270 9508          ret
+                 
+                 SET_ACCELEROMETER_MODE:
+000271 0245        .dw SET_MAGNETOMETER_MODE
+000272 4904
+000273 4341
+avrvm.asm(825): warning: .cseg .db misalignment - padding zero byte
+000274 0043        .db 4, "IACC"
+                 SET_ACCELEROMETER_MODE_PFA:
+                 
+000275 e020          ldi twi, 0x00
+                 
+000276 dfbf          rcall TWI_START_it
+                 
+000277 e300          ldi Working, ACCEL_ADDRESS
+000278 df73          rcall Send_BYTE
+000279 df56          rcall _twinty
+00027a df5e          rcall AFTER_SLA_W
+                 
+00027b e200          ldi Working, CTRL_REG1_A ; Subaddress
+00027c dfc3          rcall TWI_SEND_BYTE
+                 
+00027d e207          ldi Working, 0b00100111 ; Write Value
+00027e dfc1          rcall TWI_SEND_BYTE
+                 
+00027f df66          rcall Send_STOP
+000280 9508          ret
+                 
+                 
+                 READ_ACCELEROMETER:
+000281 0271        .dw SET_ACCELEROMETER_MODE
+000282 5204
+000283 4341
+avrvm.asm(849): warning: .cseg .db misalignment - padding zero byte
+000284 0043        .db 4, "RACC"
+                 READ_ACCELEROMETER_PFA:
+                 
+000285 e020          ldi twi, 0x00
+                 
+000286 dfaf          rcall TWI_START_it
+                 
+000287 e300          ldi Working, ACCEL_ADDRESS
+000288 df63          rcall Send_BYTE
+000289 df46          rcall _twinty
+00028a df4e          rcall AFTER_SLA_W
+                 
+00028b ea08          ldi Working, 0x28 | 0b10000000 ; first data byte | auto-increment
+00028c dfb3          rcall TWI_SEND_BYTE
+                 
+00028d dfab          rcall TWI_RSTART_it ; Repeated Start
+                 
+00028e e301          ldi Working, (ACCEL_ADDRESS | 1) ; address with read bit
+00028f df5c          rcall Send_BYTE
+000290 df3f          rcall _twinty
+000291 df6e          rcall FETCH_TWSR
+000292 df92          rcall EXPECT_TWI_SLAR_ACK ; SLA+R
+                 
+000293 dfa8          rcall TWI_RECV_BYTE
+000294 dfa7          rcall TWI_RECV_BYTE
+000295 dfa6          rcall TWI_RECV_BYTE
+000296 dfa5          rcall TWI_RECV_BYTE
+000297 dfa4          rcall TWI_RECV_BYTE
+000298 dfa3          rcall TWI_RECV_BYTE
+                 
+000299 df62          rcall Send_NACK
+00029a df35          rcall _twinty
+                 
+00029b df4a          rcall Send_STOP
+00029c 9508          ret
+                 
+                 
+                 
+                 
+                 SET_GYRO_MODE:
+00029d 0281        .dw READ_ACCELEROMETER
+00029e 4905
+00029f 5947
+0002a0 4f52        .db 5, "IGYRO"
+                 SET_GYRO_MODE_PFA:
+                 
+0002a1 e020          ldi twi, 0x00
+                 
+0002a2 df93          rcall TWI_START_it
+                 
+0002a3 ed02          ldi Working, GYRO_ADDRESS
+0002a4 df47          rcall Send_BYTE
+0002a5 df2a          rcall _twinty
+0002a6 df32          rcall AFTER_SLA_W
+                 
+0002a7 e200          ldi Working, GYRO_CTRL_REG1 ; Subaddress
+0002a8 df97          rcall TWI_SEND_BYTE
+                 
+0002a9 e00f          ldi Working, 0b00001111 ; Write Value
+0002aa df95          rcall TWI_SEND_BYTE
+                 
+0002ab df3a          rcall Send_STOP
+0002ac 9508          ret
+                 
+                 READ_GYRO:
+0002ad 029d        .dw SET_GYRO_MODE
+0002ae 5205
+0002af 5947
+0002b0 4f52        .db 5, "RGYRO"
+                 READ_GYRO_PFA:
+                 
+0002b1 e020          ldi twi, 0x00
+                 
+0002b2 df83          rcall TWI_START_it
+                 
+0002b3 ed02          ldi Working, GYRO_ADDRESS
+0002b4 df37          rcall Send_BYTE
+0002b5 df1a          rcall _twinty
+0002b6 df22          rcall AFTER_SLA_W
+                 
+0002b7 ea08          ldi Working, 0x28 | 0b10000000 ; first data byte | auto-increment
+0002b8 df87          rcall TWI_SEND_BYTE
+                 
+0002b9 df7f          rcall TWI_RSTART_it ; Repeated Start
+                 
+0002ba ed03          ldi Working, (GYRO_ADDRESS | 1) ; address with read bit
+0002bb df30          rcall Send_BYTE
+0002bc df13          rcall _twinty
+0002bd df42          rcall FETCH_TWSR
+0002be df66          rcall EXPECT_TWI_SLAR_ACK ; SLA+R
+                 
+0002bf df7c          rcall TWI_RECV_BYTE
+0002c0 df7b          rcall TWI_RECV_BYTE
+0002c1 df7a          rcall TWI_RECV_BYTE
+0002c2 df79          rcall TWI_RECV_BYTE
+0002c3 df78          rcall TWI_RECV_BYTE
+0002c4 df77          rcall TWI_RECV_BYTE
+                 
+0002c5 df36          rcall Send_NACK
+0002c6 df09          rcall _twinty
+                 
+0002c7 df1e          rcall Send_STOP
+0002c8 9508          ret
+                 
+                 
+                 READ_IMU:
+0002c9 02ad        .dw READ_GYRO
+0002ca 5204
+0002cb 4d49
+avrvm.asm(952): warning: .cseg .db misalignment - padding zero byte
+0002cc 0055        .db 4, "RIMU"
+                 READ_IMU_PFA:
+0002cd dfe3        rcall READ_GYRO_PFA
+0002ce e016        ldi word_counter, 6
+0002cf d007        rcall _send_imu_bytes
+                 
+0002d0 df88        rcall READ_MAGNETOMETER_PFA
+0002d1 e016        ldi word_counter, 6
+0002d2 d004        rcall _send_imu_bytes
+                 
+0002d3 dfb1        rcall READ_ACCELEROMETER_PFA
+0002d4 e016        ldi word_counter, 6
+0002d5 d001        rcall _send_imu_bytes
+0002d6 9508        ret
+                 
+                 _send_imu_bytes:
+0002d7 ddf5        rcall EMIT_HEX_PFA
+0002d8 951a        dec word_counter
+0002d9 f7e9        brne _send_imu_bytes
+0002da 9508        ret
+
+
+RESOURCE USE INFORMATION
+------------------------
+
+Notice:
+The register and instruction counts are symbol table hit counts,
+and hence implicitly used resources are not counted, eg, the
+'lpm' instruction without operands implicitly uses r0 and z,
+none of which are counted.
+
+x,y,z are separate entities in the symbol table and are
+counted separately from r26..r31 here.
+
+.dseg memory usage only counts static data declared with .byte
+
+ATmega328P register use summary:
+r0 :   1 r1 :   0 r2 :   0 r3 :   0 r4 :   0 r5 :   0 r6 :   0 r7 :   0 
+r8 :   2 r9 :   4 r10:   2 r11:   2 r12:   2 r13:   0 r14:   0 r15:   0 
+r16: 112 r17:  12 r18:  21 r19:   0 r20:   0 r21:   0 r22:   0 r23:   0 
+r24:   0 r25:   0 r26:  34 r27:  72 r28:   1 r29:   1 r30:   5 r31:   5 
+x  :   6 y  :  31 z  :  16 
+Registers used: 18 out of 35 (51.4%)
+
+ATmega328P instruction use summary:
+.lds  :   0 .sts  :   0 adc   :   0 add   :   2 adiw  :   2 and   :   0 
+andi  :   3 asr   :   0 bclr  :   0 bld   :   0 brbc  :   0 brbs  :   0 
+brcc  :   2 brcs  :   0 break :   0 breq  :   5 brge  :   0 brhc  :   0 
+brhs  :   0 brid  :   0 brie  :   0 brlo  :   2 brlt  :   0 brmi  :   0 
+brne  :  25 brpl  :   0 brsh  :   1 brtc  :   0 brts  :   0 brvc  :   0 
+brvs  :   0 bset  :   0 bst   :   0 call  :   0 cbi   :   0 cbr   :   0 
+clc   :   0 clh   :   0 cli   :   1 cln   :   0 clr   :   7 cls   :   0 
+clt   :   0 clv   :   0 clz   :   0 com   :   0 cp    :   3 cpc   :   1 
+cpi   :  27 cpse  :   1 dec   :   4 eor   :   0 fmul  :   0 fmuls :   0 
+fmulsu:   0 icall :   0 ijmp  :   1 in    :   0 inc   :   4 jmp   :  27 
+ld    :  20 ldd   :   0 ldi   :  80 lds   :   8 lpm   :   8 lsl   :   2 
+lsr   :   1 mov   :  18 movw  :   5 mul   :   1 muls  :   0 mulsu :   0 
+neg   :   0 nop   :   0 or    :   2 ori   :   0 out   :  10 pop   :   4 
+push  :   2 rcall : 149 ret   :  58 reti  :   0 rjmp  :  16 rol   :   0 
+ror   :   0 sbc   :   0 sbci  :   0 sbi   :   7 sbic  :   0 sbis  :   0 
+sbiw  :   2 sbr   :   0 sbrc  :   1 sbrs  :   3 sec   :   0 seh   :   0 
+sei   :   1 sen   :   0 ser   :   0 ses   :   0 set   :   0 sev   :   0 
+sez   :   0 sleep :   0 spm   :   0 st    :  13 std   :   0 sts   :  23 
+sub   :   0 subi  :   1 swap  :   1 tst   :   0 wdr   :   0 
+Instructions used: 43 out of 113 (38.1%)
+
+ATmega328P memory use summary [bytes]:
+Segment   Begin    End      Code   Data   Used    Size   Use%
+---------------------------------------------------------------
+[.cseg] 0x000000 0x0005b6   1220    242   1462   32768   4.5%
+[.dseg] 0x000100 0x000140      0     64     64    2048   3.1%
+[.eseg] 0x000000 0x000000      0      0      0    1024   0.0%
+
+Assembly complete, 0 errors, 19 warnings
