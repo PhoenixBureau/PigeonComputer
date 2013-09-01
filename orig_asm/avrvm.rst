@@ -1059,14 +1059,14 @@ http://www.pololu.com/docs/0J15/5 )::
       .db 4, "m2on"
     M2_ON_PFA:
       ldi Working, 0b11110011
-      out TCCR2A, Working
+      sts TCCR2A, Working
       ldi Working, 0b00000010
-      out TCCR2B, Working
+      sts TCCR2B, Working
       clr Working
-      out OCR2A, Working
-      out OCR2B, Working
-      sbi DDRD, DDD5
-      sbi DDRD, DDD6
+      sts OCR2A, Working
+      sts OCR2B, Working
+      sbi DDRD, DDD3
+      sbi DDRB, DDB3
       ret
 
     M2_FORWARD:
@@ -1074,8 +1074,8 @@ http://www.pololu.com/docs/0J15/5 )::
       .db 3, "m2f"
     M2_FORWARD_PFA:
       clr Working
-      out OCR2A, Working
-      out OCR2B, TOS
+      sts OCR2A, Working
+      sts OCR2B, TOS
       ret
 
     M2_REVERSE:
@@ -1083,8 +1083,8 @@ http://www.pololu.com/docs/0J15/5 )::
       .db 3, "m2r"
     M2_REVERSE_PFA:
       clr Working
-      out OCR2B, Working
-      out OCR2A, TOS
+      sts OCR2B, Working
+      sts OCR2A, TOS
       ret
 
 
