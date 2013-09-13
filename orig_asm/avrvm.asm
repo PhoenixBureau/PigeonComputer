@@ -98,10 +98,28 @@ mov Base, Working
 
 sei
 
+  rcall ROBO
+
 MAIN:
   rcall INTERPRET_PFA
   rcall DOTESS_PFA
   rjmp MAIN
+
+ROBO:
+  rcall M1_ON_PFA
+  rcall M2_ON_PFA
+ROBOLOOP:
+  ldi TOS, 6
+  rcall READ_ANALOG_PFA
+  subi TOS, -50
+  rcall M1_FORWARD_PFA
+  rcall DROP_PFA
+  ldi TOS, 1
+  rcall READ_ANALOG_PFA
+  subi TOS, -50
+  rcall M2_FORWARD_PFA
+  rcall DROP_PFA
+  rjmp ROBOLOOP
 
 UART_INIT:
   ldi r17, high(520) ; 2400 baud w/ 20Mhz osc
