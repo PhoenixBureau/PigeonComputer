@@ -83,7 +83,7 @@ class MetaII(object):
         self.program.append(self.assemble_line(*line.split(None, 1)))
       else:
         label = line.strip()
-        self.labels[label] = len(self.program)
+        self.labels[label] = len(self.program) - 1
 
   def assemble_line(self, op, arg=None):
     '''
@@ -127,7 +127,7 @@ class MetaII(object):
     '''
     Set PC to the given label/address.
     '''
-    self.PC = self.labels[ident] - 1
+    self.PC = self.labels[ident]
 
   def TST(self, string):
     '''
@@ -206,7 +206,7 @@ class MetaII(object):
     Call the subroutine at ``addr``.
     '''
     self._push_call_frame()
-    self.PC = self.labels[addr] - 1
+    self.PC = self.labels[addr]
 
   def R(self):
     '''
@@ -226,21 +226,21 @@ class MetaII(object):
     '''
     Unconditional branch to ``addr``.
     '''
-    self.PC = self.labels[addr] - 1
+    self.PC = self.labels[addr]
 
   def BT(self, addr):
     '''
     Branch to ``addr`` if switch is set.
     '''
     if self.switch:
-      self.PC = self.labels[addr] - 1
+      self.PC = self.labels[addr]
 
   def BF(self, addr):
     '''
     Branch to ``addr`` if switch is clear.
     '''
     if not self.switch:
-      self.PC = self.labels[addr] - 1
+      self.PC = self.labels[addr]
 
   def BE(self):
     '''
