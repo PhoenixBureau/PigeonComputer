@@ -23,7 +23,9 @@ cola_metaii = r'''
 
   define = 'define' .OUT('define, ') .ID .OUT('"'*'"') ;
 
-  what = define | 'send' .OUT('send_ ') ;
+  enifed = 'enifed' .OUT('enifed, ') .ID .OUT('"'*'"') ;
+
+  what = define | enifed | 'send' .OUT('send_ ') ;
 
   term = list | literal | symbol ;
 
@@ -54,10 +56,40 @@ def define(context, name, value):
   print 'assigning', name, value
   context[name] = value
 
+def enifed(context, name):
+  return context[name]
+
+
+
+def emit_lit(ast, context):
+  print ' ' * context.indent, repr(ast.data)
+
+def emit_word(ast, context):
+  print ' ' * context.indent, '< %s >' % (ast.data,)
+
+def eval_seq(ast, context):
+  context.indent += 3
+  print ' ' * context.indent, '/----\\'
+  for item in ast.data:
+      send(item, 'eval', context)
+  print ' ' * context.indent, '\\____/'
+  context.indent -= 3
+
+def seq_append(seq, *things):
+  seq.data.extend(things)
+  return seq
+
+
 c = {
   'define': define,
+  'enifed': enifed,
   'send_': send_,
   'symbol_vt': symbol_vt,
+  'object_vt': object_vt,
+  'ast_vt': ast_vt,
+  'emit_lit': emit_lit,
+  'emit_word': emit_word,
+  'eval_seq': eval_seq,
   }
 
 def compile_(context, source):
@@ -73,79 +105,32 @@ b, ast, o = compile_(c, '''
   ( define LIT
     ( send ( send symbol_vt 'allocate' ) 'setName' 'literal' ))
 
-  ( define SYMBOL
-    ( send ( send symbol_vt 'allocate' ) 'setName' 'symbol' ))
+  ( define WORD
+    ( send ( send symbol_vt 'allocate' ) 'setName' 'word' ))
 
-  
+  ( define SEQ
+    ( send ( send symbol_vt 'allocate' ) 'setName' 'sequence' ))
+
+  ( define context ( send object_vt 'delegated' ) )
+
+  ( send ( enifed context ) 'addMethod' 'literal' emit_lit )
+  ( send ( enifed context ) 'addMethod' 'word' emit_word )
+  ( send ( enifed context ) 'addMethod' 'sequence' eval_seq )
+
+  ( define s 
+    ( send ( send ast_vt 'allocate') 'init' ( enifed WORD ) 'age' )
+    )
   .
 
 ''')
 
+
+
 print b, ast, o
 del c['__builtins__']
-##lit = evaluate(c, o)
+c['context'].indent = 0
 
 
-
-##  WORD := [ [ symbol_vt allocate ] setName '' ]
-##  SEQ := [ [ symbol_vt allocate ] setName 'sequence' ]
-##
-##  context := [ object_vt delegated ]
-##  [ context addMethod 'literal' emit_lit ]
-##  [ context addMethod 'word' emit_word ]
-##  [ context addMethod 'sequence' eval_seq ] 
-
-
-
-
-##
-##
-##
-##
-##def emit_lit(ast, context):
-##  print ' ' * context.indent, repr(ast.data)
-##
-##def emit_word(ast, context):
-##  print ' ' * context.indent, '< %s >' % (ast.data,)
-##
-##def eval_seq(ast, context):
-##  context.indent += 3
-##  print ' ' * context.indent, '/----\\'
-##  for item in ast.data:
-##      send(item, 'eval', context)
-##  print ' ' * context.indent, '\\____/'
-##  context.indent -= 3
-##
-##def seq_append(seq, *things):
-##  seq.data.extend(things)
-##  return seq
-##
-##
-##object_code = compile_('''
-##
-##  LIT := [ [ symbol_vt allocate ] setName 'literal' ]
-##  WORD := [ [ symbol_vt allocate ] setName 'word' ]
-##  SEQ := [ [ symbol_vt allocate ] setName 'sequence' ]
-##
-##  context := [ object_vt delegated ]
-##  [ context addMethod 'literal' emit_lit ]
-##  [ context addMethod 'word' emit_word ]
-##  [ context addMethod 'sequence' eval_seq ] 
-##  .
-##
-##''')
-##
-##
-##namespace = object_code()
-##
-##
-##LIT = namespace['LIT']
-##WORD = namespace['WORD']
-##SEQ = namespace['SEQ']
-##CONTEXT = namespace['context']
-##CONTEXT.indent = 0
-##
-##
 ##if __name__ == '__main__':
 ##  from pprint import pprint
 ##
