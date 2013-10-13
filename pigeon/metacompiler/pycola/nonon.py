@@ -84,7 +84,7 @@ def evaluate(ast, context):
   if callable(exp[0]):
     return exp[0](*exp[1:])
 
-  return exp
+  return list_(*exp)
 
 
 def make_lambda_ast(rest, context):
@@ -104,8 +104,7 @@ def make_lambda_ast(rest, context):
 def evaluate_list(ast, context):
   result = evaluate(ast, context)
   if result is not None:
-    print '<', result, '>'
-    result = list_(*result)
+    print '<', result.data, '>'
     send(result, 'eval', print_context)
     print
 
@@ -127,8 +126,6 @@ def eval_seq(ast, context):
   context.indent += 3
   print ' ' * context.indent, '/----\\'
   for item in ast.data:
-    if isinstance(item, tuple):
-      item = list_(*item)
     send(item, 'eval', context)
   print ' ' * context.indent, '\\____/'
   context.indent -= 3
