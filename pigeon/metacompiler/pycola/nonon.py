@@ -80,19 +80,17 @@ cola_metaii = r'''
 
   .SYNTAX PROGRAM
 
-  literal = ( .STRING | .NUMBER ) .OUT('literal('*')') ;
-
-  symbol = .ID .OUT('symbol("'*'")') ;
+  PROGRAM = .OUT('(') args .OUT(')') '.' ;
 
   args = $ term ;
 
-  list = '(' .OUT('list_(')
-           term ( args | .EMPTY )
-            ')' .OUT(')') ;
-
   term = ( list | literal | symbol ) .OUT(', ') ;
 
-  PROGRAM = .OUT('(') args .OUT(')') '.' ;
+  list = '(' .OUT('list_(') args ')' .OUT(')') ;
+
+  literal = ( .STRING | .NUMBER ) .OUT('literal('*')') ;
+
+  symbol = .ID .OUT('symbol("'*'")') ;
 
   .END
 
@@ -118,10 +116,8 @@ ast = eval(body)
 pprint(ast)
 print
 
-c = context = send(object_vt, 'delegated')
-
+context = send(object_vt, 'delegated')
 send(context, 'addMethod', 'list', evaluate_list)
-
 for ast_ in ast:
   send(ast_, 'eval', context)
 
