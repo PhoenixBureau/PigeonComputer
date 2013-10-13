@@ -67,7 +67,7 @@ def evaluate(ast, context):
 
   if sname == 'symbol':
     try: return send(context, 'lookup', ast.data)
-    except: return ast.data
+    except: return str(ast.data) + '?'
 
   if sname == 'literal':
     return ast.data
@@ -78,13 +78,10 @@ def evaluate(ast, context):
   if sname == 'symbol':
 
     if first.data == 'define':
-      var, exp = rest
-      var = var.data
-      value = evaluate(exp, context)
-      send(context, 'addMethod', var, value)
+      define(rest, context)
       return
 
-    elif first.data == 'lambda':
+    if first.data == 'lambda':
       return make_lambda_ast(rest, context)
 
   exp = tuple(evaluate(it, context) for it in ast.data)
@@ -92,6 +89,14 @@ def evaluate(ast, context):
     return exp[0](*exp[1:])
 
   return exp
+
+
+def define(rest, context):
+  var, exp = rest
+  var = var.data
+  value = evaluate(exp, context)
+  send(context, 'addMethod', var, value)
+  return
 
 
 def make_lambda_ast(rest, context):
