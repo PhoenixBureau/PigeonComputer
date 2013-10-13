@@ -23,7 +23,8 @@ def literal(value): return make_ast(LITERAL, value)
 def list_(*values): return make_ast(LIST, list(values))
 
 
-def make_lambda_ast(variables, exp, context):
+def make_lambda_ast(rest, context):
+  variables, exp = rest
   variables = tuple(v.data for v in variables.data)
   exp = list_(*exp.data)
 
@@ -63,8 +64,7 @@ def evaluate(ast, context):
       return
 
     elif first.data == 'lambda':
-      variables, exp = rest
-      return make_lambda_ast(variables, exp, context)
+      return make_lambda_ast(rest, context)
 
   exp = tuple(evaluate(it, context) for it in ast.data)
   if callable(exp[0]):
