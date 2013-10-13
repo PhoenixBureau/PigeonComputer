@@ -50,24 +50,24 @@ cola_metaii = r'''
 
 # Once we have the AST we can use this LISP-like machinery to evaluate it.
 
+
 def name_of_symbol_of(ast):
   return send(send(ast, 'typeOf'), 'getName')
+
 
 def evaluate(ast, context):
   sname = name_of_symbol_of(ast)
 
   if sname == 'symbol':
-    try:
-      return send(context, 'lookup', ast.data)
-    except:
-      return ast.data
+    try: return send(context, 'lookup', ast.data)
+    except: return ast.data
 
   if sname == 'literal':
     return ast.data
 
   first, rest = ast.data[0], ast.data[1:]
-  sname = name_of_symbol_of(first)
 
+  sname = name_of_symbol_of(first)
   if sname == 'symbol':
 
     if first.data == 'define':
@@ -122,12 +122,40 @@ pprint(ast)
 print
 
 
-context = send(object_vt, 'delegated')
 def evaluate_list(ast, context):
-  print '<', evaluate(ast, context), '>'
-send(context, 'addMethod', 'list', evaluate_list)
+  result = evaluate(ast, context)
+  if result is not None:
+    print '<', result, '>'
+
+
+eval_context = send(object_vt, 'delegated')
+send(eval_context, 'addMethod', 'list', evaluate_list)
 for ast_ in ast:
-  send(ast_, 'eval', context)
+  send(ast_, 'eval', eval_context)
+
+
+def emit_lit(ast, context):
+  print ' ' * context.indent, repr(ast.data)
+
+def emit_word(ast, context):
+  print ' ' * context.indent, '< %s >' % (ast.data,)
+
+def eval_seq(ast, context):
+  context.indent += 3
+  print ' ' * context.indent, '/----\\'
+  for item in ast.data:
+      send(item, 'eval', context)
+  print ' ' * context.indent, '\\____/'
+  context.indent -= 3
+
+
+print_context = send(object_vt, 'delegated')
+send(print_context, 'addMethod', 'literal', emit_lit)
+send(print_context, 'addMethod', 'symbol', emit_word)
+send(print_context, 'addMethod', 'list', eval_seq)
+print_context.indent = 0
+for ast_ in ast:
+  send(ast_, 'eval', print_context)
 
 
 ####if __name__ == '__main__':
