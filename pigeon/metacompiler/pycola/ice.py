@@ -13,8 +13,7 @@ cola_metaii = r'''
 
   args = $ ( term .OUT(', ') ) ;
 
-  sending = '[' .OUT('send(') term .OUT(', ')
-                '<-'
+  sending = '[' .OUT('( send,') term .OUT(', ')
                 .ID .OUT('"'*'",')
                 ( args | .EMPTY )
             ']' .OUT(')') ;
@@ -37,6 +36,12 @@ cola_metaii = r'''
 
 '''
 cola_machine = comp(cola_metaii, open('metaii.asm').read())
+
+
+def evaluate(it):
+  if isinstance(it, tuple) and len(it) > 0 and callable(it[0]):
+    return it[0](*map(evaluate, it[1:]))
+  return it
 
 
 def compile_(source, compiler=cola_machine):
@@ -68,14 +73,14 @@ def seq_append(seq, *things):
 
 object_code = compile_('''
 
-  LIT := [ [ symbol_vt <- allocate ] <- setName 'literal' ]
-  WORD := [ [ symbol_vt <- allocate ] <- setName 'word' ]
-  SEQ := [ [ symbol_vt <- allocate ] <- setName 'sequence' ]
+  LIT := [ [ symbol_vt allocate ] setName 'literal' ]
+  WORD := [ [ symbol_vt allocate ] setName 'word' ]
+  SEQ := [ [ symbol_vt allocate ] setName 'sequence' ]
 
-  context := [ object_vt <- delegated ]
-  [ context <- addMethod 'literal' emit_lit ]
-  [ context <- addMethod 'word' emit_word ]
-  [ context <- addMethod 'sequence' eval_seq ] 
+  context := [ object_vt delegated ]
+  [ context addMethod 'literal' emit_lit ]
+  [ context addMethod 'word' emit_word ]
+  [ context addMethod 'sequence' eval_seq ] 
   .
 
 ''')
@@ -95,23 +100,23 @@ if __name__ == '__main__':
   from pprint import pprint
 
   source = '''
-  seq_vt := [ ast_vt <- delegated ]
-  [ seq_vt <- addMethod 'append' seq_append ]
+  seq_vt := [ ast_vt delegated ]
+  [ seq_vt addMethod 'append' seq_append ]
 
-  s := [[ seq_vt <- allocate ] <- init SEQ +* ]
+  s := [[ seq_vt allocate ] init SEQ +* ]
 
-  [ s <- append
-    [[ ast_vt <- allocate ] <- init WORD 'age' ]
-    [[ ast_vt <- allocate ] <- init LIT 'Danny' ]
-    [[ ast_vt <- allocate ] <- init LIT 23 ]
-    [[[ seq_vt <- allocate ] <- init SEQ +* ] <- append
-      [[ ast_vt <- allocate ] <- init LIT 1 ]
-      [[ ast_vt <- allocate ] <- init LIT 2 ]
-      [[ ast_vt <- allocate ] <- init LIT 3 ]
+  [ s append
+    [[ ast_vt allocate ] init WORD 'age' ]
+    [[ ast_vt allocate ] init LIT 'Danny' ]
+    [[ ast_vt allocate ] init LIT 23 ]
+    [[[ seq_vt allocate ] init SEQ +* ] append
+      [[ ast_vt allocate ] init LIT 1 ]
+      [[ ast_vt allocate ] init LIT 2 ]
+      [[ ast_vt allocate ] init LIT 3 ]
     ]
   ]
 
-  [ s <- eval CONTEXT ]
+  [ s eval CONTEXT ]
   .
   '''
 

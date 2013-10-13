@@ -11,25 +11,26 @@ cola_metaii = r'''
 
   .SYNTAX PROGRAM
 
+  args = $ ( term .OUT(', ') ) ;
+
+  sending = '[' .OUT('( send,') term .OUT(', ')
+                .ID .OUT('"'*'",')
+                ( args | .EMPTY )
+            ']' .OUT(')') ;
+
   literal = ( .STRING | .NUMBER ) .OUT('('*')') ;
 
   symbol = .ID .OUT(*) ;
 
-  args = $ ( term .OUT(', ') ) ;
+  new_list = '+*' .OUT('[]') ;
 
-  list = '(' .OUT('(')
-           what .OUT(', ') ( args | .EMPTY )
-            ')' .OUT(')') ;
+  term = sending | literal | symbol | new_list ;
 
-  define = 'define' .OUT('define, ') .ID .OUT('"'*'"') ;
+  store = .ID .OUT(*' = \') ':=' term ;
 
-  enifed = 'enifed' .OUT('enifed, ') .ID .OUT('"'*'"') ;
+  it = store | sending ;
 
-  what = define | enifed | 'send' .OUT('send_ ') ;
-
-  term = list | literal | symbol ;
-
-  PROGRAM = .OUT('(') args .OUT(')') '.' ;
+  PROGRAM = it $ it '.' .OUT('return locals()') ;
 
   .END
 
@@ -37,28 +38,18 @@ cola_metaii = r'''
 cola_machine = comp(cola_metaii, open('metaii.asm').read())
 
 
-def evaluate(context, it):
-  if isinstance(it, tuple):
-    if len(it) > 0:
-      if callable(it[0]):
-        g = it[0]
-        args = (evaluate(context, foo) for foo in it[1:])
-        return g(context, *args)
-      return tuple(evaluate(context, foo) for foo in it)
+def evaluate(it):
+  if isinstance(it, tuple) and len(it) > 0 and callable(it[0]):
+    return it[0](*map(evaluate, it[1:]))
   return it
 
 
-def send_(context, receiver, name, *args):
-  return send(receiver, name, *args)
-
-
-def define(context, name, value):
-  print 'assigning', name, value
-  context[name] = value
-
-def enifed(context, name):
-  return context[name]
-
+def compile_(source, compiler=cola_machine):
+  body = 'def a():\n' + comp(source, cola_machine)
+  if __debug__:
+    print body
+  exec body
+  return a
 
 
 def emit_lit(ast, context):
@@ -80,81 +71,57 @@ def seq_append(seq, *things):
   return seq
 
 
-c = {
-  'define': define,
-  'enifed': enifed,
-  'send_': send_,
-  'symbol_vt': symbol_vt,
-  'object_vt': object_vt,
-  'ast_vt': ast_vt,
-  'emit_lit': emit_lit,
-  'emit_word': emit_word,
-  'eval_seq': eval_seq,
-  }
+object_code = compile_('''
 
-def compile_(context, source):
-  body = comp(source, cola_machine)
-  print body
-  ast = eval(body, context)
-  print ast
-  o = evaluate(context, ast)
-  print o
-  return body, ast, o
+  sym := [ symbol_vt allocate ]
 
-b, ast, o = compile_(c, '''
-  ( define LIT
-    ( send ( send symbol_vt 'allocate' ) 'setName' 'literal' ))
+  LIT := [ sym setName 'literal' ]
+  WORD := [ sym setName 'word' ]
+  SEQ := [ sym setName 'sequence' ]
 
-  ( define WORD
-    ( send ( send symbol_vt 'allocate' ) 'setName' 'word' ))
-
-  ( define SEQ
-    ( send ( send symbol_vt 'allocate' ) 'setName' 'sequence' ))
-
-  ( define context ( send object_vt 'delegated' ) )
-
-  ( send ( enifed context ) 'addMethod' 'literal' emit_lit )
-  ( send ( enifed context ) 'addMethod' 'word' emit_word )
-  ( send ( enifed context ) 'addMethod' 'sequence' eval_seq )
-
-  ( define s 
-    ( send ( send ast_vt 'allocate') 'init' ( enifed WORD ) 'age' )
-    )
+  context := [ object_vt delegated ]
+  [ context addMethod 'literal' emit_lit ]
+  [ context addMethod 'word' emit_word ]
+  [ context addMethod 'sequence' eval_seq ] 
   .
 
 ''')
 
 
-
-print b, ast, o
-del c['__builtins__']
-c['context'].indent = 0
+namespace = object_code()
 
 
-##if __name__ == '__main__':
-##  from pprint import pprint
-##
-##  source = '''
-##  seq_vt := [ ast_vt delegated ]
-##  [ seq_vt addMethod 'append' seq_append ]
-##
-##  s := [[ seq_vt allocate ] init SEQ +* ]
-##
-##  [ s append
-##    [[ ast_vt allocate ] init WORD 'age' ]
-##    [[ ast_vt allocate ] init LIT 'Danny' ]
-##    [[ ast_vt allocate ] init LIT 23 ]
-##    [[[ seq_vt allocate ] init SEQ +* ] append
-##      [[ ast_vt allocate ] init LIT 1 ]
-##      [[ ast_vt allocate ] init LIT 2 ]
-##      [[ ast_vt allocate ] init LIT 3 ]
-##    ]
-##  ]
-##
-##  [ s eval CONTEXT ]
-##  .
-##  '''
-##
-##  a = compile_(source)
-##  ast = a()
-##  pprint(ast)
+LIT = evaluate(namespace['LIT'])
+WORD = evaluate(namespace['WORD'])
+SEQ = evaluate(namespace['SEQ'])
+CONTEXT = evaluate(namespace['context'])
+CONTEXT.indent = 0
+
+
+if __name__ == '__main__':
+  from pprint import pprint
+
+  source = '''
+  seq_vt := [ ast_vt delegated ]
+  [ seq_vt addMethod 'append' seq_append ]
+
+  s := [[ seq_vt allocate ] init SEQ +* ]
+
+  [ s append
+    [[ ast_vt allocate ] init WORD 'age' ]
+    [[ ast_vt allocate ] init LIT 'Danny' ]
+    [[ ast_vt allocate ] init LIT 23 ]
+    [[[ seq_vt allocate ] init SEQ +* ] append
+      [[ ast_vt allocate ] init LIT 1 ]
+      [[ ast_vt allocate ] init LIT 2 ]
+      [[ ast_vt allocate ] init LIT 3 ]
+    ]
+  ]
+
+  [ s eval CONTEXT ]
+  .
+  '''
+
+  a = compile_(source)
+  ast = a()
+  pprint(ast)
