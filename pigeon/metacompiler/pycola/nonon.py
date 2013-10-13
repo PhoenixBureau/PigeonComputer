@@ -8,29 +8,19 @@ object_vt, vtvt = bootstrap()
 symbol_vt, ast_vt = setUpTransformEngine(object_vt, vtvt)
 
 
-c = context = send(object_vt, 'delegated')
+def allocate(vt): return send(vt, 'allocate')
+def make_kind(kind): return send(allocate(symbol_vt), 'setName', kind)
+def make_ast(KIND, value): return send(allocate(ast_vt), 'init', KIND, value)
 
 
-SYMBOL = send(send(symbol_vt, 'allocate'), 'setName', 'symbol')
-LITERAL = send(send(symbol_vt, 'allocate'), 'setName', 'literal')
-LIST = send(send(symbol_vt, 'allocate'), 'setName', 'list')
+SYMBOL = make_kind('symbol')
+LITERAL = make_kind('literal')
+LIST = make_kind('list')
 
 
-def symbol(name):
-  symbol = send(ast_vt, 'allocate')
-  send(symbol, 'init', SYMBOL, name)
-  return symbol
-
-def literal(value):
-  lit = send(ast_vt, 'allocate')
-  send(lit, 'init', LITERAL, value)
-  return lit
-
-def list_(*values):
-  el = send(ast_vt, 'allocate')
-  send(el, 'init', LIST, list(values))
-  return el
-
+def symbol(name): return make_ast(SYMBOL, name)
+def literal(value): return make_ast(LITERAL, value)
+def list_(*values): return make_ast(LIST, list(values))
 
 
 def make_lambda_ast(variables, exp, context):
@@ -85,8 +75,6 @@ def evaluate(ast, context):
 def evaluate_list(ast, context):
   print '<', evaluate(ast, context), '>'
 
-send(context, 'addMethod', 'list', evaluate_list)
-
 
 cola_metaii = r'''
 
@@ -129,6 +117,10 @@ ast = eval(body)
 
 pprint(ast)
 print
+
+c = context = send(object_vt, 'delegated')
+
+send(context, 'addMethod', 'list', evaluate_list)
 
 for ast_ in ast:
   send(ast_, 'eval', context)
