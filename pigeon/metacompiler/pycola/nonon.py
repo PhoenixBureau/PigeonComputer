@@ -7,6 +7,7 @@ from metaii import comp
 object_vt, vtvt = bootstrap()
 symbol_vt, ast_vt = setUpTransformEngine(object_vt, vtvt)
 
+
 # Helper functions.
 def allocate(vt): return send(vt, 'allocate')
 def make_kind(kind): return send(allocate(symbol_vt), 'setName', kind)
@@ -59,7 +60,7 @@ def evaluate(ast, context):
 
   if sname == 'symbol':
     try: return send(context, 'lookup', ast.data)
-    except: return ast.data
+    except: return ast
 
   if sname == 'literal':
     return ast.data
@@ -140,7 +141,7 @@ if __name__ == '__main__':
   body = comp('''
 
   (define a 1)
-  (a)
+  (a b)
 
    (define area (lambda (r) (m 3.141592653 (multiply r r))))
    ( area cage nic )
