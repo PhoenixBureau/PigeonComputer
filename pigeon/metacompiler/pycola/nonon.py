@@ -14,7 +14,6 @@ c = context = send(object_vt, 'delegated')
 SYMBOL = send(send(symbol_vt, 'allocate'), 'setName', 'symbol')
 LITERAL = send(send(symbol_vt, 'allocate'), 'setName', 'literal')
 LIST = send(send(symbol_vt, 'allocate'), 'setName', 'list')
-LAMBDA = send(send(symbol_vt, 'allocate'), 'setName', 'lambda')
 
 
 def symbol(name):
@@ -42,11 +41,9 @@ def make_lambda_ast(variables, exp, context):
     new_context = send(context, 'delegated')
     for k, v in zip(variables, args.data):
       send(new_context, 'addMethod', k, v)
-    send(exp, 'eval', new_context)
+    return evaluate(exp, new_context)
 
-  inner_ast = send(ast_vt, 'allocate')
-  send(inner_ast, 'init', LAMBDA, inner)
-  return inner_ast
+  return inner
 
 
 def evaluate(ast, context):
@@ -78,15 +75,11 @@ def evaluate(ast, context):
       send(context, 'addMethod', var, value)
       return
 
-  return tuple(evaluate(it, context) for it in ast.data)
+    elif first.data == 'lambda':
+      variables, exp = rest
+      return make_lambda_ast(variables, exp, context)
 
-##    elif f.data == 'lambda':
-##      variables, exp = rest
-##      return make_lambda_ast(variables, exp, context)
-##
-##    i = send(context, 'lookup', f.data).data
-##    i(rest)
-##    return
+  return tuple(evaluate(it, context) for it in ast.data)
 
 def evaluate_list(ast, context):
   print evaluate(ast, context)
