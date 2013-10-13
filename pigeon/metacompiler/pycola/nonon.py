@@ -154,11 +154,16 @@ print_context.indent = 0
 
 
 if __name__ == '__main__':
+  from pprint import pprint
+
+  send(eval_context, 'addMethod', 'bill', lambda x: 2 * x)
 
   body = comp('''
 
-  (define a 1)
+  (define a 1)(define b Larry)
   (a b)
+
+  (bill 23)
 
    (define area (lambda (r) (m 3.141592653 (multiply r r))))
    ( area cage nic )
