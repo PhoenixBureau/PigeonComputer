@@ -1,4 +1,3 @@
-from pprint import pprint
 from co import bootstrap, send
 from la import setUpTransformEngine
 from metaii import comp
@@ -8,10 +7,16 @@ object_vt, vtvt = bootstrap()
 symbol_vt, ast_vt = setUpTransformEngine(object_vt, vtvt)
 
 
+#########################################################################
+##  Simple Syntax to AST                                               ##
+#########################################################################
+
+
 # Helper functions.
 def allocate(vt): return send(vt, 'allocate')
 def make_kind(kind): return send(allocate(symbol_vt), 'setName', kind)
 def make_ast(KIND, value): return send(allocate(ast_vt), 'init', KIND, value)
+def name_of_symbol_of(ast): return send(send(ast, 'typeOf'), 'getName')
 
 
 # Some AST symbol types.
@@ -49,10 +54,12 @@ cola_machine = comp(r'''
 ''', open('metaii.asm').read())
 
 
-# Once we have AST we can use this LISP-like machinery to evaluate it.
+#########################################################################
+#########################################################################
+#########################################################################
 
-def name_of_symbol_of(ast):
-  return send(send(ast, 'typeOf'), 'getName')
+
+# Once we have AST we can use this LISP-like machinery to evaluate it.
 
 
 def evaluate(ast, context):
@@ -111,6 +118,11 @@ eval_context = send(object_vt, 'delegated')
 send(eval_context, 'addMethod', 'list', evaluate_list)
 
 
+#########################################################################
+#########################################################################
+#########################################################################
+
+
 # We can also use machinery like this to walk the AST and print a
 # representation.
 
@@ -134,6 +146,11 @@ send(print_context, 'addMethod', 'literal', emit_lit)
 send(print_context, 'addMethod', 'symbol', emit_word)
 send(print_context, 'addMethod', 'list', eval_seq)
 print_context.indent = 0
+
+
+#########################################################################
+#########################################################################
+#########################################################################
 
 
 if __name__ == '__main__':
