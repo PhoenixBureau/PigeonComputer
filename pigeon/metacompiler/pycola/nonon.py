@@ -9,18 +9,17 @@ symbol_vt, ast_vt = setUpTransformEngine(object_vt, vtvt)
 
 
 c = context = send(object_vt, 'delegated')
+
+
 SYMBOL = send(send(symbol_vt, 'allocate'), 'setName', 'symbol')
 LITERAL = send(send(symbol_vt, 'allocate'), 'setName', 'literal')
 LIST = send(send(symbol_vt, 'allocate'), 'setName', 'list')
 LAMBDA = send(send(symbol_vt, 'allocate'), 'setName', 'lambda')
 
+
 def symbol(name):
-  try:
-    return send(context, 'lookup', name)
-  except:
-    symbol = send(ast_vt, 'allocate')
-    send(symbol, 'init', SYMBOL, name)
-    send(context, 'addMethod', name, symbol)
+  symbol = send(ast_vt, 'allocate')
+  send(symbol, 'init', SYMBOL, name)
   return symbol
 
 def literal(value):
@@ -32,6 +31,8 @@ def list_(*values):
   el = send(ast_vt, 'allocate')
   send(el, 'init', LIST, list(values))
   return el
+
+
 
 def make_lambda_ast(variables, exp, context):
   variables = tuple(v.data for v in variables.data)
@@ -47,39 +48,50 @@ def make_lambda_ast(variables, exp, context):
   send(inner_ast, 'init', LAMBDA, inner)
   return inner_ast
 
-def emit_lit(ast, context):
-  print repr(ast.data)
 
-def emit_symbol(ast, context):
-  print '< %s >' % (ast.data,)
+def evaluate(ast, context):
+  symbol = send(ast, 'typeOf')
+  sname = send(symbol, 'getName')
 
-def eval_list(ast, context):
-  if len(ast.data) > 0:
-    f, rest = ast.data[0], ast.data[1:]
-    symbol = send(f, 'typeOf')
-    sname = send(symbol, 'getName')
-    if sname == 'symbol':
+  if sname == 'symbol':
+    try:
+      return send(context, 'lookup', ast.data)
+    except:
+      return ast.data
 
-      if f.data == 'define':
-        var, exp = rest
-        var = var.data
-        value = eval_list(exp, context)
-        send(context, 'addMethod', var, value)
+  if sname == 'literal':
+    return ast.data
 
-      elif f.data == 'lambda':
-        variables, exp = rest
-        return make_lambda_ast(variables, exp, context)
+  if len(ast.data) == 0:
+    return
 
-      i = send(context, 'lookup', f.data).data
-      i(rest)
+  first, rest = ast.data[0], ast.data[1:]
+  symbol = send(first, 'typeOf')
+  sname = send(symbol, 'getName')
+
+  if sname == 'symbol':
+
+    if first.data == 'define':
+      var, exp = rest
+      var = var.data
+      value = evaluate(exp, context)
+      send(context, 'addMethod', var, value)
       return
 
-  for item in ast.data:
-      send(item, 'eval', context)
+  return tuple(evaluate(it, context) for it in ast.data)
 
-send(context, 'addMethod', 'list', eval_list)
-send(context, 'addMethod', 'symbol', emit_symbol)
-send(context, 'addMethod', 'literal', emit_lit)
+##    elif f.data == 'lambda':
+##      variables, exp = rest
+##      return make_lambda_ast(variables, exp, context)
+##
+##    i = send(context, 'lookup', f.data).data
+##    i(rest)
+##    return
+
+def evaluate_list(ast, context):
+  print evaluate(ast, context)
+
+send(context, 'addMethod', 'list', evaluate_list)
 
 
 cola_metaii = r'''
@@ -112,13 +124,15 @@ cola_metaii = r'''
 cola_machine = comp(cola_metaii, open('metaii.asm').read())
 
 source = '''
-  (define area (lambda (r) (m 3.141592653 (multiply r r))))
-  ( area cage nic )
-  ( 12 'neato' )
+(define a 1)
+(a)
 
-
-  .
+ (define area (lambda (r) (m 3.141592653 (multiply r r))))
+ ( area cage nic )
+ ( 12 'neato' )
+.
 '''
+
 body = comp(source, cola_machine)
 print body
 print
