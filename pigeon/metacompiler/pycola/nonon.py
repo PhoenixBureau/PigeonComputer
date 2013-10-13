@@ -39,7 +39,7 @@ def make_lambda_ast(variables, exp, context):
 
   def inner(*args):
     new_context = send(context, 'delegated')
-    for k, v in zip(variables, args.data):
+    for k, v in zip(variables, args):
       send(new_context, 'addMethod', k, v)
     return evaluate(exp, new_context)
 
@@ -79,10 +79,14 @@ def evaluate(ast, context):
       variables, exp = rest
       return make_lambda_ast(variables, exp, context)
 
-  return tuple(evaluate(it, context) for it in ast.data)
+  exp = tuple(evaluate(it, context) for it in ast.data)
+  if callable(exp[0]):
+    return exp[0](*exp[1:])
+
+  return exp
 
 def evaluate_list(ast, context):
-  print evaluate(ast, context)
+  print '<', evaluate(ast, context), '>'
 
 send(context, 'addMethod', 'list', evaluate_list)
 
