@@ -60,10 +60,10 @@ def evaluate(ast, context):
 
   if sname == 'symbol':
     try: return send(context, 'lookup', ast.data)
-    except: return ast
+    except: return ast.data
 
   if sname == 'literal':
-    return ast
+    return ast.data
 
   first, rest = ast.data[0], ast.data[1:]
 
@@ -84,7 +84,7 @@ def evaluate(ast, context):
   if callable(exp[0]):
     return exp[0](*exp[1:])
 
-  return list_(*exp)
+  return exp
 
 
 def make_lambda_ast(rest, context):
@@ -104,9 +104,7 @@ def make_lambda_ast(rest, context):
 def evaluate_list(ast, context):
   result = evaluate(ast, context)
   if result is not None:
-    print '<', result.data, '>'
-    send(result, 'eval', print_context)
-    print
+    print '<', result, '>'
 
 
 eval_context = send(object_vt, 'delegated')
