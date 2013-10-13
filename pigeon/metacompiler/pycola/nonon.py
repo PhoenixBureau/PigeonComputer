@@ -63,7 +63,7 @@ def evaluate(ast, context):
     except: return ast
 
   if sname == 'literal':
-    return ast.data
+    return ast
 
   first, rest = ast.data[0], ast.data[1:]
 
@@ -105,6 +105,9 @@ def evaluate_list(ast, context):
   result = evaluate(ast, context)
   if result is not None:
     print '<', result, '>'
+    result = list_(*result)
+    send(result, 'eval', print_context)
+    print
 
 
 eval_context = send(object_vt, 'delegated')
@@ -124,7 +127,9 @@ def eval_seq(ast, context):
   context.indent += 3
   print ' ' * context.indent, '/----\\'
   for item in ast.data:
-      send(item, 'eval', context)
+    if isinstance(item, tuple):
+      item = list_(*item)
+    send(item, 'eval', context)
   print ' ' * context.indent, '\\____/'
   context.indent -= 3
 
@@ -162,5 +167,6 @@ if __name__ == '__main__':
 
   print
 
+  print 'Evaluating...' ; print
   for ast_ in ast:
     send(ast_, 'eval', eval_context)
