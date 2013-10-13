@@ -156,17 +156,42 @@ print_context.indent = 0
 if __name__ == '__main__':
   from pprint import pprint
 
-  send(eval_context, 'addMethod', 'bill', lambda x: 2 * x)
+  send(eval_context, 'addMethod', 'multiply', lambda x, y: y * x)
+  send(eval_context, 'addMethod', 'allocate', allocate)
+  send(eval_context, 'addMethod', 'make_kind', make_kind)
+  send(eval_context, 'addMethod', 'make_ast', make_ast)
+  send(eval_context, 'addMethod', 'name_of_symbol_of', name_of_symbol_of)
+
+  send(eval_context, 'addMethod',
+       'eval_ast', lambda ast: evaluate_list(ast, eval_context)
+       )
 
   body = comp('''
+
+  ( define SYMBOL ( make_kind 'symbol' ) )
+  ( define LITERAL ( make_kind 'literal' ) )
+  ( define LIST ( make_kind 'list' ) )
+
+  ( define symbol ( lambda (name) ( make_ast SYMBOL name ) ) )
+  ( define literal ( lambda (value) ( make_ast LITERAL value ) ) )
+  ( define list_ ( lambda (values) ( make_ast LIST values ) ) )
+
+  ( define it ( list_ (
+    ( symbol Larry )
+    ( literal 23 )
+    ( symbol Barry )
+  )))
+
+  ( eval_ast it )
+  ( eval_ast ( symbol Bob ) )
 
   (define a 1)(define b Larry)
   (a b)
 
   (bill 23)
 
-   (define area (lambda (r) (m 3.141592653 (multiply r r))))
-   ( area cage nic )
+   (define area (lambda (r) (multiply 3.141592653 (multiply r r))))
+   ( area 23 nic )
    ( 12 'neato' )
   .
   ''', cola_machine)
