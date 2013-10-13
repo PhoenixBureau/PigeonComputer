@@ -19,15 +19,15 @@ LITERAL = make_kind('literal')
 LIST = make_kind('list')
 
 
-# Helper functions to generate AST for the simple "compiler" below.
+# Helper functions to generate AST for the simple compiler below.
 def symbol(name): return make_ast(SYMBOL, name)
 def literal(value): return make_ast(LITERAL, value)
 def list_(*values): return make_ast(LIST, list(values))
 
 
-# META-II source for a simple s-expression language, it generates AST
+# META-II compiler for a simple s-expression language, it generates AST
 # objects using the helper functions above when evaluated.
-cola_metaii = r'''
+cola_machine = comp(r'''
 
   .SYNTAX PROGRAM
 
@@ -45,11 +45,10 @@ cola_metaii = r'''
 
   .END
 
-'''
+''', open('metaii.asm').read())
 
 
-# Once we have the AST we can use this LISP-like machinery to evaluate it.
-
+# Once we have AST we can use this LISP-like machinery to evaluate it.
 
 def name_of_symbol_of(ast):
   return send(send(ast, 'typeOf'), 'getName')
@@ -101,27 +100,6 @@ def make_lambda_ast(rest, context):
   return inner
 
 
-source = '''
-(define a 1)
-(a)
-
- (define area (lambda (r) (m 3.141592653 (multiply r r))))
- ( area cage nic )
- ( 12 'neato' )
-.
-'''
-
-cola_machine = comp(cola_metaii, open('metaii.asm').read())
-body = comp(source, cola_machine)
-print body
-print
-
-
-ast = eval(body)
-pprint(ast)
-print
-
-
 def evaluate_list(ast, context):
   result = evaluate(ast, context)
   if result is not None:
@@ -130,9 +108,10 @@ def evaluate_list(ast, context):
 
 eval_context = send(object_vt, 'delegated')
 send(eval_context, 'addMethod', 'list', evaluate_list)
-for ast_ in ast:
-  send(ast_, 'eval', eval_context)
 
+
+# We can also use machinery like this to walk the AST and print a
+# representation.
 
 def emit_lit(ast, context):
   print ' ' * context.indent, repr(ast.data)
@@ -154,8 +133,33 @@ send(print_context, 'addMethod', 'literal', emit_lit)
 send(print_context, 'addMethod', 'symbol', emit_word)
 send(print_context, 'addMethod', 'list', eval_seq)
 print_context.indent = 0
-for ast_ in ast:
-  send(ast_, 'eval', print_context)
 
 
-####if __name__ == '__main__':
+if __name__ == '__main__':
+
+  body = comp('''
+
+  (define a 1)
+  (a)
+
+   (define area (lambda (r) (m 3.141592653 (multiply r r))))
+   ( area cage nic )
+   ( 12 'neato' )
+  .
+  ''', cola_machine)
+
+  ast = eval(body)
+
+  print body
+  print
+
+  pprint(ast)
+  print
+
+  for ast_ in ast:
+    send(ast_, 'eval', print_context)
+
+  print
+
+  for ast_ in ast:
+    send(ast_, 'eval', eval_context)
