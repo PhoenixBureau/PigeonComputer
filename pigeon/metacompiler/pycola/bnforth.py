@@ -30,10 +30,8 @@ def C(*terms):
   @deco_chk
   def c(context):
     try:
-      for term in terms:
-        term(context)
-    except PopFrame:
-      pass
+      for term in terms: term(context)
+    except PopFrame: pass
   return c
 
 def deco_chk(f):
@@ -41,20 +39,16 @@ def deco_chk(f):
     if context.success:
       context.push()
       f(context)
-      if not context.success:
-        context.fail()
-      else:
-        context.okay()
+      if context.success: context.okay()
+      else: context.fail()
   return chk
 
 def make_char_tokenizer(char):
   @deco_chk
   def tok(context):
     print context, '=?=', char
-    if context.current() != char:
-      context.success = False
-    else:
-      context.advance()
+    if context.current() != char: context.success = False
+    else: context.advance()
   return tok
 
 H, h, e, l = map(make_char_tokenizer, 'Hhel')
