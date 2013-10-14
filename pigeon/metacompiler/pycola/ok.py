@@ -32,7 +32,8 @@ def chartok(char):
 class PopFrame(Exception): pass
 
 def OR(context):
-  if context.success: raise PopFrame
+  if context.success:
+    raise PopFrame
   context.success = True
 
 def seq(*terms):
@@ -44,11 +45,31 @@ def seq(*terms):
       pass
   return do_seq
 
-context = Context('Hello world!')
-H = chartok('H')
-h = chartok('h')
-e = chartok('e')
-l = chartok('l')
+def kstar(term):
+  @deco
+  def kst(context):
+    while context.success: term(context)
+    context.success = True
+  return kst
+
+def parse(text, pattern):
+  context = Context(text)
+  pattern(context)
+  return context
+
+H, h, e, l, o = map(chartok, 'Hhelo')
 h2 = seq(h, OR, H, e, l, l)
 h3 = seq(H, OR, h, e, l, l)
 h4 = seq(seq(h, OR, H), e, l, l)
+h5 = seq(seq(h, OR, H), e, kstar(l), o)
+
+hi = 'Hello world!'
+
+for text, pattern in (
+  (hi, h2), (hi, h3), (hi, h4), (hi, h5),
+  ('heo ', h5),
+  ('Helllo world!', h5),
+  ):
+  print repr(text)
+  print parse(text, pattern)
+  print
