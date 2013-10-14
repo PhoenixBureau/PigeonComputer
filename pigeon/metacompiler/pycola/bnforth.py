@@ -40,7 +40,8 @@ class Context(object):
     self.stack.pop()
 
   def __repr__(self):
-    return '<Context %s %r, %i>' % (self.success, self.current(), self.pointer)
+    return '<Context %s %r, %i %r>' % (
+      self.success, self.current(), self.pointer, self.stack)
 
 
 class PopFrame(Exception): pass
@@ -95,16 +96,13 @@ e = make_char_tokenizer('e')
 l = make_char_tokenizer('l')
 
 
-h = C(h, OR, H, e, l, l)
-j = C(C(h, OR, H), e, l, l)
+##h = C(h, OR, H, e, l, l)
 
-Context('Hello World').parse(h)
+Context('Hello World').parse(h, OR, H, e, l, l)
 print
-c = Context('hello World')
-c.parse(h)
+Context('hello World').parse(h, OR, H, e, l, l)
 print
-
-Context('Hello World').parse(j)
+Context('Hello World').parse(C(h, OR, H), e, l, l)
 print
 
 c = Context('hello World')
