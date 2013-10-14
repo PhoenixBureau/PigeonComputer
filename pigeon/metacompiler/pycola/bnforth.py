@@ -1,13 +1,13 @@
 class Context(object):
 
-  def __init__(self, text, stack=[]):
+  def __init__(self, text):
     self.success = True
-    self.stack = stack
+    self.stack = []
     self.text = text
     self.pointer = 0
 
   def advance(self): self.pointer += 1
-  def parse(self, *terms): C(*terms)(self)
+  def parse(self, *terms): self.push() ; C(*terms)(self)
   def current(self): return self.text[self.pointer]
   def push(self): self.stack.append(self.pointer)
   def fail(self): self.pointer = self.stack.pop()
@@ -27,8 +27,8 @@ def OR(context):
   context.success = True
 
 def C(*terms):
+  @deco_chk
   def c(context):
-    context.push()
     try:
       for term in terms:
         term(context)
@@ -59,10 +59,9 @@ def make_char_tokenizer(char):
 
 H, h, e, l = map(make_char_tokenizer, 'Hhel')
 
-Context('Hello World').parse(h, OR, H, e, l, l) ; print
-Context('hello World').parse(h, OR, H, e, l, l) ; print
-Context('Hello World').parse(C(h, OR, H), e, l, l) ; print
-
+c = Context('Hello World')
+c.parse(h, OR, H, e, l, l) ; print c ; print
 c = Context('hello World')
-C(h, OR, H)(c)
-C(e, l, l)(c)
+c.parse(h, OR, H, e, l, l) ; print c ; print
+c = Context('Hello World')
+c.parse(C(h, OR, H), e, l, l) ; print c ; print
