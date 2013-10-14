@@ -1,0 +1,10 @@
+Each term examines the stack on entry. if false, the word exits immediately with false on the stack.
+
+
+
+|| given a true value on the stack, exits the colon definition immediately with true on the stack.
+
+&& given a false value on the stack, exits the colon definition immediately with false on the stack.
+
+We assume that each "token" (terminal) is represented by a Forth word which scans the input stream and 
+returns a success flag.

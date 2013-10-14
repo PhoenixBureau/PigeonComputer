@@ -91,16 +91,12 @@ def evaluate(ast, context):
   return exp
 
 
-def define(rest, context):
-  var, exp = rest
-  var = var.data
-  value = evaluate(exp, context)
-  send(context, 'addMethod', var, value)
+def define((var, exp), context):
+  send(context, 'addMethod', var.data, evaluate(exp, context))
   return
 
 
-def make_lambda_ast(rest, context):
-  variables, exp = rest
+def make_lambda_ast((variables, exp), context):
   variables = tuple(v.data for v in variables.data)
   exp = list_(*exp.data)
 
@@ -211,6 +207,7 @@ if __name__ == '__main__':
 
   for ast_ in ast:
     send(ast_, 'eval', print_context)
+    print
 
   print
 
