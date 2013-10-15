@@ -1,5 +1,14 @@
 from string import whitespace
 import sys
+from nonon import (
+  symbol as SYM,
+  literal as LIT,
+  list_ as LIST,
+  send,
+  print_context,
+  eval_context,
+  )
+
 
 class Context:
 
@@ -28,10 +37,12 @@ class Context:
   def __repr__(self):
     return '<Context %r %s >' % (self.current, self.success)
 
+
 def deco(f):
   def chk(context):
     if context.success: f(context)
   return chk
+
 
 def chartok(char):
   @deco
@@ -43,6 +54,7 @@ def chartok(char):
       context.success = False
   return tok
 
+
 def rangetok(start, stop):
   @deco
   def tok(context):
@@ -53,12 +65,15 @@ def rangetok(start, stop):
       context.success = False
   return tok
 
+
 class PopFrame(Exception): pass
+
 
 def OR(context):
   if context.success:
     raise PopFrame
   context.success = True
+
 
 def seq(*terms):
   @deco
@@ -69,12 +84,14 @@ def seq(*terms):
       pass
   return do_seq
 
+
 def kstar(term):
   @deco
   def kst(context):
     while context.success: term(context)
     context.success = True
   return kst
+
 
 def parse(text, pattern):
   context = Context(text)
@@ -94,29 +111,25 @@ def capture(f, post_process=eval):
     context.basket = None
   return bracket
 
+
 @deco
 def start_frame(context):
   new_frame = []
   context.frame_stack.append(context.current_frame)
   context.current_frame = new_frame
 
+
 @deco
 def finish_frame(context):
   frame = context.frame_stack.pop()
-  frame.append(tuple(context.current_frame))
+  frame.append(LIST(*context.current_frame))
   context.current_frame = frame
 
-class Symbol:
-  def __init__(self, text):
-    self.text = text
-  def __repr__(self):
-    return '<%s>' % (self.text,)
 
 blanc = [OR] * (len(whitespace) * 2 - 1)
 blanc[::2] = map(chartok, whitespace) #Python is cool. ;)
 blanc = seq(*blanc)
 __ = kstar(blanc)
-
 lparen, rparen = chartok('('), chartok(')')
 dot = chartok('.')
 quote = chartok("'")
@@ -124,12 +137,11 @@ low = rangetok('a', 'z')
 high = rangetok('A', 'Z')
 letter = seq(low, OR, high)
 digit = rangetok('0', '9')
-number = capture(seq(digit, kstar(digit)))
+number = capture(seq(digit, kstar(digit)), lambda i: LIT(int(i)))
 anychar = kstar(seq(letter, OR, digit))
-symbol = capture(seq(letter, anychar), Symbol)
-string = capture(seq(quote, anychar, quote))
+symbol = capture(seq(letter, anychar), SYM)
+string = capture(seq(quote, anychar, quote), lambda i: LIT(eval(i)))
 term = seq(number, OR, symbol, OR, string)
-
 @deco
 def do_list(context):
   seq(
@@ -138,18 +150,36 @@ def do_list(context):
     rparen, finish_frame
     )(context)
 
-little_language = seq(__, kstar(seq(seq(term, OR, do_list), __)), dot)
 
-c = Context(''' ( 123 a (bb c 34)) th4 '' ('Tuesday')
+little_language = seq(__, kstar(seq(do_list, __)), dot)
 
-   (define area (lambda (r) (multiply 3141592653 (multiply r r))))
+
+c = Context(''' ( 123 a (bb c 34))  ('Tuesday')
+   (define p (divide 1 1000000000))
+   (define pi (multiply 3141592653 p))
+   (pi p)
+   (define area (lambda (r) (multiply pi (multiply r r))))
    ( area 23 nic )
    ( 12 'neato' )
 
 .''')
+
 little_language(c)
 print c
 print
-for it in c.current_frame:
-  print it
 
+for it in c.current_frame:
+  send(it, 'eval', print_context)
+  print
+print
+
+print 'Evaluating...' ; print
+for it in c.current_frame:
+  send(it, 'eval', eval_context)
+print
+
+send(eval_context, 'addMethod', 'multiply', lambda x, y: y * x)
+send(eval_context, 'addMethod', 'divide', lambda x, y: x / float(y))
+print 'Evaluating...' ; print
+for it in c.current_frame:
+  send(it, 'eval', eval_context)
