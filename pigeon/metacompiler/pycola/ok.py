@@ -75,7 +75,6 @@ def chartok(char):
   @deco
   def tok(context):
     if context.current == char:
-##      print >> sys.stderr, char, context
       context.advance()
     else:
       context.success = False
@@ -86,7 +85,6 @@ def rangetok(start, stop):
   @deco
   def tok(context):
     if start <= context.current <= stop:
-##      print >> sys.stderr, start, '-', stop, context
       context.advance()
     else:
       context.success = False
@@ -229,13 +227,12 @@ if __name__ == '__main__':
   little_language(c)
   print
   print c
+  print c.context.data.keys()
   print
 
   for it in c.current_frame:
     send(it, 'eval', print_context)
     print
-  print
-  print c.context.data.keys()
   print
 
   c = Context(source, eval_context)
