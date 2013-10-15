@@ -5,6 +5,7 @@ from nonon import (
   literal as LIT,
   list_ as LIST,
   send,
+  object_vt,
   print_context,
   eval_context,
   )
@@ -12,12 +13,19 @@ from nonon import (
 
 class Context:
 
-  def __init__(self, text):
+  def __init__(self, text, context=None):
     self.stream = iter(text)
     self.advance()
     self.success = True
     self.current_frame = []
     self.frame_stack = []
+    if context is None:
+      context = send(object_vt, 'delegated')
+    else:
+      context = send(context, 'delegated')
+    send(context, 'addMethod', 'compiler', self)
+    send(context, 'addMethod', 'context', context)
+    self.context = context
 
   def advance(self):
     self.collect()
@@ -42,6 +50,17 @@ class Context:
     self.frame_stack[-1].append(LIST(*self.current_frame))
     self.current_frame = self.frame_stack.pop()
 
+  def finish_send(self):
+    f = self.current_frame
+    recipient, message, args = f[0].data, f[1].data, f[2:]
+    print recipient, message, args
+    recipient = send(self.context, 'lookup', recipient)
+    result = send(recipient, message, *args)
+    if result is not None:
+      self.frame_stack[-1].append(result)
+    self.current_frame = self.frame_stack.pop()
+    
+
   def __repr__(self):
     return '<Context %r %s >' % (self.current, self.success)
 
@@ -56,7 +75,7 @@ def chartok(char):
   @deco
   def tok(context):
     if context.current == char:
-      print >> sys.stderr, char, context
+##      print >> sys.stderr, char, context
       context.advance()
     else:
       context.success = False
@@ -67,7 +86,7 @@ def rangetok(start, stop):
   @deco
   def tok(context):
     if start <= context.current <= stop:
-      print >> sys.stderr, start, '-', stop, context
+##      print >> sys.stderr, start, '-', stop, context
       context.advance()
     else:
       context.success = False
@@ -128,11 +147,17 @@ def finish_frame(context):
   context.finish_frame()
 
 
+@deco
+def finish_send(context):
+  context.finish_send()
+
+
 blanc = [OR] * (len(whitespace) * 2 - 1)
 blanc[::2] = map(chartok, whitespace) #Python is cool. ;)
 blanc = seq(*blanc)
 __ = kstar(blanc)
 lparen, rparen = chartok('('), chartok(')')
+lbrack, rbrack = chartok('['), chartok(']')
 dot = chartok('.')
 quote = chartok("'")
 low = rangetok('a', 'z')
@@ -150,20 +175,44 @@ def do_list(context):
     lparen,
     start_frame,
     __,
-    kstar(seq(term, __, OR, do_list)),
+    kstar(seq(term, __, OR, do_list, OR, do_send)),
     rparen,
     finish_frame,
     __
     ):
     it(context)
 
+immediate_number = capture(seq(digit, kstar(digit)), int)
+immediate_string = capture(seq(quote, anychar, quote))
+immediate_term = seq(immediate_number, OR, symbol, OR, immediate_string)
 
-little_language = seq(__, kstar(do_list), dot)
+@deco
+def do_send(context):
+  for it in (
+    lbrack,
+    start_frame,
+    __,
+    symbol, __,
+    symbol, __,
+    kstar(seq(immediate_term, __, OR, do_send)),
+    rbrack,
+    finish_send,
+    __
+    ):
+    it(context)
+
+
+little_language = seq(__, kstar(seq(do_list, OR, do_send)), dot)
 
 
 if __name__ == '__main__':
-  c = Context('''
+  source = '''
+
      ( 123 a (bb c 34 ) )  ('Tuesday')
+
+     [ context addMethod 'twentythree' 23 ]
+     ( twentythree )
+     ( ooo [ context addMethod 'g' [context lookup 'twentythree'] ])
 
      (define p (divide 1 1000000000))
      (define pi (multiply 3141592653 p))
@@ -173,9 +222,12 @@ if __name__ == '__main__':
 
      ( 12 'neato' )
 
-  .''')
+  .'''
+
+  c = Context(source, eval_context)
 
   little_language(c)
+  print
   print c
   print
 
@@ -183,14 +235,21 @@ if __name__ == '__main__':
     send(it, 'eval', print_context)
     print
   print
+  print c.context.data.keys()
+  print
 
+  c = Context(source, eval_context)
+  print 'Parsing...' ; print
+  little_language(c)
   print 'Evaluating...' ; print
   for it in c.current_frame:
-    send(it, 'eval', eval_context)
+    send(it, 'eval', c.context)
   print
 
   send(eval_context, 'addMethod', 'multiply', lambda x, y: y * x)
   send(eval_context, 'addMethod', 'divide', lambda x, y: x / float(y))
   print 'Evaluating...' ; print
   for it in c.current_frame:
-    send(it, 'eval', eval_context)
+    send(it, 'eval', c.context)
+  print
+  print c.context.data.keys()
