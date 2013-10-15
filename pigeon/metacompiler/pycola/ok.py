@@ -1,17 +1,30 @@
-from string import ascii_letters, digits, whitespace
+from string import whitespace
 import sys
 
 class Context:
+
   def __init__(self, text):
     self.stream = iter(text)
     self.advance()
     self.success = True
+    self.current_frame = []
+    self.frame_stack = []
+
   def advance(self):
+    self.collect()
     try:
       self.current = self.stream.next()
     except StopIteration:
       if not self.success:
         raise
+
+  def collect(self):
+    if hasattr(self, 'basket') and self.basket is not None:
+      self.basket.append(self.current)
+
+  def push(self, term):
+    self.current_frame.append(term)
+
   def __repr__(self):
     return '<Context %r %s >' % (self.current, self.success)
 
@@ -69,20 +82,40 @@ def parse(text, pattern):
   return context
 
 
-##alphabet = map(chartok, ascii_letters)
-##numerals = map(chartok, digits)
+def capture(f, post_process=eval):
+  @deco
+  def bracket(context):
+    b = context.basket = []
+    f(context)
+    if context.success:
+      found = ''.join(b)
+      found = post_process(found)
+      context.push(found)
+    context.basket = None
+  return bracket
+
+@deco
+def start_frame(context):
+  new_frame = []
+  context.frame_stack.append(context.current_frame)
+  context.current_frame = new_frame
+
+@deco
+def finish_frame(context):
+  frame = context.frame_stack.pop()
+  frame.append(tuple(context.current_frame))
+  context.current_frame = frame
+
+class Symbol:
+  def __init__(self, text):
+    self.text = text
+  def __repr__(self):
+    return '<%s>' % (self.text,)
 
 blanc = [OR] * (len(whitespace) * 2 - 1)
 blanc[::2] = map(chartok, whitespace) #Python is cool. ;)
 blanc = seq(*blanc)
 __ = kstar(blanc)
-
-##_l = locals()
-##for name, tokeneater in zip(ascii_letters, alphabet):
-##  _l[name] = tokeneater
-##for name, tokeneater in zip(digits, numerals):
-##  _l['_' + name] = tokeneater
-##del _l
 
 lparen, rparen = chartok('('), chartok(')')
 dot = chartok('.')
@@ -91,22 +124,32 @@ low = rangetok('a', 'z')
 high = rangetok('A', 'Z')
 letter = seq(low, OR, high)
 digit = rangetok('0', '9')
-number = seq(digit, kstar(digit))
+number = capture(seq(digit, kstar(digit)))
 anychar = kstar(seq(letter, OR, digit))
-symbol = seq(letter, anychar)
-string = seq(quote, anychar, quote)
+symbol = capture(seq(letter, anychar), Symbol)
+string = capture(seq(quote, anychar, quote))
 term = seq(number, OR, symbol, OR, string)
 
 @deco
 def do_list(context):
   seq(
-    lparen, __,
+    lparen, __, start_frame,
     kstar(seq(seq(term, OR, do_list), __)),
-    rparen
+    rparen, finish_frame
     )(context)
 
 little_language = seq(__, kstar(seq(seq(term, OR, do_list), __)), dot)
 
-c = Context(" ( 123 a (bb c 34)) 34 '' ('Tuesday') .")
+c = Context(''' ( 123 a (bb c 34)) th4 '' ('Tuesday')
+
+   (define area (lambda (r) (multiply 3141592653 (multiply r r))))
+   ( area 23 nic )
+   ( 12 'neato' )
+
+.''')
 little_language(c)
 print c
+print
+for it in c.current_frame:
+  print it
+
