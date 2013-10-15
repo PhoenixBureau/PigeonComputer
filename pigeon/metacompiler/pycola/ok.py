@@ -1,18 +1,19 @@
+from string import ascii_letters, digits, whitespace
 import sys
-
-class Stream:
-  def __init__(self, text):
-    self.i = iter(text)
-    self.advance()
-  def advance(self):
-    self.current = self.i.next()
 
 class Context:
   def __init__(self, text):
-    self.stream = Stream(text)
+    self.stream = iter(text)
+    self.advance()
     self.success = True
+  def advance(self):
+    try:
+      self.current = self.stream.next()
+    except StopIteration:
+      if not self.success:
+        raise
   def __repr__(self):
-    return '<Context %r %s >' % (self.stream.current, self.success)
+    return '<Context %r %s >' % (self.current, self.success)
 
 def deco(f):
   def chk(context):
@@ -22,9 +23,19 @@ def deco(f):
 def chartok(char):
   @deco
   def tok(context):
-    print >> sys.stderr, char, context
-    if context.stream.current == char:
-      context.stream.advance()
+    if context.current == char:
+      print >> sys.stderr, char, context
+      context.advance()
+    else:
+      context.success = False
+  return tok
+
+def rangetok(start, stop):
+  @deco
+  def tok(context):
+    if start <= context.current <= stop:
+      print >> sys.stderr, start, '-', stop, context
+      context.advance()
     else:
       context.success = False
   return tok
@@ -57,19 +68,45 @@ def parse(text, pattern):
   pattern(context)
   return context
 
-H, h, e, l, o = map(chartok, 'Hhelo')
-h2 = seq(h, OR, H, e, l, l)
-h3 = seq(H, OR, h, e, l, l)
-h4 = seq(seq(h, OR, H), e, l, l)
-h5 = seq(seq(h, OR, H), e, kstar(l), o)
 
-hi = 'Hello world!'
+##alphabet = map(chartok, ascii_letters)
+##numerals = map(chartok, digits)
 
-for text, pattern in (
-  (hi, h2), (hi, h3), (hi, h4), (hi, h5),
-  ('heo ', h5),
-  ('Helllo world!', h5),
-  ):
-  print repr(text)
-  print parse(text, pattern)
-  print
+blanc = [OR] * (len(whitespace) * 2 - 1)
+blanc[::2] = map(chartok, whitespace) #Python is cool. ;)
+blanc = seq(*blanc)
+__ = kstar(blanc)
+
+##_l = locals()
+##for name, tokeneater in zip(ascii_letters, alphabet):
+##  _l[name] = tokeneater
+##for name, tokeneater in zip(digits, numerals):
+##  _l['_' + name] = tokeneater
+##del _l
+
+lparen, rparen = chartok('('), chartok(')')
+dot = chartok('.')
+quote = chartok("'")
+low = rangetok('a', 'z')
+high = rangetok('A', 'Z')
+letter = seq(low, OR, high)
+digit = rangetok('0', '9')
+number = seq(digit, kstar(digit))
+anychar = kstar(seq(letter, OR, digit))
+symbol = seq(letter, anychar)
+string = seq(quote, anychar, quote)
+term = seq(number, OR, symbol, OR, string)
+
+@deco
+def do_list(context):
+  seq(
+    lparen, __,
+    kstar(seq(seq(term, OR, do_list), __)),
+    rparen
+    )(context)
+
+little_language = seq(__, kstar(seq(seq(term, OR, do_list), __)), dot)
+
+c = Context(" ( 123 a (bb c 34)) 34 '' ('Tuesday') .")
+little_language(c)
+print c
