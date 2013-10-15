@@ -28,11 +28,19 @@ class Context:
         raise
 
   def collect(self):
-    if hasattr(self, 'basket') and self.basket is not None:
+    if hasattr(self, 'basket'):
       self.basket.append(self.current)
 
   def push(self, term):
     self.current_frame.append(term)
+
+  def start_frame(self):
+    self.frame_stack.append(self.current_frame)
+    self.current_frame = []
+
+  def finish_frame(self):
+    self.frame_stack[-1].append(LIST(*self.current_frame))
+    self.current_frame = self.frame_stack.pop()
 
   def __repr__(self):
     return '<Context %r %s >' % (self.current, self.success)
@@ -105,25 +113,19 @@ def capture(f, post_process=eval):
     b = context.basket = []
     f(context)
     if context.success:
-      found = ''.join(b)
-      found = post_process(found)
-      context.push(found)
-    context.basket = None
+      context.push(post_process(''.join(b)))
+    del context.basket
   return bracket
 
 
 @deco
 def start_frame(context):
-  new_frame = []
-  context.frame_stack.append(context.current_frame)
-  context.current_frame = new_frame
+  context.start_frame()
 
 
 @deco
 def finish_frame(context):
-  frame = context.frame_stack.pop()
-  frame.append(LIST(*context.current_frame))
-  context.current_frame = frame
+  context.finish_frame()
 
 
 blanc = [OR] * (len(whitespace) * 2 - 1)
