@@ -144,23 +144,31 @@ string = capture(seq(quote, anychar, quote), lambda i: LIT(eval(i)))
 term = seq(number, OR, symbol, OR, string)
 @deco
 def do_list(context):
-  seq(
-    lparen, __, start_frame,
-    kstar(seq(seq(term, OR, do_list), __)),
-    rparen, finish_frame
-    )(context)
+  for it in (
+    lparen,
+    start_frame,
+    __,
+    kstar(seq(term, __, OR, do_list)),
+    rparen,
+    finish_frame,
+    __
+    ):
+    it(context)
 
 
-little_language = seq(__, kstar(seq(do_list, __)), dot)
+little_language = seq(__, kstar(do_list), dot)
 
 
 if __name__ == '__main__':
-  c = Context(''' ( 123 a (bb c 34))  ('Tuesday')
+  c = Context('''
+     ( 123 a (bb c 34 ) )  ('Tuesday')
+
      (define p (divide 1 1000000000))
      (define pi (multiply 3141592653 p))
      (pi p)
      (define area (lambda (r) (multiply pi (multiply r r))))
      ( area 23 nic )
+
      ( 12 'neato' )
 
   .''')
