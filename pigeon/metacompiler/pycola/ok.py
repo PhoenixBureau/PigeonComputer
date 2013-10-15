@@ -154,32 +154,33 @@ def do_list(context):
 little_language = seq(__, kstar(seq(do_list, __)), dot)
 
 
-c = Context(''' ( 123 a (bb c 34))  ('Tuesday')
-   (define p (divide 1 1000000000))
-   (define pi (multiply 3141592653 p))
-   (pi p)
-   (define area (lambda (r) (multiply pi (multiply r r))))
-   ( area 23 nic )
-   ( 12 'neato' )
+if __name__ == '__main__':
+  c = Context(''' ( 123 a (bb c 34))  ('Tuesday')
+     (define p (divide 1 1000000000))
+     (define pi (multiply 3141592653 p))
+     (pi p)
+     (define area (lambda (r) (multiply pi (multiply r r))))
+     ( area 23 nic )
+     ( 12 'neato' )
 
-.''')
+  .''')
 
-little_language(c)
-print c
-print
-
-for it in c.current_frame:
-  send(it, 'eval', print_context)
+  little_language(c)
+  print c
   print
-print
 
-print 'Evaluating...' ; print
-for it in c.current_frame:
-  send(it, 'eval', eval_context)
-print
+  for it in c.current_frame:
+    send(it, 'eval', print_context)
+    print
+  print
 
-send(eval_context, 'addMethod', 'multiply', lambda x, y: y * x)
-send(eval_context, 'addMethod', 'divide', lambda x, y: x / float(y))
-print 'Evaluating...' ; print
-for it in c.current_frame:
-  send(it, 'eval', eval_context)
+  print 'Evaluating...' ; print
+  for it in c.current_frame:
+    send(it, 'eval', eval_context)
+  print
+
+  send(eval_context, 'addMethod', 'multiply', lambda x, y: y * x)
+  send(eval_context, 'addMethod', 'divide', lambda x, y: x / float(y))
+  print 'Evaluating...' ; print
+  for it in c.current_frame:
+    send(it, 'eval', eval_context)
