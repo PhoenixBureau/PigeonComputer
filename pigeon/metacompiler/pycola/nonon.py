@@ -5,6 +5,7 @@ from metaii import comp
 
 object_vt, vtvt = bootstrap()
 symbol_vt, ast_vt = setUpTransformEngine(object_vt, vtvt)
+context_vt = send(vtvt, 'delegated')
 
 
 #########################################################################
@@ -13,6 +14,7 @@ symbol_vt, ast_vt = setUpTransformEngine(object_vt, vtvt)
 
 
 # Helper functions.
+send(ast_vt, 'addMethod', 'valueOf', lambda ast: ast.data)
 def allocate(vt): return send(vt, 'allocate')
 def make_kind(kind): return send(allocate(symbol_vt), 'setName', kind)
 def make_ast(KIND, value): return send(allocate(ast_vt), 'init', KIND, value)
@@ -29,6 +31,10 @@ LIST = make_kind('list')
 def symbol(name): return make_ast(SYMBOL, name)
 def literal(value): return make_ast(LITERAL, value)
 def list_(*values): return make_ast(LIST, list(values))
+
+
+send(vtvt, 'addMethod', 'makeKind', lambda context, kind: make_kind(kind))
+send(vtvt, 'addMethod', 'makeAst', lambda context, KIND, value: make_ast(KIND, value))
 
 
 # META-II compiler for a simple s-expression language, it generates AST
@@ -115,7 +121,7 @@ def evaluate_list(ast, context):
     print '<', result, '>'
 
 
-eval_context = send(object_vt, 'delegated')
+eval_context = send(context_vt, 'delegated')
 send(eval_context, 'addMethod', 'list', evaluate_list)
 
 
@@ -142,7 +148,7 @@ def eval_seq(ast, context):
   context.indent -= 3
 
 
-print_context = send(object_vt, 'delegated')
+print_context = send(context_vt, 'delegated')
 send(print_context, 'addMethod', 'literal', emit_lit)
 send(print_context, 'addMethod', 'symbol', emit_word)
 send(print_context, 'addMethod', 'list', eval_seq)

@@ -6,8 +6,11 @@ from nonon import (
   list_ as LIST,
   send,
   object_vt,
+  context_vt,
   print_context,
   eval_context,
+  make_kind,
+  make_ast,
   )
 
 
@@ -60,7 +63,6 @@ class Context:
       self.frame_stack[-1].append(result)
     self.current_frame = self.frame_stack.pop()
     
-
   def __repr__(self):
     return '<Context %r %s >' % (self.current, self.success)
 
@@ -186,13 +188,14 @@ immediate_term = seq(immediate_number, OR, symbol, OR, immediate_string)
 
 @deco
 def do_send(context):
+  T = seq(immediate_term, __, OR, do_send)
   for it in (
     lbrack,
     start_frame,
     __,
     symbol, __,
     symbol, __,
-    kstar(seq(immediate_term, __, OR, do_send)),
+    kstar(T),
     rbrack,
     finish_send,
     __
@@ -204,13 +207,23 @@ little_language = seq(__, kstar(seq(do_list, OR, do_send)), dot)
 
 
 if __name__ == '__main__':
-  source = '''
 
-     ( 123 a (bb c 34 ) )  ('Tuesday')
+  source = '''
+     ( 123 a (bb c 34 ) )
+     ('Tuesday')
+
+     [context addMethod 'LITERAL' [context makeKind 'literal']]
+     [context addMethod 'r' [context makeAst [context lookup 'LITERAL'] 'dfg']]
+     [context addMethod 'q' [r valueOf]]
+     [context addMethod 's' [LITERAL getName]]
+
+     ( r [context lookup 'r'] q 42 s)
 
      [ context addMethod 'twentythree' 23 ]
+     [ context addMethod 'g' [context lookup 'twentythree'] ]
      ( twentythree )
-     ( ooo [ context addMethod 'g' [context lookup 'twentythree'] ])
+
+     ( ooo g )
 
      (define p (divide 1 1000000000))
      (define pi (multiply 3141592653 p))
@@ -219,6 +232,7 @@ if __name__ == '__main__':
      ( area 23 nic )
 
      ( 12 'neato' )
+
 
   .'''
 
