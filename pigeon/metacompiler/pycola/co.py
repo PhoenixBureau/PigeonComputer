@@ -20,6 +20,10 @@ class Object:
     def __init__(self, vtable):
         self.vtable = vtable
         self.data = None
+    def __repr__(self):
+##        return '<co.Object(%r) of type %r>' % (self.data,
+##                                               'O' if self.vtable is self else self.vtable.data.keys() )
+        return '<co.Object(%r)>' % (self.data,)
 
 def send(obj, name, *args, **keyword_args):
     method = bind(obj, name)
