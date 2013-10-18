@@ -21,9 +21,11 @@ class Object:
         self.vtable = vtable
         self.data = None
     def __repr__(self):
-##        return '<co.Object(%r) of type %r>' % (self.data,
-##                                               'O' if self.vtable is self else self.vtable.data.keys() )
-        return '<co.Object(%r)>' % (self.data,)
+        try:
+            ast_type = self.symbol.name
+        except AttributeError:
+            return '<co.Object(%r)>' % (self.data,)
+        return '<co.Object %s %r>' % (ast_type.upper(), self.data,)
 
 def send(obj, name, *args, **keyword_args):
     method = bind(obj, name)

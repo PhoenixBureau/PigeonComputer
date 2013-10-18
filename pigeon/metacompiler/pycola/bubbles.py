@@ -1,3 +1,4 @@
+import sys
 from co import bootstrap, send, addMethod, lookup
 from la import setUpTransformEngine
 
@@ -229,51 +230,82 @@ little_language = seq(__, kstar(do_list), dot)
 ##  LISP-ish Evaluator
 
 
-def evaluate(ast, context):
-  sname = name_of_symbol_of(ast)
-  if sname == 'symbol':
-    try:
-      return send(context, 'lookup', ast.data)
-    except:
-      return str(ast.data) + '?'
+DEFINE = make_kind('define')
+LAMBDA = make_kind('lambda')
 
-  if sname == 'literal':
-    return ast.data
 
-  first, rest = ast.data[0], ast.data[1:]
+def evaluate_list_(ast, context):
+  first = ast.data[0]
   sname = name_of_symbol_of(first)
-  if sname == 'symbol':
-    if first.data == 'define':
-      define(rest, context)
-      return
-    if first.data == 'lambda':
-      return make_lambda_ast(rest, context)
+  if sname == 'symbol' and first.data in ('define', 'lambda'):
+    return evaluate_special(ast, context)
 
-  exp = tuple(evaluate(it, context) for it in ast.data)
+  send(context, 'start_frame')
+  for inner_ast in ast.data:
+    send(inner_ast, 'eval', context)
+  send(context, 'finish_frame')
+
+  current_frame = send(context, 'lookup', 'current_frame')
+  exp = current_frame.pop().data
   if callable(exp[0]):
-    return exp[0](*exp[1:])
-  return exp
+    result = exp[0](*exp[1:])
+  else:
+    result = exp
+  current_frame.append(result)
 
 
-def define((var, exp), context):
-  send(context, 'addMethod', var.data, evaluate(exp, context))
+def evaluate_special(ast, context):
+  first, rest = ast.data[0], ast.data[1:]
+  if first.data == 'define':
+    assert len(rest) == 2, repr(rest)
+    return make_ast(DEFINE, rest)
+  if first.data == 'lambda':
+    assert len(rest) == 2, repr(rest)
+    return make_ast(LAMBDA, rest)
 
 
-def make_lambda_ast((variables, exp), context):
+def _append_result(context, result):
+  current_frame = send(context, 'lookup', 'current_frame')
+  current_frame.append(result)
+
+
+def evaluate_symbol(ast, context):
+  try:
+    it = send(context, 'lookup', ast.data)
+  except:
+    it = str(ast.data) + '?'
+  _append_result(context, it)
+
+
+def evaluate_literal(ast, context):
+  _append_result(context, ast.data)
+
+
+def evaluate_lambda(ast, context):
+  variables, exp = ast.data
   variables = tuple(v.data for v in variables.data)
   exp = list_(*exp.data)
   def inner(*args):
     new_context = send(context, 'delegated')
     for k, v in zip(variables, args):
       send(new_context, 'addMethod', k, v)
-    return evaluate(exp, new_context)
-  return inner
+    send(exp, 'eval', new_context)
+  _append_result(context, inner)
 
 
-def evaluate_list(ast, context):
-  result = evaluate(ast, context)
-  if result is not None:
-    print '<', result, '>'
+def evaluate_define(ast, context):
+  var, exp = ast.data
+  send(exp, 'eval', context)
+  current_frame = send(context, 'lookup', 'current_frame')
+  send(context, 'addMethod', var.data, current_frame.pop())
+
+
+def prep_eval_context(context):
+  send(context, 'addMethod', 'lambda', evaluate_lambda)
+  send(context, 'addMethod', 'define', evaluate_define)
+  send(context, 'addMethod', 'literal', evaluate_literal)
+  send(context, 'addMethod', 'symbol', evaluate_symbol)
+  send(context, 'addMethod', 'list', evaluate_list_)
 
 
 #########################################################################
@@ -315,7 +347,6 @@ if __name__ == '__main__':
   c = makeContext('''
 
   (12) ( 3 'fo ur' ) ( 5 (6 (7) bo )bo)
-
   (define p (divide 1 1000000000))
   (define pi (multiply 3141592653 p))
 
@@ -335,12 +366,38 @@ if __name__ == '__main__':
     print
   print
 
-  send(c, 'addMethod', 'multiply', lambda x, y: y * x)
-  send(c, 'addMethod', 'divide', lambda x, y: x / float(y))
+  from operator import mul, truediv
+  send(c, 'addMethod', 'multiply', mul)
+  send(c, 'addMethod', 'divide', truediv)
 
-  send(c, 'addMethod', 'list', evaluate_list)
+  prep_eval_context(c)
 
-  for it in c.data['current_frame']:
-    send(it, 'eval', c)
-    print
+  print 'Parsed ASTs'
   print
+  asts = c.data['current_frame']
+  pprint(asts)
+  c.data['current_frame'] = []
+
+  for it in asts:
+    send(it, 'eval', c)
+  print ; print ; print
+  print 'Evaluated'
+  print
+  pprint(c.data)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
