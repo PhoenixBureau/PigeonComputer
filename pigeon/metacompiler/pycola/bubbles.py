@@ -1,4 +1,3 @@
-import sys
 from co import bootstrap, send, addMethod, lookup
 from la import setUpTransformEngine
 
@@ -90,7 +89,13 @@ def finish_frame(context):
 
 
 context_vt = delegated(vtvt)
-for method in (advance, collect, push, start_frame, finish_frame):
+for method in (
+  advance,
+  collect,
+  push,
+  start_frame,
+  finish_frame,
+  ):
   send(context_vt, 'addMethod', method.__name__, method)
 
 
@@ -206,11 +211,13 @@ low = rangetok('a', 'z')
 high = rangetok('A', 'Z')
 letter = seq(low, OR, high)
 digit = rangetok('0', '9')
-number = capture(seq(digit, kstar(digit)), lambda i: literal(int(i)))
 alnum = seq(letter, OR, digit)
 anychar = seq(alnum, OR, blanc)
+
+number = capture(seq(digit, kstar(digit)), lambda i: literal(int(i)))
 symbol = capture(seq(letter, kstar(alnum)), symbol)
 string = capture(seq(quote, kstar(anychar), quote), lambda i: literal(eval(i)))
+
 term = seq(number, OR, symbol, OR, string)
 
 @deco
@@ -257,11 +264,11 @@ def evaluate_list_(ast, context):
 def evaluate_special(ast, context):
   first, rest = ast.data[0], ast.data[1:]
   if first.data == 'define':
-    assert len(rest) == 2, repr(rest)
-    return make_ast(DEFINE, rest)
-  if first.data == 'lambda':
-    assert len(rest) == 2, repr(rest)
-    return make_ast(LAMBDA, rest)
+    symbol = DEFINE
+  elif first.data == 'lambda':
+    symbol = LAMBDA
+  assert len(rest) == 2, repr(rest)
+  return make_ast(symbol, rest)
 
 
 def _append_result(context, result):
@@ -384,20 +391,3 @@ if __name__ == '__main__':
   print 'Evaluated'
   print
   pprint(c.data)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
