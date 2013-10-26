@@ -1,0 +1,8 @@
+
+  (define a 1)
+  (a b)
+
+   (define area (lambda (r) (m 3.141592653 (multiply r r))))
+   ( area cage nic )
+   ( 12 'neato' )
+  .

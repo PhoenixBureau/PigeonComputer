@@ -1,0 +1,54 @@
+digit = '0' | '1' | '2' | '3' | '4' | '5' | '6' | '7' | '8' | '9' ;
+hexDigit = digit | 'A' | 'B' | 'C' | 'D' | 'E' | 'F' ;
+
+ident = .ID .OUT('ident '*) ;
+
+qualident = ( ( ident '.' ) | .EMPTY ) ident .OUT('qualident') ;
+
+identdef = ident ( '*' .OUT(' export') | .EMPTY ) ;
+
+integer = ( digit $ digit ) | ( digit $ hexDigit 'H' ) ;
+
+real = digit $ digit '.' $ digit ( ScaleFactor | .EMPTY ) ;
+
+ScaleFactor = ( 'E' | 'D' ) ( ( '+' | '-' ) | .EMPTY ) digit $ digit ;
+
+number = ( integer | real ) .OUT('number');
+
+string = ( '"' .STRING '"' ) | ( digit $ hexDigit 'H' ) ;
+
+
+'WHILE' .OUT('KEYWORD "WHILE"') | 
+'VAR' .OUT('KEYWORD "VAR"') | 
+'UNTIL' .OUT('KEYWORD "UNTIL"') | 
+'TYPE' .OUT('KEYWORD "TYPE"') | 
+'TRUE' .OUT('KEYWORD "TRUE"') | 
+'TO' .OUT('KEYWORD "TO"') | 
+'THEN' .OUT('KEYWORD "THEN"') | 
+'RETURN' .OUT('KEYWORD "RETURN"') | 
+'REPEAT' .OUT('KEYWORD "REPEAT"') | 
+'RECORD' .OUT('KEYWORD "RECORD"') | 
+'PROCEDURE' .OUT('KEYWORD "PROCEDURE"') | 
+'POINTER' .OUT('KEYWORD "POINTER"') | 
+'OR' .OUT('KEYWORD "OR"') | 
+'OF' .OUT('KEYWORD "OF"') | 
+'NIL' .OUT('KEYWORD "NIL"') | 
+'MODULE' .OUT('KEYWORD "MODULE"') | 
+'MOD' .OUT('KEYWORD "MOD"') | 
+'IS' .OUT('KEYWORD "IS"') | 
+'IN' .OUT('KEYWORD "IN"') | 
+'IMPORT' .OUT('KEYWORD "IMPORT"') | 
+'IF' .OUT('KEYWORD "IF"') | 
+'FOR' .OUT('KEYWORD "FOR"') | 
+'FALSE' .OUT('KEYWORD "FALSE"') | 
+'END' .OUT('KEYWORD "END"') | 
+'ELSIF' .OUT('KEYWORD "ELSIF"') | 
+'ELSE' .OUT('KEYWORD "ELSE"') | 
+'DO' .OUT('KEYWORD "DO"') | 
+'DIV' .OUT('KEYWORD "DIV"') | 
+'CONST' .OUT('KEYWORD "CONST"') | 
+'CASE' .OUT('KEYWORD "CASE"') | 
+'BY' .OUT('KEYWORD "BY"') | 
+'BEGIN' .OUT('KEYWORD "BEGIN"') | 
+'ARRAY' .OUT('KEYWORD "ARRAY"') | 
+
