@@ -311,7 +311,7 @@ class TextViewerWidget(Text, mousebindingsmixin):
         foreground = "orange"
     )
 
-    def __init__(self, master=None,  **kw):
+    def __init__(self, main=None,  **kw):
 
         # Get the filename associated with this widget's contents, if any.
         self.filename = kw.pop('filename', False)
@@ -324,7 +324,7 @@ class TextViewerWidget(Text, mousebindingsmixin):
         kw.setdefault('font', 'arial 12')
 
         #Create ourselves as a Tkinter Text
-        Text.__init__(self, master, **kw)
+        Text.__init__(self, main, **kw)
 
         #Initialize our mouse mixin.
         mousebindingsmixin.__init__(self)
