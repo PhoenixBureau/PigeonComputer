@@ -45,7 +45,7 @@ developing code for our micro-controllers.
 .. _Metacompilers Tutorial: http://www.bayfronttechnologies.com/mc_tutorial.html
 
 '''
-from StringIO import StringIO
+from io import StringIO
 
 
 class MetaII(object):
@@ -113,7 +113,7 @@ class MetaII(object):
     self.output_buffer = '\t'
     self.last = None
     self.error = self.end = False
-    self.q = label_generator().next
+    self.q = label_generator().__next__
     while not (self.error or self.end):
       op, args = self.program[self.PC]
       op(*args)
@@ -291,7 +291,7 @@ class MetaII(object):
     Copy output buffer to output stream, appending a newline character,
     then reset output buffer for next line.
     '''
-    print >> self.output, self.output_buffer.rstrip()
+    print(self.output_buffer.rstrip(), file=self.output)
     self.output_buffer = '\t'
 
   def END(self):
@@ -333,15 +333,15 @@ class MetaII(object):
     uh, errors.
     '''
     from pprint import pformat
-    print 'Stack:', pformat(self.stack)
-    print 'last:', repr(self.last), 'switch:', self.switch
-    print 'input:', repr(self.input[:20])
-    print 'PC:', self.PC,
+    print('Stack:', pformat(self.stack))
+    print('last:', repr(self.last), 'switch:', self.switch)
+    print('input:', repr(self.input[:20]))
+    print('PC:', self.PC, end=' ')
     op, args = self.program[self.PC]
     L = self._labels_for_address(self.PC)
     if L:
-      print L, ':',
-    print op.__name__ + str(args)
+      print(L, ':', end=' ')
+    print(op.__name__ + str(args))
 
   def print_program(self):
     '''
@@ -351,11 +351,11 @@ class MetaII(object):
     for n, (f, a) in enumerate(self.program):
       L = self._labels_for_address(n)
       if L:
-        print L, ':'
-      print '    %3i %3s %r' % (n, f.__name__, a)
+        print(L, ':')
+      print('    %3i %3s %r' % (n, f.__name__, a))
 
   def _labels_for_address(self, addr):
-    return ' '.join(k for k, v in self.labels.iteritems() if v == addr)
+    return ' '.join(k for k, v in self.labels.items() if v == addr)
 
 
 def label_generator():
@@ -391,7 +391,7 @@ if __name__ == '__main__':
   m2 = MetaII()
   m2.assemble(metaii_asm)
   new_asm = m2.compile(metaii_description)
-  print new_asm
+  print(new_asm)
   if m2.error:
     m2.info()
 #  print new_asm.rstrip() == metaii_asm.rstrip()
