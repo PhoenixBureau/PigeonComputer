@@ -4,13 +4,10 @@ PROGRAM → '▶' ●
     «⇤'from metaii_base import MetaII'↵↵»
     «'class '⊙'_compiler(MetaII):'↵↦↵»
     «'def compile(self, source):'↦↵»
-        «'self.inbuf = source'↵»
-        «'self.pos = 0'↵»
-        «'self.outbuf = ""'↵»
-        «'self.margin = 0'↵»
-        «'self.gnlabel = 1'↵»
+        «'self.input = source'↵»
+        «'self.reset()'↵»
         «'self.rule_'⊙'()'↵»
-        «'return self.outbuf'↤↵↵»
+        «'return self.output.getvalue()'↤↵↵»
     ★ ST
     '◀' ▪
 
@@ -20,10 +17,10 @@ ST → ● «'def rule_'⊙'(self):'↦↵»
     '→' EX1 '▪'
     «↤↵↵» ▪
 
-EX1 → EX2 ★ ('|' «'if not self.flag:'↦↵» EX2 «↤↵» ) ▪
+EX1 → EX2 ★ ('|' «'if not self.switch:'↦↵» EX2 «↤↵» ) ▪
 
-EX2 → (EX3 «'if self.flag:'↦↵» | OUTPUT «'if True:'↦↵» )
-       ★ (EX3 «'if not self.flag: self.runBEjsfn(rname)'↵↵» | OUTPUT)
+EX2 → (EX3 «'if self.switch:'↦↵» | OUTPUT «'if True:'↦↵» )
+       ★ (EX3 «'if not self.switch: self.runBEjsfn(rname)'↵↵» | OUTPUT)
       «'pass'↵»
       «↤↵» ▪
 
@@ -35,7 +32,7 @@ EX3 → ● «'self.rule_'⊙'()'↵» |
       '(' EX1 ')' |
       '∅' «'self.SET()'↵» |
       '★' «'self.SET()'↵»
-          «'while self.flag:'↦↵»
+          «'while self.switch:'↦↵»
           EX3
           «↤↵»
           «'self.SET()'↵» ▪

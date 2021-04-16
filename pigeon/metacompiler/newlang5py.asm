@@ -17,21 +17,15 @@ PROGRAM
     CL 'def compile(self, source):'
     LMI
     NL
-    CL 'self.inbuf = source'
+    CL 'self.input = source'
     NL
-    CL 'self.pos = 0'
-    NL
-    CL 'self.outbuf = ""'
-    NL
-    CL 'self.margin = 0'
-    NL
-    CL 'self.gnlabel = 1'
+    CL 'self.reset()'
     NL
     CL 'self.rule_'
     CI
     CL '()'
     NL
-    CL 'return self.outbuf'
+    CL 'return self.output.getvalue()'
     LMD
     NL
     NL
@@ -77,7 +71,7 @@ EX1
 L7
     TST '|'
     BF L8
-    CL 'if not self.flag:'
+    CL 'if not self.switch:'
     LMI
     NL
     CLL EX2
@@ -95,7 +89,7 @@ L10
 EX2
     CLL EX3
     BF L11
-    CL 'if self.flag:'
+    CL 'if self.switch:'
     LMI
     NL
 L11
@@ -111,7 +105,7 @@ L12
 L15
     CLL EX3
     BF L16
-    CL 'if not self.flag: self.runBEjsfn(rname)'
+    CL 'if not self.switch: self.runBEjsfn(rname)'
     NL
     NL
 L16
@@ -183,7 +177,7 @@ L27
     BF L28
     CL 'self.SET()'
     NL
-    CL 'while self.flag:'
+    CL 'while self.switch:'
     LMI
     NL
     CLL EX3

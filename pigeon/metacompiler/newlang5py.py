@@ -3,21 +3,18 @@ from metaii_base import MetaII
 class PROGRAM_compiler(MetaII):
 
     def compile(self, source):
-        self.inbuf = source
-        self.pos = 0
-        self.outbuf = ""
-        self.margin = 0
-        self.gnlabel = 1
+        self.input = source
+        self.reset()
         self.rule_PROGRAM()
-        return self.outbuf
+        return self.output.getvalue()
 
     def rule_PROGRAM(self):
         rname = "PROGRAM"
         rlabel = 0
         self.TST('▶')
-        if self.flag:
+        if self.switch:
             self.ID()
-            if not self.flag: self.runBEjsfn(rname)
+            if not self.switch: self.runBEjsfn(rname)
 
             self.LB()
             self.CL('from metaii_base import MetaII')
@@ -32,33 +29,27 @@ class PROGRAM_compiler(MetaII):
             self.CL('def compile(self, source):')
             self.LMI()
             self.NL()
-            self.CL('self.inbuf = source')
+            self.CL('self.input = source')
             self.NL()
-            self.CL('self.pos = 0')
-            self.NL()
-            self.CL('self.outbuf = ""')
-            self.NL()
-            self.CL('self.margin = 0')
-            self.NL()
-            self.CL('self.gnlabel = 1')
+            self.CL('self.reset()')
             self.NL()
             self.CL('self.rule_')
             self.CI()
             self.CL('()')
             self.NL()
-            self.CL('return self.outbuf')
+            self.CL('return self.output.getvalue()')
             self.LMD()
             self.NL()
             self.NL()
             self.SET()
-            while self.flag:
+            while self.switch:
                 self.rule_ST()
 
             self.SET()
-            if not self.flag: self.runBEjsfn(rname)
+            if not self.switch: self.runBEjsfn(rname)
 
             self.TST('◀')
-            if not self.flag: self.runBEjsfn(rname)
+            if not self.switch: self.runBEjsfn(rname)
 
             pass
 
@@ -68,7 +59,7 @@ class PROGRAM_compiler(MetaII):
         rname = "ST"
         rlabel = 0
         self.ID()
-        if self.flag:
+        if self.switch:
             self.CL('def rule_')
             self.CI()
             self.CL('(self):')
@@ -81,13 +72,13 @@ class PROGRAM_compiler(MetaII):
             self.CL('rlabel = 0')
             self.NL()
             self.TST('→')
-            if not self.flag: self.runBEjsfn(rname)
+            if not self.switch: self.runBEjsfn(rname)
 
             self.rule_EX1()
-            if not self.flag: self.runBEjsfn(rname)
+            if not self.switch: self.runBEjsfn(rname)
 
             self.TST('▪')
-            if not self.flag: self.runBEjsfn(rname)
+            if not self.switch: self.runBEjsfn(rname)
 
             self.LMD()
             self.NL()
@@ -100,16 +91,16 @@ class PROGRAM_compiler(MetaII):
         rname = "EX1"
         rlabel = 0
         self.rule_EX2()
-        if self.flag:
+        if self.switch:
             self.SET()
-            while self.flag:
+            while self.switch:
                 self.TST('|')
-                if self.flag:
-                    self.CL('if not self.flag:')
+                if self.switch:
+                    self.CL('if not self.switch:')
                     self.LMI()
                     self.NL()
                     self.rule_EX2()
-                    if not self.flag: self.runBEjsfn(rname)
+                    if not self.switch: self.runBEjsfn(rname)
 
                     self.LMD()
                     self.NL()
@@ -117,7 +108,7 @@ class PROGRAM_compiler(MetaII):
 
 
             self.SET()
-            if not self.flag: self.runBEjsfn(rname)
+            if not self.switch: self.runBEjsfn(rname)
 
             pass
 
@@ -127,40 +118,40 @@ class PROGRAM_compiler(MetaII):
         rname = "EX2"
         rlabel = 0
         self.rule_EX3()
-        if self.flag:
-            self.CL('if self.flag:')
+        if self.switch:
+            self.CL('if self.switch:')
             self.LMI()
             self.NL()
             pass
 
-        if not self.flag:
+        if not self.switch:
             self.rule_OUTPUT()
-            if self.flag:
+            if self.switch:
                 self.CL('if True:')
                 self.LMI()
                 self.NL()
                 pass
 
 
-        if self.flag:
+        if self.switch:
             self.SET()
-            while self.flag:
+            while self.switch:
                 self.rule_EX3()
-                if self.flag:
-                    self.CL('if not self.flag: self.runBEjsfn(rname)')
+                if self.switch:
+                    self.CL('if not self.switch: self.runBEjsfn(rname)')
                     self.NL()
                     self.NL()
                     pass
 
-                if not self.flag:
+                if not self.switch:
                     self.rule_OUTPUT()
-                    if self.flag:
+                    if self.switch:
                         pass
 
 
 
             self.SET()
-            if not self.flag: self.runBEjsfn(rname)
+            if not self.switch: self.runBEjsfn(rname)
 
             self.CL('pass')
             self.NL()
@@ -174,16 +165,16 @@ class PROGRAM_compiler(MetaII):
         rname = "EX3"
         rlabel = 0
         self.ID()
-        if self.flag:
+        if self.switch:
             self.CL('self.rule_')
             self.CI()
             self.CL('()')
             self.NL()
             pass
 
-        if not self.flag:
+        if not self.switch:
             self.SR()
-            if self.flag:
+            if self.switch:
                 self.CL('self.TST(')
                 self.CI()
                 self.CL(')')
@@ -191,60 +182,60 @@ class PROGRAM_compiler(MetaII):
                 pass
 
 
-        if not self.flag:
+        if not self.switch:
             self.TST('●')
-            if self.flag:
+            if self.switch:
                 self.CL('self.ID()')
                 self.NL()
                 pass
 
 
-        if not self.flag:
+        if not self.switch:
             self.TST('ℕ')
-            if self.flag:
+            if self.switch:
                 self.CL('self.NUM()')
                 self.NL()
                 pass
 
 
-        if not self.flag:
+        if not self.switch:
             self.TST('≋')
-            if self.flag:
+            if self.switch:
                 self.CL('self.SR()')
                 self.NL()
                 pass
 
 
-        if not self.flag:
+        if not self.switch:
             self.TST('(')
-            if self.flag:
+            if self.switch:
                 self.rule_EX1()
-                if not self.flag: self.runBEjsfn(rname)
+                if not self.switch: self.runBEjsfn(rname)
 
                 self.TST(')')
-                if not self.flag: self.runBEjsfn(rname)
+                if not self.switch: self.runBEjsfn(rname)
 
                 pass
 
 
-        if not self.flag:
+        if not self.switch:
             self.TST('∅')
-            if self.flag:
+            if self.switch:
                 self.CL('self.SET()')
                 self.NL()
                 pass
 
 
-        if not self.flag:
+        if not self.switch:
             self.TST('★')
-            if self.flag:
+            if self.switch:
                 self.CL('self.SET()')
                 self.NL()
-                self.CL('while self.flag:')
+                self.CL('while self.switch:')
                 self.LMI()
                 self.NL()
                 self.rule_EX3()
-                if not self.flag: self.runBEjsfn(rname)
+                if not self.switch: self.runBEjsfn(rname)
 
                 self.LMD()
                 self.NL()
@@ -259,16 +250,16 @@ class PROGRAM_compiler(MetaII):
         rname = "OUTPUT"
         rlabel = 0
         self.TST('«')
-        if self.flag:
+        if self.switch:
             self.SET()
-            while self.flag:
+            while self.switch:
                 self.rule_OUT1()
 
             self.SET()
-            if not self.flag: self.runBEjsfn(rname)
+            if not self.switch: self.runBEjsfn(rname)
 
             self.TST('»')
-            if not self.flag: self.runBEjsfn(rname)
+            if not self.switch: self.runBEjsfn(rname)
 
             pass
 
@@ -278,14 +269,14 @@ class PROGRAM_compiler(MetaII):
         rname = "OUT1"
         rlabel = 0
         self.TST('⊙')
-        if self.flag:
+        if self.switch:
             self.CL('self.CI()')
             self.NL()
             pass
 
-        if not self.flag:
+        if not self.switch:
             self.SR()
-            if self.flag:
+            if self.switch:
                 self.CL('self.CL(')
                 self.CI()
                 self.CL(')')
@@ -293,9 +284,9 @@ class PROGRAM_compiler(MetaII):
                 pass
 
 
-        if not self.flag:
+        if not self.switch:
             self.TST('#')
-            if self.flag:
+            if self.switch:
                 self.CL('if rlabel == 0:')
                 self.LMI()
                 self.NL()
@@ -309,41 +300,41 @@ class PROGRAM_compiler(MetaII):
                 pass
 
 
-        if not self.flag:
+        if not self.switch:
             self.TST('↵')
-            if self.flag:
+            if self.switch:
                 self.CL('self.NL()')
                 self.NL()
                 pass
 
 
-        if not self.flag:
+        if not self.switch:
             self.TST('⇤')
-            if self.flag:
+            if self.switch:
                 self.CL('self.LB()')
                 self.NL()
                 pass
 
 
-        if not self.flag:
+        if not self.switch:
             self.TST('⇥')
-            if self.flag:
+            if self.switch:
                 self.CL('self.TB()')
                 self.NL()
                 pass
 
 
-        if not self.flag:
+        if not self.switch:
             self.TST('↦')
-            if self.flag:
+            if self.switch:
                 self.CL('self.LMI()')
                 self.NL()
                 pass
 
 
-        if not self.flag:
+        if not self.switch:
             self.TST('↤')
-            if self.flag:
+            if self.switch:
                 self.CL('self.LMD()')
                 self.NL()
                 pass
