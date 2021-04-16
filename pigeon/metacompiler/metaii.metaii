@@ -5,7 +5,7 @@ OUT1 = '*1' .OUT('GN1') |
        '*' .OUT('CI') |
        .STRING .OUT('CL '*) ;
 
-OUTPUT = ('.OUT' '(' $ OUT1 ')' |
+OUTPUT = ('«' $ OUT1 '»' |
           '.LABEL' .OUT('LB') OUT1)
          .OUT('OUT') ;
 
