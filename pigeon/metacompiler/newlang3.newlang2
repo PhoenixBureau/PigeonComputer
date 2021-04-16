@@ -24,8 +24,8 @@ EX2 = (EX3 «'BF ' ○¹» | OUTPUT) ★ (EX3 «'BE'» | OUTPUT)
 EX1 = EX2 ★('|' «'BT ' ○¹» EX2 )
       .LABEL ○¹ ;
 
-ST = ● .LABEL ⊙ '=' EX1 ';' «'R'» ;
+ST = ● .LABEL ⊙ '→' EX1 '▪' «'R'» ;
 
-PROGRAM = '.SYNTAX' ● «'ADR ' ⊙» ★ ST '.END' «'END'» ;
+PROGRAM = '▶' ● «'ADR ' ⊙» ★ ST '◀' «'END'» ;
 
 .END

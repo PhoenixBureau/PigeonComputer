@@ -1,0 +1,4 @@
+s/\.SYNTAX/▶/g
+s/\.END/◀/g
+s/=/→/g
+s/;/▪/g
