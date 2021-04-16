@@ -1,7 +1,8 @@
 ▶ PROGRAM
 
 PROGRAM → '▶' ●
-    «⇤'class '⊙'_compiler:'↵↦↵»
+    «⇤'from metaii_base import MetaII'↵↵»
+    «'class '⊙'_compiler(MetaII):'↵↦↵»
     «'def compile(self, source):'↦↵»
         «'self.inbuf = source'↵»
         «'self.pos = 0'↵»

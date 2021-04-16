@@ -1,4 +1,6 @@
-class PROGRAM_compiler:
+from metaii_base import MetaII
+
+class PROGRAM_compiler(MetaII):
 
     def compile(self, source):
         self.inbuf = source
@@ -18,9 +20,12 @@ class PROGRAM_compiler:
             if not self.flag: self.runBEjsfn(rname)
 
             self.LB()
+            self.CL('from metaii_base import MetaII')
+            self.NL()
+            self.NL()
             self.CL('class ')
             self.CI()
-            self.CL('_compiler:')
+            self.CL('_compiler(MetaII):')
             self.NL()
             self.LMI()
             self.NL()

@@ -5,9 +5,12 @@ PROGRAM
     ID
     BE
     LB
+    CL 'from metaii_base import MetaII'
+    NL
+    NL
     CL 'class '
     CI
-    CL '_compiler:'
+    CL '_compiler(MetaII):'
     NL
     LMI
     NL
