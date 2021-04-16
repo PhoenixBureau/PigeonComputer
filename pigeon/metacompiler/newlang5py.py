@@ -52,14 +52,13 @@ L2
             TST '◀'
             BE
 L1
-L3
 
 
     def rule_ST(self):
         rname = "ST"
         rlabel = 0
             ID
-            BF L4
+            BF L3
             CL 'def rule_'
             CI
             CL '(self):'
@@ -80,70 +79,97 @@ L3
             LMD
             NL
             NL
-L4
+L3
+
+
+    def rule_EX1(self):
+        rname = "EX1"
+        rlabel = 0
+            CLL EX2
+            BF L4
 L5
+            TST '|'
+            BF L6
+            CL 'if not flag:'
+            LMI
+            NL
+            CLL EX2
+            BE
+            LMD
+            NL
+L6
+            BT L5
+            SET
+            BE
+L4
 
 
     def rule_OUT1(self):
         rname = "OUT1"
         rlabel = 0
             TST '⊙'
-            BF L6
+            BF L7
             TB
             CL 'CI'
             NL
-L6
-            BT L7
-            SR
-            BF L8
-            TB
-            CL 'CL '
-            CI
-            NL
-L8
-            BT L7
-            TST '#'
-            BF L9
-            TB
-            CL 'GN'
-            NL
-L9
-            BT L7
-            TST '↵'
-            BF L10
-            TB
-            CL 'NL'
-            NL
-L10
-            BT L7
-            TST '⇤'
-            BF L11
-            TB
-            CL 'LB'
-            NL
-L11
-            BT L7
-            TST '⇥'
-            BF L12
-            TB
-            CL 'TB'
-            NL
-L12
-            BT L7
-            TST '↦'
-            BF L13
-            TB
-            CL 'LMI'
-            NL
-L13
-            BT L7
-            TST '↤'
-            BF L14
-            TB
-            CL 'LMD'
-            NL
-L14
 L7
+        if not flag:
+                SR
+                BF L8
+                TB
+                CL 'CL '
+                CI
+                NL
+L8
+
+        if not flag:
+                TST '#'
+                BF L9
+                TB
+                CL 'GN'
+                NL
+L9
+
+        if not flag:
+                TST '↵'
+                BF L10
+                TB
+                CL 'NL'
+                NL
+L10
+
+        if not flag:
+                TST '⇤'
+                BF L11
+                TB
+                CL 'LB'
+                NL
+L11
+
+        if not flag:
+                TST '⇥'
+                BF L12
+                TB
+                CL 'TB'
+                NL
+L12
+
+        if not flag:
+                TST '↦'
+                BF L13
+                TB
+                CL 'LMI'
+                NL
+L13
+
+        if not flag:
+                TST '↤'
+                BF L14
+                TB
+                CL 'LMD'
+                NL
+L14
+
 
 
     def rule_OUTPUT(self):
@@ -159,147 +185,124 @@ L16
             TST '»'
             BE
 L15
-L17
 
 
     def rule_EX3(self):
         rname = "EX3"
         rlabel = 0
             ID
-            BF L18
+            BF L17
             TB
             CL 'CLL '
             CI
             NL
+L17
+        if not flag:
+                SR
+                BF L18
+                TB
+                CL 'TST '
+                CI
+                NL
 L18
-            BT L19
-            SR
-            BF L20
-            TB
-            CL 'TST '
-            CI
-            NL
-L20
-            BT L19
-            TST '●'
-            BF L21
-            TB
-            CL 'ID'
-            NL
-L21
-            BT L19
-            TST 'ℕ'
-            BF L22
-            TB
-            CL 'NUM'
-            NL
-L22
-            BT L19
-            TST '≋'
-            BF L23
-            TB
-            CL 'SR'
-            NL
-L23
-            BT L19
-            TST '('
-            BF L24
-            CLL EX1
-            BE
-            TST ')'
-            BE
-L24
-            BT L19
-            TST '∅'
-            BF L25
-            TB
-            CL 'SET'
-            NL
-L25
-            BT L19
-            TST '★'
-            BF L26
-            LB
-            CL 'L'
-            GN
-            NL
-            CLL EX3
-            BE
-            TB
-            CL 'BT L'
-            GN
-            NL
-            TB
-            CL 'SET'
-            NL
-L26
+
+        if not flag:
+                TST '●'
+                BF L19
+                TB
+                CL 'ID'
+                NL
 L19
+
+        if not flag:
+                TST 'ℕ'
+                BF L20
+                TB
+                CL 'NUM'
+                NL
+L20
+
+        if not flag:
+                TST '≋'
+                BF L21
+                TB
+                CL 'SR'
+                NL
+L21
+
+        if not flag:
+                TST '('
+                BF L22
+                CLL EX1
+                BE
+                TST ')'
+                BE
+L22
+
+        if not flag:
+                TST '∅'
+                BF L23
+                TB
+                CL 'SET'
+                NL
+L23
+
+        if not flag:
+                TST '★'
+                BF L24
+                LB
+                CL 'L'
+                GN
+                NL
+                CLL EX3
+                BE
+                TB
+                CL 'BT L'
+                GN
+                NL
+                TB
+                CL 'SET'
+                NL
+L24
+
 
 
     def rule_EX2(self):
         rname = "EX2"
         rlabel = 0
             CLL EX3
-            BF L27
+            BF L25
             TB
             CL 'BF L'
             GN
             NL
-L27
-            BT L28
-            CLL OUTPUT
-            BF L29
-L29
+L25
+        if not flag:
+                CLL OUTPUT
+                BF L26
+L26
+
+            BF L27
 L28
-            BF L30
-L31
             CLL EX3
-            BF L32
+            BF L29
             TB
             CL 'BE'
             NL
-L32
-            BT L33
-            CLL OUTPUT
-            BF L34
-L34
-L33
-            BT L31
-            SET
-            BE
-            LB
-            CL 'L'
-            GN
-            NL
+L29
+        if not flag:
+                CLL OUTPUT
+                BF L30
 L30
-L35
 
-
-    def rule_EX1(self):
-        rname = "EX1"
-        rlabel = 0
-            CLL EX2
-            BF L36
-L37
-            TST '|'
-            BF L38
-            TB
-            CL 'BT L'
-            GN
-            NL
-            CLL EX2
-            BE
-L38
-L39
-            BT L37
+            BT L28
             SET
             BE
             LB
             CL 'L'
             GN
             NL
-L36
-L40
+L27
 
 
 

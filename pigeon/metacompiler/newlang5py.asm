@@ -68,133 +68,154 @@ ST
 L4
 L5
     R
+EX1
+    CLL EX2
+    BF L6
+L7
+    TST '|'
+    BF L8
+    CL 'if not flag:'
+    LMI
+    NL
+    CLL EX2
+    BE
+    LMD
+    NL
+L8
+L9
+    BT L7
+    SET
+    BE
+L6
+L10
+    R
 OUT1
     TST '⊙'
-    BF L6
+    BF L11
     TB
     CL 'CI'
     NL
-L6
-    BT L7
+L11
+    BT L12
     SR
-    BF L8
+    BF L13
     TB
     CL 'CL '
     CI
     NL
-L8
-    BT L7
+L13
+    BT L12
     TST '#'
-    BF L9
+    BF L14
     TB
     CL 'GN'
     NL
-L9
-    BT L7
+L14
+    BT L12
     TST '↵'
-    BF L10
+    BF L15
     TB
     CL 'NL'
     NL
-L10
-    BT L7
+L15
+    BT L12
     TST '⇤'
-    BF L11
+    BF L16
     TB
     CL 'LB'
     NL
-L11
-    BT L7
+L16
+    BT L12
     TST '⇥'
-    BF L12
+    BF L17
     TB
     CL 'TB'
     NL
-L12
-    BT L7
+L17
+    BT L12
     TST '↦'
-    BF L13
+    BF L18
     TB
     CL 'LMI'
     NL
-L13
-    BT L7
+L18
+    BT L12
     TST '↤'
-    BF L14
+    BF L19
     TB
     CL 'LMD'
     NL
-L14
-L7
+L19
+L12
     R
 OUTPUT
     TST '«'
-    BF L15
-L16
+    BF L20
+L21
     CLL OUT1
-    BT L16
+    BT L21
     SET
     BE
     TST '»'
     BE
-L15
-L17
+L20
+L22
     R
 EX3
     ID
-    BF L18
+    BF L23
     TB
     CL 'CLL '
     CI
     NL
-L18
-    BT L19
+L23
+    BT L24
     SR
-    BF L20
+    BF L25
     TB
     CL 'TST '
     CI
     NL
-L20
-    BT L19
+L25
+    BT L24
     TST '●'
-    BF L21
+    BF L26
     TB
     CL 'ID'
     NL
-L21
-    BT L19
+L26
+    BT L24
     TST 'ℕ'
-    BF L22
+    BF L27
     TB
     CL 'NUM'
     NL
-L22
-    BT L19
+L27
+    BT L24
     TST '≋'
-    BF L23
+    BF L28
     TB
     CL 'SR'
     NL
-L23
-    BT L19
+L28
+    BT L24
     TST '('
-    BF L24
+    BF L29
     CLL EX1
     BE
     TST ')'
     BE
-L24
-    BT L19
+L29
+    BT L24
     TST '∅'
-    BF L25
+    BF L30
     TB
     CL 'SET'
     NL
-L25
-    BT L19
+L30
+    BT L24
     TST '★'
-    BF L26
+    BF L31
     LB
     CL 'L'
     GN
@@ -208,28 +229,15 @@ L25
     TB
     CL 'SET'
     NL
-L26
-L19
+L31
+L24
     R
 EX2
     CLL EX3
-    BF L27
+    BF L32
     TB
     CL 'BF L'
     GN
-    NL
-L27
-    BT L28
-    CLL OUTPUT
-    BF L29
-L29
-L28
-    BF L30
-L31
-    CLL EX3
-    BF L32
-    TB
-    CL 'BE'
     NL
 L32
     BT L33
@@ -237,38 +245,27 @@ L32
     BF L34
 L34
 L33
-    BT L31
-    SET
-    BE
-    LB
-    CL 'L'
-    GN
-    NL
-L30
-L35
-    R
-EX1
-    CLL EX2
-    BF L36
-L37
-    TST '|'
-    BF L38
-    TB
-    CL 'BT L'
-    GN
-    NL
-    CLL EX2
-    BE
-L38
-L39
-    BT L37
-    SET
-    BE
-    LB
-    CL 'L'
-    GN
-    NL
+    BF L35
 L36
+    CLL EX3
+    BF L37
+    TB
+    CL 'BE'
+    NL
+L37
+    BT L38
+    CLL OUTPUT
+    BF L39
+L39
+L38
+    BT L36
+    SET
+    BE
+    LB
+    CL 'L'
+    GN
+    NL
+L35
 L40
     R
     END

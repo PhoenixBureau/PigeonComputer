@@ -19,6 +19,8 @@ ST → ● «'def rule_'⊙'(self):'↦↵»
     '→' EX1 '▪'
     «↤↵↵» ▪
 
+EX1 → EX2 ★ ('|' «'if not flag:'↦↵» EX2 «↤↵» ) ▪
+
 
 OUT1 → '⊙' «⇥'CI'↵» |
         ≋  «⇥'CL '⊙↵» |
@@ -46,7 +48,5 @@ EX3 → ● «⇥'CLL '⊙↵» |
 EX2 → (EX3 «⇥'BF L'#↵» | OUTPUT)
        ★ (EX3 «⇥'BE'↵» | OUTPUT)
       «⇤'L'#↵» ▪
-
-EX1 → EX2 ★ ('|' «⇥'BT L'#↵» EX2 ) «⇤'L'#↵» ▪
 
 ◀
