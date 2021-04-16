@@ -3,13 +3,13 @@
 OUT1 → '○¹' «'GN1'» |
        '○²' «'GN2'» |
        '⊙' «'CI'» |
-       ≋ «'CL '⊙»  /
-       '#'     .OUT('GN') /
-       '.NL'   .OUT('NL') /
-       '.LB'   .OUT('LB') /
-       '.TB'   .OUT('TB') /
-       '.LM+'  .OUT('LMI') /
-       '.LM-'  .OUT('LMD')▪
+       ≋ «'CL '⊙»  |
+       '#'     «'GN'» |
+       '.NL'   «'NL'» |
+       '.LB'   «'LB'» |
+       '.TB'   «'TB'» |
+       '.LM+'  «'LMI'» |
+       '.LM-'  «'LMD'»▪
 
 OUTPUT → ('«' ★ OUT1 '»' |
           '.LABEL' «'LB'» OUT1)
