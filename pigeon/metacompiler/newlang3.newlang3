@@ -1,31 +1,31 @@
-.SYNTAX PROGRAM
+▶ PROGRAM
 
-OUT1 = '○¹' «'GN1'» |
+OUT1 → '○¹' «'GN1'» |
        '○²' «'GN2'» |
        '⊙' «'CI'» |
-       ≋ «'CL '⊙» ;
+       ≋ «'CL '⊙» ▪
 
-OUTPUT = ('«' ★ OUT1 '»' |
+OUTPUT → ('«' ★ OUT1 '»' |
           '.LABEL' «'LB'» OUT1)
-         «'OUT'» ;
+         «'OUT'» ▪
 
-EX3 = ● «'CLL '⊙» |
+EX3 → ● «'CLL '⊙» |
       ≋ «'TST '⊙» |
       '●' «'ID'» |
       'ℕ' «'NUM'» |
       '≋' «'SR'» |
       '(' EX1 ')' |
       '∅' «'SET'» |
-      '★' .LABEL ○¹ EX3 «'BT ' ○¹» «'SET'» ;
+      '★' .LABEL ○¹ EX3 «'BT ' ○¹» «'SET'» ▪
 
-EX2 = (EX3 «'BF ' ○¹» | OUTPUT) ★ (EX3 «'BE'» | OUTPUT)
-      .LABEL ○¹ ;
+EX2 → (EX3 «'BF ' ○¹» | OUTPUT) ★ (EX3 «'BE'» | OUTPUT)
+      .LABEL ○¹ ▪
 
-EX1 = EX2 ★('|' «'BT ' ○¹» EX2 )
-      .LABEL ○¹ ;
+EX1 → EX2 ★('|' «'BT ' ○¹» EX2 )
+      .LABEL ○¹ ▪
 
-ST = ● .LABEL ⊙ '→' EX1 '▪' «'R'» ;
+ST → ● .LABEL ⊙ '→' EX1 '▪' «'R'» ▪
 
-PROGRAM = '▶' ● «'ADR ' ⊙» ★ ST '◀' «'END'» ;
+PROGRAM → '▶' ● «'ADR ' ⊙» ★ ST '◀' «'END'» ▪
 
-.END
+◀
