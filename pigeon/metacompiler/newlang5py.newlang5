@@ -1,0 +1,55 @@
+▶ PROGRAM
+
+PROGRAM → '▶' ●
+    «⇤'class '⊙'_compiler:'↵↦↵»
+    «'def compile(self, source):'↦↵»
+        «'self.inbuf = source'↵»
+        «'self.pos = 0'↵»
+        «'self.outbuf = ""'↵»
+        «'self.margin = 0'↵»
+        «'self.gnlabel = 1'↵»
+        «'self.rule_'⊙'()'↵»
+        «'return self.outbuf'↤↵↵»
+    ★ ST
+    '◀' ▪
+
+ST → ● «'def rule_'⊙'(self):'↦↵»
+    «'rname = "'⊙'"'↵»
+    «'rlabel = 0'↵»
+    '→' EX1 '▪'
+    «↤↵↵» ▪
+
+        «''↵»
+        «''↵»
+        «''↵»
+
+OUT1 → '⊙' «⇥'CI'↵» |
+        ≋  «⇥'CL '⊙↵» |
+       '#' «⇥'GN'↵» |
+       '↵' «⇥'NL'↵» |
+       '⇤' «⇥'LB'↵» |
+       '⇥' «⇥'TB'↵» |
+       '↦' «⇥'LMI'↵» |
+       '↤' «⇥'LMD'↵» ▪
+
+OUTPUT → '«' ★ OUT1 '»' ▪
+
+EX3 → ● «⇥'CLL '⊙↵» |
+      ≋ «⇥'TST '⊙↵» |
+      '●' «⇥'ID'↵» |
+      'ℕ' «⇥'NUM'↵» |
+      '≋' «⇥'SR'↵» |
+      '(' EX1 ')' |
+      '∅' «⇥'SET'↵» |
+      '★' «⇤'L'#↵»
+          EX3
+          «⇥'BT L'#↵»
+          «⇥'SET'↵» ▪
+
+EX2 → (EX3 «⇥'BF L'#↵» | OUTPUT)
+       ★ (EX3 «⇥'BE'↵» | OUTPUT)
+      «⇤'L'#↵» ▪
+
+EX1 → EX2 ★ ('|' «⇥'BT L'#↵» EX2 ) «⇤'L'#↵» ▪
+
+◀
