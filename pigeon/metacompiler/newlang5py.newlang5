@@ -38,15 +38,18 @@ EX3 → ● «'self.rule_'⊙'()'↵» |
           «↤↵»
           «'self.SET()'↵» ▪
 
-OUT1 → '⊙' «⇥'CI'↵» |
-        ≋  «⇥'CL '⊙↵» |
-       '#' «⇥'GN'↵» |
-       '↵' «⇥'NL'↵» |
-       '⇤' «⇥'LB'↵» |
-       '⇥' «⇥'TB'↵» |
-       '↦' «⇥'LMI'↵» |
-       '↤' «⇥'LMD'↵» ▪
-
 OUTPUT → '«' ★ OUT1 '»' ▪
+
+OUT1 → '⊙' «'self.CI()'↵» |
+        ≋  «'self.CL('⊙')'↵» |
+       '#' «'if rlabel == 0:'↦↵»
+               «'rlable = self.gnlabel'↵»
+               «'self.gnlabel += 1'↤↵»
+           «'self.CL(str(rlabel))'↵» |
+       '↵' «'self.NL()'↵» |
+       '⇤' «'self.LB()'↵» |
+       '⇥' «'self.TB()'↵» |
+       '↦' «'self.LMI()'↵» |
+       '↤' «'self.LMD()'↵» ▪
 
 ◀

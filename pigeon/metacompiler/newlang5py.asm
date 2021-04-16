@@ -190,77 +190,78 @@ L27
 L28
 L21
     R
-OUT1
-    TST '⊙'
-    BF L29
-    TB
-    CL 'CI'
-    NL
-L29
-    BT L30
-    SR
-    BF L31
-    TB
-    CL 'CL '
-    CI
-    NL
-L31
-    BT L30
-    TST '#'
-    BF L32
-    TB
-    CL 'GN'
-    NL
-L32
-    BT L30
-    TST '↵'
-    BF L33
-    TB
-    CL 'NL'
-    NL
-L33
-    BT L30
-    TST '⇤'
-    BF L34
-    TB
-    CL 'LB'
-    NL
-L34
-    BT L30
-    TST '⇥'
-    BF L35
-    TB
-    CL 'TB'
-    NL
-L35
-    BT L30
-    TST '↦'
-    BF L36
-    TB
-    CL 'LMI'
-    NL
-L36
-    BT L30
-    TST '↤'
-    BF L37
-    TB
-    CL 'LMD'
-    NL
-L37
-L30
-    R
 OUTPUT
     TST '«'
-    BF L38
-L39
+    BF L29
+L30
     CLL OUT1
-    BT L39
+    BT L30
     SET
     BE
     TST '»'
     BE
+L29
+L31
+    R
+OUT1
+    TST '⊙'
+    BF L32
+    CL 'self.CI()'
+    NL
+L32
+    BT L33
+    SR
+    BF L34
+    CL 'self.CL('
+    CI
+    CL ')'
+    NL
+L34
+    BT L33
+    TST '#'
+    BF L35
+    CL 'if rlabel == 0:'
+    LMI
+    NL
+    CL 'rlable = self.gnlabel'
+    NL
+    CL 'self.gnlabel += 1'
+    LMD
+    NL
+    CL 'self.CL(str(rlabel))'
+    NL
+L35
+    BT L33
+    TST '↵'
+    BF L36
+    CL 'self.NL()'
+    NL
+L36
+    BT L33
+    TST '⇤'
+    BF L37
+    CL 'self.LB()'
+    NL
+L37
+    BT L33
+    TST '⇥'
+    BF L38
+    CL 'self.TB()'
+    NL
 L38
+    BT L33
+    TST '↦'
+    BF L39
+    CL 'self.LMI()'
+    NL
+L39
+    BT L33
+    TST '↤'
+    BF L40
+    CL 'self.LMD()'
+    NL
 L40
+L33
     R
     END
 
