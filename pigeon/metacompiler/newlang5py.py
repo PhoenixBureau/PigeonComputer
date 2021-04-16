@@ -12,297 +12,309 @@ class PROGRAM_compiler:
     def rule_PROGRAM(self):
         rname = "PROGRAM"
         rlabel = 0
-            TST '▶'
-            BF L1
-            ID
-            BE
-            LB
-            CL 'class '
-            CI
-            CL '_compiler:'
-            NL
-            LMI
-            NL
-            CL 'def compile(self, source):'
-            LMI
-            NL
-            CL 'self.inbuf = source'
-            NL
-            CL 'self.pos = 0'
-            NL
-            CL 'self.outbuf = ""'
-            NL
-            CL 'self.margin = 0'
-            NL
-            CL 'self.gnlabel = 1'
-            NL
-            CL 'self.rule_'
-            CI
-            CL '()'
-            NL
-            CL 'return self.outbuf'
-            LMD
-            NL
-            NL
-L2
-            CLL ST
-            BT L2
-            SET
-            BE
-            TST '◀'
-            BE
-L1
+        self.TST('▶')
+        if flag:
+            self.ID()
+            if not flag: runBEjsfn(rname)
+
+                LB
+                CL 'class '
+                CI
+                CL '_compiler:'
+                NL
+                LMI
+                NL
+                CL 'def compile(self, source):'
+                LMI
+                NL
+                CL 'self.inbuf = source'
+                NL
+                CL 'self.pos = 0'
+                NL
+                CL 'self.outbuf = ""'
+                NL
+                CL 'self.margin = 0'
+                NL
+                CL 'self.gnlabel = 1'
+                NL
+                CL 'self.rule_'
+                CI
+                CL '()'
+                NL
+                CL 'return self.outbuf'
+                LMD
+                NL
+                NL
+            self.SET()
+            while flag:
+                self.rule_ST()
+
+            self.SET()
+            if not flag: runBEjsfn(rname)
+
+            self.TST('◀')
+            if not flag: runBEjsfn(rname)
+
+
 
 
     def rule_ST(self):
         rname = "ST"
         rlabel = 0
-            ID
-            BF L3
-            CL 'def rule_'
-            CI
-            CL '(self):'
-            LMI
-            NL
-            CL 'rname = "'
-            CI
-            CL '"'
-            NL
-            CL 'rlabel = 0'
-            NL
-            TST '→'
-            BE
-            CLL EX1
-            BE
-            TST '▪'
-            BE
-            LMD
-            NL
-            NL
-L3
+        self.ID()
+        if flag:
+                CL 'def rule_'
+                CI
+                CL '(self):'
+                LMI
+                NL
+                CL 'rname = "'
+                CI
+                CL '"'
+                NL
+                CL 'rlabel = 0'
+                NL
+            self.TST('→')
+            if not flag: runBEjsfn(rname)
+
+            self.rule_EX1()
+            if not flag: runBEjsfn(rname)
+
+            self.TST('▪')
+            if not flag: runBEjsfn(rname)
+
+                LMD
+                NL
+                NL
+
 
 
     def rule_EX1(self):
         rname = "EX1"
         rlabel = 0
-            CLL EX2
-            BF L4
-L5
-            TST '|'
-            BF L6
-            CL 'if not flag:'
-            LMI
-            NL
-            CLL EX2
-            BE
-            LMD
-            NL
-L6
-            BT L5
-            SET
-            BE
-L4
+        self.rule_EX2()
+        if flag:
+            self.SET()
+            while flag:
+                self.TST('|')
+                if flag:
+                        CL 'if not flag:'
+                        LMI
+                        NL
+                    self.rule_EX2()
+                    if not flag: runBEjsfn(rname)
+
+                        LMD
+                        NL
 
 
-    def rule_OUT1(self):
-        rname = "OUT1"
-        rlabel = 0
-            TST '⊙'
-            BF L7
-            TB
-            CL 'CI'
-            NL
-L7
-        if not flag:
-                SR
-                BF L8
-                TB
-                CL 'CL '
-                CI
-                NL
-L8
+            self.SET()
+            if not flag: runBEjsfn(rname)
 
-        if not flag:
-                TST '#'
-                BF L9
-                TB
-                CL 'GN'
-                NL
-L9
-
-        if not flag:
-                TST '↵'
-                BF L10
-                TB
-                CL 'NL'
-                NL
-L10
-
-        if not flag:
-                TST '⇤'
-                BF L11
-                TB
-                CL 'LB'
-                NL
-L11
-
-        if not flag:
-                TST '⇥'
-                BF L12
-                TB
-                CL 'TB'
-                NL
-L12
-
-        if not flag:
-                TST '↦'
-                BF L13
-                TB
-                CL 'LMI'
-                NL
-L13
-
-        if not flag:
-                TST '↤'
-                BF L14
-                TB
-                CL 'LMD'
-                NL
-L14
-
-
-
-    def rule_OUTPUT(self):
-        rname = "OUTPUT"
-        rlabel = 0
-            TST '«'
-            BF L15
-L16
-            CLL OUT1
-            BT L16
-            SET
-            BE
-            TST '»'
-            BE
-L15
-
-
-    def rule_EX3(self):
-        rname = "EX3"
-        rlabel = 0
-            ID
-            BF L17
-            TB
-            CL 'CLL '
-            CI
-            NL
-L17
-        if not flag:
-                SR
-                BF L18
-                TB
-                CL 'TST '
-                CI
-                NL
-L18
-
-        if not flag:
-                TST '●'
-                BF L19
-                TB
-                CL 'ID'
-                NL
-L19
-
-        if not flag:
-                TST 'ℕ'
-                BF L20
-                TB
-                CL 'NUM'
-                NL
-L20
-
-        if not flag:
-                TST '≋'
-                BF L21
-                TB
-                CL 'SR'
-                NL
-L21
-
-        if not flag:
-                TST '('
-                BF L22
-                CLL EX1
-                BE
-                TST ')'
-                BE
-L22
-
-        if not flag:
-                TST '∅'
-                BF L23
-                TB
-                CL 'SET'
-                NL
-L23
-
-        if not flag:
-                TST '★'
-                BF L24
-                LB
-                CL 'L'
-                GN
-                NL
-                CLL EX3
-                BE
-                TB
-                CL 'BT L'
-                GN
-                NL
-                TB
-                CL 'SET'
-                NL
-L24
 
 
 
     def rule_EX2(self):
         rname = "EX2"
         rlabel = 0
-            CLL EX3
-            BF L25
-            TB
-            CL 'BF L'
-            GN
-            NL
-L25
-        if not flag:
-                CLL OUTPUT
-                BF L26
-L26
+        self.rule_EX3()
+        if flag:
+                CL 'if flag:'
+                LMI
+                NL
 
-            BF L27
-L28
-            CLL EX3
-            BF L29
-            TB
-            CL 'BE'
-            NL
-L29
         if not flag:
-                CLL OUTPUT
-                BF L30
-L30
+            self.rule_OUTPUT()
+            if flag:
+                    CL 'if True:'
+                    LMI
+                    NL
 
-            BT L28
-            SET
-            BE
-            LB
-            CL 'L'
-            GN
-            NL
-L27
+
+        if flag:
+            self.SET()
+            while flag:
+                self.rule_EX3()
+                if flag:
+                        CL 'if not flag: runBEjsfn(rname)'
+                        NL
+                        NL
+
+                if not flag:
+                    self.rule_OUTPUT()
+                    if flag:
+
+
+
+            self.SET()
+            if not flag: runBEjsfn(rname)
+
+                LMD
+                NL
+
+
+
+    def rule_EX3(self):
+        rname = "EX3"
+        rlabel = 0
+        self.ID()
+        if flag:
+                CL 'self.rule_'
+                CI
+                CL '()'
+                NL
+
+        if not flag:
+            self.SR()
+            if flag:
+                    CL 'self.TST('
+                    CI
+                    CL ')'
+                    NL
+
+
+        if not flag:
+            self.TST('●')
+            if flag:
+                    CL 'self.ID()'
+                    NL
+
+
+        if not flag:
+            self.TST('ℕ')
+            if flag:
+                    CL 'self.NUM()'
+                    NL
+
+
+        if not flag:
+            self.TST('≋')
+            if flag:
+                    CL 'self.SR()'
+                    NL
+
+
+        if not flag:
+            self.TST('(')
+            if flag:
+                self.rule_EX1()
+                if not flag: runBEjsfn(rname)
+
+                self.TST(')')
+                if not flag: runBEjsfn(rname)
+
+
+
+        if not flag:
+            self.TST('∅')
+            if flag:
+                    CL 'self.SET()'
+                    NL
+
+
+        if not flag:
+            self.TST('★')
+            if flag:
+                    CL 'self.SET()'
+                    NL
+                    CL 'while flag:'
+                    LMI
+                    NL
+                self.rule_EX3()
+                if not flag: runBEjsfn(rname)
+
+                    LMD
+                    NL
+                    CL 'self.SET()'
+                    NL
+
+
+
+
+    def rule_OUT1(self):
+        rname = "OUT1"
+        rlabel = 0
+        self.TST('⊙')
+        if flag:
+                TB
+                CL 'CI'
+                NL
+
+        if not flag:
+            self.SR()
+            if flag:
+                    TB
+                    CL 'CL '
+                    CI
+                    NL
+
+
+        if not flag:
+            self.TST('#')
+            if flag:
+                    TB
+                    CL 'GN'
+                    NL
+
+
+        if not flag:
+            self.TST('↵')
+            if flag:
+                    TB
+                    CL 'NL'
+                    NL
+
+
+        if not flag:
+            self.TST('⇤')
+            if flag:
+                    TB
+                    CL 'LB'
+                    NL
+
+
+        if not flag:
+            self.TST('⇥')
+            if flag:
+                    TB
+                    CL 'TB'
+                    NL
+
+
+        if not flag:
+            self.TST('↦')
+            if flag:
+                    TB
+                    CL 'LMI'
+                    NL
+
+
+        if not flag:
+            self.TST('↤')
+            if flag:
+                    TB
+                    CL 'LMD'
+                    NL
+
+
+
+
+    def rule_OUTPUT(self):
+        rname = "OUTPUT"
+        rlabel = 0
+        self.TST('«')
+        if flag:
+            self.SET()
+            while flag:
+                self.rule_OUT1()
+
+            self.SET()
+            if not flag: runBEjsfn(rname)
+
+            self.TST('»')
+            if not flag: runBEjsfn(rname)
+
+
 
 
 

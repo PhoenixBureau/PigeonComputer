@@ -21,6 +21,22 @@ ST → ● «'def rule_'⊙'(self):'↦↵»
 
 EX1 → EX2 ★ ('|' «'if not flag:'↦↵» EX2 «↤↵» ) ▪
 
+EX2 → (EX3 «'if flag:'↦↵» | OUTPUT «'if True:'↦↵» )
+       ★ (EX3 «'if not flag: runBEjsfn(rname)'↵↵» | OUTPUT)
+      «↤↵» ▪
+
+EX3 → ● «'self.rule_'⊙'()'↵» |
+      ≋ «'self.TST('⊙')'↵» |
+      '●' «'self.ID()'↵» |
+      'ℕ' «'self.NUM()'↵» |
+      '≋' «'self.SR()'↵» |
+      '(' EX1 ')' |
+      '∅' «'self.SET()'↵» |
+      '★' «'self.SET()'↵»
+          «'while flag:'↦↵»
+          EX3
+          «↤↵»
+          «'self.SET()'↵» ▪
 
 OUT1 → '⊙' «⇥'CI'↵» |
         ≋  «⇥'CL '⊙↵» |
@@ -32,21 +48,5 @@ OUT1 → '⊙' «⇥'CI'↵» |
        '↤' «⇥'LMD'↵» ▪
 
 OUTPUT → '«' ★ OUT1 '»' ▪
-
-EX3 → ● «⇥'CLL '⊙↵» |
-      ≋ «⇥'TST '⊙↵» |
-      '●' «⇥'ID'↵» |
-      'ℕ' «⇥'NUM'↵» |
-      '≋' «⇥'SR'↵» |
-      '(' EX1 ')' |
-      '∅' «⇥'SET'↵» |
-      '★' «⇤'L'#↵»
-          EX3
-          «⇥'BT L'#↵»
-          «⇥'SET'↵» ▪
-
-EX2 → (EX3 «⇥'BF L'#↵» | OUTPUT)
-       ★ (EX3 «⇥'BE'↵» | OUTPUT)
-      «⇤'L'#↵» ▪
 
 ◀

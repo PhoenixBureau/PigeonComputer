@@ -89,183 +89,177 @@ L9
 L6
 L10
     R
-OUT1
-    TST '⊙'
+EX2
+    CLL EX3
     BF L11
-    TB
-    CL 'CI'
+    CL 'if flag:'
+    LMI
     NL
 L11
     BT L12
-    SR
+    CLL OUTPUT
     BF L13
-    TB
-    CL 'CL '
-    CI
+    CL 'if True:'
+    LMI
     NL
 L13
-    BT L12
-    TST '#'
+L12
     BF L14
-    TB
-    CL 'GN'
-    NL
-L14
-    BT L12
-    TST '↵'
-    BF L15
-    TB
-    CL 'NL'
-    NL
 L15
-    BT L12
-    TST '⇤'
+    CLL EX3
     BF L16
-    TB
-    CL 'LB'
+    CL 'if not flag: runBEjsfn(rname)'
+    NL
     NL
 L16
-    BT L12
-    TST '⇥'
-    BF L17
-    TB
-    CL 'TB'
-    NL
-L17
-    BT L12
-    TST '↦'
+    BT L17
+    CLL OUTPUT
     BF L18
-    TB
-    CL 'LMI'
-    NL
 L18
-    BT L12
-    TST '↤'
-    BF L19
-    TB
-    CL 'LMD'
-    NL
-L19
-L12
-    R
-OUTPUT
-    TST '«'
-    BF L20
-L21
-    CLL OUT1
-    BT L21
+L17
+    BT L15
     SET
     BE
-    TST '»'
-    BE
-L20
-L22
+    LMD
+    NL
+L14
+L19
     R
 EX3
     ID
-    BF L23
-    TB
-    CL 'CLL '
+    BF L20
+    CL 'self.rule_'
     CI
+    CL '()'
+    NL
+L20
+    BT L21
+    SR
+    BF L22
+    CL 'self.TST('
+    CI
+    CL ')'
+    NL
+L22
+    BT L21
+    TST '●'
+    BF L23
+    CL 'self.ID()'
     NL
 L23
-    BT L24
-    SR
+    BT L21
+    TST 'ℕ'
+    BF L24
+    CL 'self.NUM()'
+    NL
+L24
+    BT L21
+    TST '≋'
     BF L25
-    TB
-    CL 'TST '
-    CI
+    CL 'self.SR()'
     NL
 L25
-    BT L24
-    TST '●'
-    BF L26
-    TB
-    CL 'ID'
-    NL
-L26
-    BT L24
-    TST 'ℕ'
-    BF L27
-    TB
-    CL 'NUM'
-    NL
-L27
-    BT L24
-    TST '≋'
-    BF L28
-    TB
-    CL 'SR'
-    NL
-L28
-    BT L24
+    BT L21
     TST '('
-    BF L29
+    BF L26
     CLL EX1
     BE
     TST ')'
     BE
-L29
-    BT L24
+L26
+    BT L21
     TST '∅'
-    BF L30
-    TB
-    CL 'SET'
+    BF L27
+    CL 'self.SET()'
     NL
-L30
-    BT L24
+L27
+    BT L21
     TST '★'
-    BF L31
-    LB
-    CL 'L'
-    GN
+    BF L28
+    CL 'self.SET()'
+    NL
+    CL 'while flag:'
+    LMI
     NL
     CLL EX3
     BE
-    TB
-    CL 'BT L'
-    GN
+    LMD
     NL
+    CL 'self.SET()'
+    NL
+L28
+L21
+    R
+OUT1
+    TST '⊙'
+    BF L29
     TB
-    CL 'SET'
+    CL 'CI'
+    NL
+L29
+    BT L30
+    SR
+    BF L31
+    TB
+    CL 'CL '
+    CI
     NL
 L31
-L24
-    R
-EX2
-    CLL EX3
+    BT L30
+    TST '#'
     BF L32
     TB
-    CL 'BF L'
-    GN
+    CL 'GN'
     NL
 L32
-    BT L33
-    CLL OUTPUT
-    BF L34
-L34
-L33
-    BF L35
-L36
-    CLL EX3
-    BF L37
+    BT L30
+    TST '↵'
+    BF L33
     TB
-    CL 'BE'
+    CL 'NL'
     NL
-L37
-    BT L38
-    CLL OUTPUT
-    BF L39
-L39
-L38
-    BT L36
-    SET
-    BE
-    LB
-    CL 'L'
-    GN
+L33
+    BT L30
+    TST '⇤'
+    BF L34
+    TB
+    CL 'LB'
+    NL
+L34
+    BT L30
+    TST '⇥'
+    BF L35
+    TB
+    CL 'TB'
     NL
 L35
+    BT L30
+    TST '↦'
+    BF L36
+    TB
+    CL 'LMI'
+    NL
+L36
+    BT L30
+    TST '↤'
+    BF L37
+    TB
+    CL 'LMD'
+    NL
+L37
+L30
+    R
+OUTPUT
+    TST '«'
+    BF L38
+L39
+    CLL OUT1
+    BT L39
+    SET
+    BE
+    TST '»'
+    BE
+L38
 L40
     R
     END
