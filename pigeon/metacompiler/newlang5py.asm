@@ -120,6 +120,8 @@ L17
     BT L15
     SET
     BE
+    CL 'pass'
+    NL
     LMD
     NL
 L14

@@ -55,6 +55,7 @@ class PROGRAM_compiler:
             self.TST('◀')
             if not self.flag: self.runBEjsfn(rname)
 
+            pass
 
 
 
@@ -86,6 +87,7 @@ class PROGRAM_compiler:
             self.LMD()
             self.NL()
             self.NL()
+            pass
 
 
 
@@ -106,11 +108,13 @@ class PROGRAM_compiler:
 
                     self.LMD()
                     self.NL()
+                    pass
 
 
             self.SET()
             if not self.flag: self.runBEjsfn(rname)
 
+            pass
 
 
 
@@ -122,6 +126,7 @@ class PROGRAM_compiler:
             self.CL('if self.flag:')
             self.LMI()
             self.NL()
+            pass
 
         if not self.flag:
             self.rule_OUTPUT()
@@ -129,6 +134,7 @@ class PROGRAM_compiler:
                 self.CL('if True:')
                 self.LMI()
                 self.NL()
+                pass
 
 
         if self.flag:
@@ -139,18 +145,23 @@ class PROGRAM_compiler:
                     self.CL('if not self.flag: self.runBEjsfn(rname)')
                     self.NL()
                     self.NL()
+                    pass
 
                 if not self.flag:
                     self.rule_OUTPUT()
                     if self.flag:
+                        pass
 
 
 
             self.SET()
             if not self.flag: self.runBEjsfn(rname)
 
+            self.CL('pass')
+            self.NL()
             self.LMD()
             self.NL()
+            pass
 
 
 
@@ -163,6 +174,7 @@ class PROGRAM_compiler:
             self.CI()
             self.CL('()')
             self.NL()
+            pass
 
         if not self.flag:
             self.SR()
@@ -171,6 +183,7 @@ class PROGRAM_compiler:
                 self.CI()
                 self.CL(')')
                 self.NL()
+                pass
 
 
         if not self.flag:
@@ -178,6 +191,7 @@ class PROGRAM_compiler:
             if self.flag:
                 self.CL('self.ID()')
                 self.NL()
+                pass
 
 
         if not self.flag:
@@ -185,6 +199,7 @@ class PROGRAM_compiler:
             if self.flag:
                 self.CL('self.NUM()')
                 self.NL()
+                pass
 
 
         if not self.flag:
@@ -192,6 +207,7 @@ class PROGRAM_compiler:
             if self.flag:
                 self.CL('self.SR()')
                 self.NL()
+                pass
 
 
         if not self.flag:
@@ -203,6 +219,7 @@ class PROGRAM_compiler:
                 self.TST(')')
                 if not self.flag: self.runBEjsfn(rname)
 
+                pass
 
 
         if not self.flag:
@@ -210,6 +227,7 @@ class PROGRAM_compiler:
             if self.flag:
                 self.CL('self.SET()')
                 self.NL()
+                pass
 
 
         if not self.flag:
@@ -227,6 +245,7 @@ class PROGRAM_compiler:
                 self.NL()
                 self.CL('self.SET()')
                 self.NL()
+                pass
 
 
 
@@ -246,6 +265,7 @@ class PROGRAM_compiler:
             self.TST('»')
             if not self.flag: self.runBEjsfn(rname)
 
+            pass
 
 
 
@@ -256,6 +276,7 @@ class PROGRAM_compiler:
         if self.flag:
             self.CL('self.CI()')
             self.NL()
+            pass
 
         if not self.flag:
             self.SR()
@@ -264,6 +285,7 @@ class PROGRAM_compiler:
                 self.CI()
                 self.CL(')')
                 self.NL()
+                pass
 
 
         if not self.flag:
@@ -279,6 +301,7 @@ class PROGRAM_compiler:
                 self.NL()
                 self.CL('self.CL(str(rlabel))')
                 self.NL()
+                pass
 
 
         if not self.flag:
@@ -286,6 +309,7 @@ class PROGRAM_compiler:
             if self.flag:
                 self.CL('self.NL()')
                 self.NL()
+                pass
 
 
         if not self.flag:
@@ -293,6 +317,7 @@ class PROGRAM_compiler:
             if self.flag:
                 self.CL('self.LB()')
                 self.NL()
+                pass
 
 
         if not self.flag:
@@ -300,6 +325,7 @@ class PROGRAM_compiler:
             if self.flag:
                 self.CL('self.TB()')
                 self.NL()
+                pass
 
 
         if not self.flag:
@@ -307,6 +333,7 @@ class PROGRAM_compiler:
             if self.flag:
                 self.CL('self.LMI()')
                 self.NL()
+                pass
 
 
         if not self.flag:
@@ -314,6 +341,7 @@ class PROGRAM_compiler:
             if self.flag:
                 self.CL('self.LMD()')
                 self.NL()
+                pass
 
 
 

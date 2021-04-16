@@ -23,6 +23,7 @@ EX1 → EX2 ★ ('|' «'if not self.flag:'↦↵» EX2 «↤↵» ) ▪
 
 EX2 → (EX3 «'if self.flag:'↦↵» | OUTPUT «'if True:'↦↵» )
        ★ (EX3 «'if not self.flag: self.runBEjsfn(rname)'↵↵» | OUTPUT)
+      «'pass'↵»
       «↤↵» ▪
 
 EX3 → ● «'self.rule_'⊙'()'↵» |
