@@ -19,10 +19,10 @@ ST → ● «'def rule_'⊙'(self):'↦↵»
     '→' EX1 '▪'
     «↤↵↵» ▪
 
-EX1 → EX2 ★ ('|' «'if not flag:'↦↵» EX2 «↤↵» ) ▪
+EX1 → EX2 ★ ('|' «'if not self.flag:'↦↵» EX2 «↤↵» ) ▪
 
-EX2 → (EX3 «'if flag:'↦↵» | OUTPUT «'if True:'↦↵» )
-       ★ (EX3 «'if not flag: runBEjsfn(rname)'↵↵» | OUTPUT)
+EX2 → (EX3 «'if self.flag:'↦↵» | OUTPUT «'if True:'↦↵» )
+       ★ (EX3 «'if not self.flag: self.runBEjsfn(rname)'↵↵» | OUTPUT)
       «↤↵» ▪
 
 EX3 → ● «'self.rule_'⊙'()'↵» |
@@ -33,7 +33,7 @@ EX3 → ● «'self.rule_'⊙'()'↵» |
       '(' EX1 ')' |
       '∅' «'self.SET()'↵» |
       '★' «'self.SET()'↵»
-          «'while flag:'↦↵»
+          «'while self.flag:'↦↵»
           EX3
           «↤↵»
           «'self.SET()'↵» ▪

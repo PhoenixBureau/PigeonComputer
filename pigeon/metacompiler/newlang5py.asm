@@ -74,7 +74,7 @@ EX1
 L7
     TST '|'
     BF L8
-    CL 'if not flag:'
+    CL 'if not self.flag:'
     LMI
     NL
     CLL EX2
@@ -92,7 +92,7 @@ L10
 EX2
     CLL EX3
     BF L11
-    CL 'if flag:'
+    CL 'if self.flag:'
     LMI
     NL
 L11
@@ -108,7 +108,7 @@ L12
 L15
     CLL EX3
     BF L16
-    CL 'if not flag: runBEjsfn(rname)'
+    CL 'if not self.flag: self.runBEjsfn(rname)'
     NL
     NL
 L16
@@ -178,7 +178,7 @@ L27
     BF L28
     CL 'self.SET()'
     NL
-    CL 'while flag:'
+    CL 'while self.flag:'
     LMI
     NL
     CLL EX3

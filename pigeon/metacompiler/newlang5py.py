@@ -13,9 +13,9 @@ class PROGRAM_compiler:
         rname = "PROGRAM"
         rlabel = 0
         self.TST('▶')
-        if flag:
+        if self.flag:
             self.ID()
-            if not flag: runBEjsfn(rname)
+            if not self.flag: self.runBEjsfn(rname)
 
             self.LB()
             self.CL('class ')
@@ -46,14 +46,14 @@ class PROGRAM_compiler:
             self.NL()
             self.NL()
             self.SET()
-            while flag:
+            while self.flag:
                 self.rule_ST()
 
             self.SET()
-            if not flag: runBEjsfn(rname)
+            if not self.flag: self.runBEjsfn(rname)
 
             self.TST('◀')
-            if not flag: runBEjsfn(rname)
+            if not self.flag: self.runBEjsfn(rname)
 
 
 
@@ -62,7 +62,7 @@ class PROGRAM_compiler:
         rname = "ST"
         rlabel = 0
         self.ID()
-        if flag:
+        if self.flag:
             self.CL('def rule_')
             self.CI()
             self.CL('(self):')
@@ -75,13 +75,13 @@ class PROGRAM_compiler:
             self.CL('rlabel = 0')
             self.NL()
             self.TST('→')
-            if not flag: runBEjsfn(rname)
+            if not self.flag: self.runBEjsfn(rname)
 
             self.rule_EX1()
-            if not flag: runBEjsfn(rname)
+            if not self.flag: self.runBEjsfn(rname)
 
             self.TST('▪')
-            if not flag: runBEjsfn(rname)
+            if not self.flag: self.runBEjsfn(rname)
 
             self.LMD()
             self.NL()
@@ -93,23 +93,23 @@ class PROGRAM_compiler:
         rname = "EX1"
         rlabel = 0
         self.rule_EX2()
-        if flag:
+        if self.flag:
             self.SET()
-            while flag:
+            while self.flag:
                 self.TST('|')
-                if flag:
-                    self.CL('if not flag:')
+                if self.flag:
+                    self.CL('if not self.flag:')
                     self.LMI()
                     self.NL()
                     self.rule_EX2()
-                    if not flag: runBEjsfn(rname)
+                    if not self.flag: self.runBEjsfn(rname)
 
                     self.LMD()
                     self.NL()
 
 
             self.SET()
-            if not flag: runBEjsfn(rname)
+            if not self.flag: self.runBEjsfn(rname)
 
 
 
@@ -118,36 +118,36 @@ class PROGRAM_compiler:
         rname = "EX2"
         rlabel = 0
         self.rule_EX3()
-        if flag:
-            self.CL('if flag:')
+        if self.flag:
+            self.CL('if self.flag:')
             self.LMI()
             self.NL()
 
-        if not flag:
+        if not self.flag:
             self.rule_OUTPUT()
-            if flag:
+            if self.flag:
                 self.CL('if True:')
                 self.LMI()
                 self.NL()
 
 
-        if flag:
+        if self.flag:
             self.SET()
-            while flag:
+            while self.flag:
                 self.rule_EX3()
-                if flag:
-                    self.CL('if not flag: runBEjsfn(rname)')
+                if self.flag:
+                    self.CL('if not self.flag: self.runBEjsfn(rname)')
                     self.NL()
                     self.NL()
 
-                if not flag:
+                if not self.flag:
                     self.rule_OUTPUT()
-                    if flag:
+                    if self.flag:
 
 
 
             self.SET()
-            if not flag: runBEjsfn(rname)
+            if not self.flag: self.runBEjsfn(rname)
 
             self.LMD()
             self.NL()
@@ -158,70 +158,70 @@ class PROGRAM_compiler:
         rname = "EX3"
         rlabel = 0
         self.ID()
-        if flag:
+        if self.flag:
             self.CL('self.rule_')
             self.CI()
             self.CL('()')
             self.NL()
 
-        if not flag:
+        if not self.flag:
             self.SR()
-            if flag:
+            if self.flag:
                 self.CL('self.TST(')
                 self.CI()
                 self.CL(')')
                 self.NL()
 
 
-        if not flag:
+        if not self.flag:
             self.TST('●')
-            if flag:
+            if self.flag:
                 self.CL('self.ID()')
                 self.NL()
 
 
-        if not flag:
+        if not self.flag:
             self.TST('ℕ')
-            if flag:
+            if self.flag:
                 self.CL('self.NUM()')
                 self.NL()
 
 
-        if not flag:
+        if not self.flag:
             self.TST('≋')
-            if flag:
+            if self.flag:
                 self.CL('self.SR()')
                 self.NL()
 
 
-        if not flag:
+        if not self.flag:
             self.TST('(')
-            if flag:
+            if self.flag:
                 self.rule_EX1()
-                if not flag: runBEjsfn(rname)
+                if not self.flag: self.runBEjsfn(rname)
 
                 self.TST(')')
-                if not flag: runBEjsfn(rname)
+                if not self.flag: self.runBEjsfn(rname)
 
 
 
-        if not flag:
+        if not self.flag:
             self.TST('∅')
-            if flag:
+            if self.flag:
                 self.CL('self.SET()')
                 self.NL()
 
 
-        if not flag:
+        if not self.flag:
             self.TST('★')
-            if flag:
+            if self.flag:
                 self.CL('self.SET()')
                 self.NL()
-                self.CL('while flag:')
+                self.CL('while self.flag:')
                 self.LMI()
                 self.NL()
                 self.rule_EX3()
-                if not flag: runBEjsfn(rname)
+                if not self.flag: self.runBEjsfn(rname)
 
                 self.LMD()
                 self.NL()
@@ -235,16 +235,16 @@ class PROGRAM_compiler:
         rname = "OUTPUT"
         rlabel = 0
         self.TST('«')
-        if flag:
+        if self.flag:
             self.SET()
-            while flag:
+            while self.flag:
                 self.rule_OUT1()
 
             self.SET()
-            if not flag: runBEjsfn(rname)
+            if not self.flag: self.runBEjsfn(rname)
 
             self.TST('»')
-            if not flag: runBEjsfn(rname)
+            if not self.flag: self.runBEjsfn(rname)
 
 
 
@@ -253,22 +253,22 @@ class PROGRAM_compiler:
         rname = "OUT1"
         rlabel = 0
         self.TST('⊙')
-        if flag:
+        if self.flag:
             self.CL('self.CI()')
             self.NL()
 
-        if not flag:
+        if not self.flag:
             self.SR()
-            if flag:
+            if self.flag:
                 self.CL('self.CL(')
                 self.CI()
                 self.CL(')')
                 self.NL()
 
 
-        if not flag:
+        if not self.flag:
             self.TST('#')
-            if flag:
+            if self.flag:
                 self.CL('if rlabel == 0:')
                 self.LMI()
                 self.NL()
@@ -281,37 +281,37 @@ class PROGRAM_compiler:
                 self.NL()
 
 
-        if not flag:
+        if not self.flag:
             self.TST('↵')
-            if flag:
+            if self.flag:
                 self.CL('self.NL()')
                 self.NL()
 
 
-        if not flag:
+        if not self.flag:
             self.TST('⇤')
-            if flag:
+            if self.flag:
                 self.CL('self.LB()')
                 self.NL()
 
 
-        if not flag:
+        if not self.flag:
             self.TST('⇥')
-            if flag:
+            if self.flag:
                 self.CL('self.TB()')
                 self.NL()
 
 
-        if not flag:
+        if not self.flag:
             self.TST('↦')
-            if flag:
+            if self.flag:
                 self.CL('self.LMI()')
                 self.NL()
 
 
-        if not flag:
+        if not self.flag:
             self.TST('↤')
-            if flag:
+            if self.flag:
                 self.CL('self.LMD()')
                 self.NL()
 
