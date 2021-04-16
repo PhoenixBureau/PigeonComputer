@@ -1,0 +1,31 @@
+.SYNTAX PROGRAM
+
+OUT1 = '○¹' «'GN1'» |
+       '○²' «'GN2'» |
+       '⊙' «'CI'» |
+       ≋ «'CL '*» ;
+
+OUTPUT = ('«' ★ OUT1 '»' |
+          '.LABEL' «'LB'» OUT1)
+         «'OUT'» ;
+
+EX3 = ● «'CLL '*» |
+      ≋ «'TST '*» |
+      '●' «'ID'» |
+      'ℕ' «'NUM'» |
+      '≋' «'SR'» |
+      '(' EX1 ')' |
+      '.EMPTY' «'SET'» |
+      '★' .LABEL *1 EX3 «'BT ' *1» «'SET'» ;
+
+EX2 = (EX3 «'BF ' *1» | OUTPUT) ★ (EX3 «'BE'» | OUTPUT)
+      .LABEL *1 ;
+
+EX1 = EX2 ★('|' «'BT ' *1» EX2 )
+      .LABEL *1 ;
+
+ST = ● .LABEL * '=' EX1 ';' «'R'» ;
+
+PROGRAM = '.SYNTAX' ● «'ADR ' *» ★ ST '.END' «'END'» ;
+
+.END
