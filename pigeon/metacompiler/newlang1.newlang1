@@ -3,14 +3,14 @@
 OUT1 = '*1' «'GN1'» |
        '*2' «'GN2'» |
        '*' «'CI'» |
-       .STRING «'CL '*» ;
+       ≋ «'CL '*» ;
 
 OUTPUT = ('«' ★ OUT1 '»' |
           '.LABEL' «'LB'» OUT1)
          «'OUT'» ;
 
-EX3 = .ID «'CLL '*» |
-      .STRING «'TST '*» |
+EX3 = ● «'CLL '*» |
+      ≋ «'TST '*» |
       '●' «'ID'» |
       'ℕ' «'NUM'» |
       '≋' «'SR'» |
@@ -24,9 +24,9 @@ EX2 = (EX3 «'BF ' *1» | OUTPUT) ★ (EX3 «'BE'» | OUTPUT)
 EX1 = EX2 ★('|' «'BT ' *1» EX2 )
       .LABEL *1 ;
 
-ST = .ID .LABEL * '=' EX1 ';' «'R'» ;
+ST = ● .LABEL * '=' EX1 ';' «'R'» ;
 
-PROGRAM = '.SYNTAX' .ID «'ADR ' *» ★ ST '.END' «'END'» ;
+PROGRAM = '.SYNTAX' ● «'ADR ' *» ★ ST '.END' «'END'» ;
 
 .END
 
