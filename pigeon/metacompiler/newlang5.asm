@@ -1,0 +1,221 @@
+	ADR PROGRAM
+OUT1
+	TST '⊙'
+	BF L1
+	CL 'CI'
+	OUT
+L1
+	BT L2
+	SR
+	BF L3
+	CL 'CL '
+	CI
+	OUT
+L3
+	BT L2
+	TST '#'
+	BF L4
+	CL 'GN'
+	OUT
+L4
+	BT L2
+	TST '↵'
+	BF L5
+	CL 'NL'
+	OUT
+L5
+	BT L2
+	TST '⇤'
+	BF L6
+	CL 'LB'
+	OUT
+L6
+	BT L2
+	TST '⇥'
+	BF L7
+	CL 'TB'
+	OUT
+L7
+	BT L2
+	TST '↦'
+	BF L8
+	CL 'LMI'
+	OUT
+L8
+	BT L2
+	TST '↤'
+	BF L9
+	CL 'LMD'
+	OUT
+L9
+L2
+	R
+OUTPUT
+	TST '«'
+	BF L10
+L11
+	CLL OUT1
+	BT L11
+	SET
+	BE
+	TST '»'
+	BE
+L10
+L12
+	R
+EX3
+	ID
+	BF L13
+	CL 'CLL '
+	CI
+	OUT
+L13
+	BT L14
+	SR
+	BF L15
+	CL 'TST '
+	CI
+	OUT
+L15
+	BT L14
+	TST '●'
+	BF L16
+	CL 'ID'
+	OUT
+L16
+	BT L14
+	TST 'ℕ'
+	BF L17
+	CL 'NUM'
+	OUT
+L17
+	BT L14
+	TST '≋'
+	BF L18
+	CL 'SR'
+	OUT
+L18
+	BT L14
+	TST '('
+	BF L19
+	CLL EX1
+	BE
+	TST ')'
+	BE
+L19
+	BT L14
+	TST '∅'
+	BF L20
+	CL 'SET'
+	OUT
+L20
+	BT L14
+	TST '★'
+	BF L21
+	LB
+	GN1
+	OUT
+	CLL EX3
+	BE
+	CL 'BT '
+	GN1
+	OUT
+	CL 'SET'
+	OUT
+L21
+L14
+	R
+EX2
+	CLL EX3
+	BF L22
+	CL 'BF '
+	GN1
+	OUT
+L22
+	BT L23
+	CLL OUTPUT
+	BF L24
+L24
+L23
+	BF L25
+L26
+	CLL EX3
+	BF L27
+	CL 'BE'
+	OUT
+L27
+	BT L28
+	CLL OUTPUT
+	BF L29
+L29
+L28
+	BT L26
+	SET
+	BE
+	LB
+	GN1
+	OUT
+L25
+L30
+	R
+EX1
+	CLL EX2
+	BF L31
+L32
+	TST '|'
+	BF L33
+	CL 'BT '
+	GN1
+	OUT
+	CLL EX2
+	BE
+L33
+L34
+	BT L32
+	SET
+	BE
+	LB
+	GN1
+	OUT
+L31
+L35
+	R
+ST
+	ID
+	BF L36
+	LB
+	CI
+	OUT
+	TST '→'
+	BE
+	CLL EX1
+	BE
+	TST '▪'
+	BE
+	CL 'R'
+	OUT
+L36
+L37
+	R
+PROGRAM
+	TST '▶'
+	BF L38
+	ID
+	BE
+	CL 'ADR '
+	CI
+	OUT
+L39
+	CLL ST
+	BT L39
+	SET
+	BE
+	TST '◀'
+	BE
+	CL 'END'
+	OUT
+L38
+L40
+	R
+	END
+
