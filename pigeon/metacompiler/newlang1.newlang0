@@ -11,9 +11,9 @@ OUTPUT = ('«' ★ OUT1 '»' |
 
 EX3 = .ID «'CLL '*» |
       .STRING «'TST '*» |
-      '.ID' «'ID'» |
-      '.NUMBER' «'NUM'» |
-      '.STRING' «'SR'» |
+      '●' «'ID'» |
+      'ℕ' «'NUM'» |
+      '≋' «'SR'» |
       '(' EX1 ')' |
       '.EMPTY' «'SET'» |
       '★' .LABEL *1 EX3 «'BT ' *1» «'SET'» ;
