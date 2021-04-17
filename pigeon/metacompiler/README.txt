@@ -113,3 +113,12 @@ sforman@bock:~/src/PigeonComputer/pigeon/metacompiler % python3 metaii.5.py -p n
 sforman@bock:~/src/PigeonComputer/pigeon/metacompiler % python3 newlang5py.py < newlang5py.newlang5 > newlang5py.py.out
 sforman@bock:~/src/PigeonComputer/pigeon/metacompiler % diff -s newlang5py.py newlang5py.py.out
 Files newlang5py.py and newlang5py.py.out are identical
+
+
+python3 newlang5py.py < newlang5.newlang5 > newlang5asm.py
+python3 newlang5asm.py < newlang5.newlang5 > newlang5.asm.out
+
+but there's an error, the label #'s aren't getting updated...
+newlang5.asm.out is broken..
+
+Ah, it's a misspelled variable name.

@@ -49,7 +49,7 @@ OUTPUT → '«' ★ OUT1 '»' ▪
 OUT1 → '⊙' «'self.CI()'↵» |
         ≋  «'self.CL('⊙')'↵» |
        '#' «'if rlabel == 0:'↦↵»
-               «'rlable = self.gnlabel'↵»
+               «'rlabel = self.gnlabel'↵»
                «'self.gnlabel += 1'↤↵»
            «'self.CL(str(rlabel))'↵» |
        '↵' «'self.NL()'↵» |
