@@ -1,5 +1,6 @@
 .SUFFIXES :
 DIFF = diff --report-identical-files
+PATCH = patch --quiet -V none
 
 # It seems I have already altered metaii.metaii to recognize '«' and '»'
 # in lieu of '.OUT(' and ')', so that metaii.asm and newlang.asm are not
@@ -40,8 +41,7 @@ newlang0.out: metaii.py newlang0.asm newlang0.newlang0
 	$(DIFF) newlang0.asm newlang0.out
 
 newlang1.newlang0: newlang0.newlang0 newlang0-1.diff
-	patch -o newlang1.newlang0 -i newlang0-1.diff newlang0.newlang0
-
+	$(PATCH) -o newlang1.newlang0 -i newlang0-1.diff newlang0.newlang0
 
 newlang1.asm: metaii.py newlang0.asm newlang1.newlang0
 	python3 metaii.py -p newlang0.asm newlang1.newlang0 > newlang1.asm
