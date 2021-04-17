@@ -24,6 +24,7 @@ newlang0.newlang: newlang.newlang
 	# I can't figure out how to quote "'$'" on the CLI, I originaly
 	# used a text editor.  TODO: use sed or something?
 	echo "newlang.newlang -> newlang0.newlang"
+	touch newlang0.newlang
 
 # Generate a compiler that recognizes newlang0.
 newlang0.asm: metaii.py newlang.asm newlang0.newlang
