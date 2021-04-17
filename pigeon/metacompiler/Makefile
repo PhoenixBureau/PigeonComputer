@@ -101,10 +101,16 @@ newlang4.out: metaii.py newlang4.asm newlang4.newlang3
 	python3 metaii.py -p newlang4.asm newlang4.newlang3 > newlang4.out
 	$(DIFF) newlang4.asm newlang4.out
 
+# newlang5
 
+newlang5.newlang4: newlang4.newlang4 newlang4-5.diff
+	$(PATCH) -o newlang5.newlang4 -i newlang4-5.diff newlang4.newlang4
 
+newlang5.asm: metaii.py newlang4.asm newlang5.newlang4
+	python3 metaii.py -p newlang4.asm newlang5.newlang4 > newlang5.asm
 
-
+newlang5.newlang5: newlang5.newlang4 newlang4-5.diff
+	$(PATCH) -o newlang5.newlang5 -i newlang4-5.diff newlang5.newlang4
 
 newlang5.out: metaii.py newlang5.asm newlang5.newlang5
 	python3 metaii.py   -p newlang5.asm newlang5.newlang5 > newlang5.out
