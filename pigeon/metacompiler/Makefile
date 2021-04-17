@@ -102,6 +102,9 @@ newlang4.out: metaii.py newlang4.asm newlang4.newlang3
 	$(DIFF) newlang4.asm newlang4.out
 
 # newlang5
+# Here's where it gets a little squirrely, we are switching to a slightly
+# different VM that allows for finer-grained control over output so that
+# we can have output languages that have block structure.
 
 newlang5.newlang4: newlang4.newlang4 newlang4-5.diff
 	$(PATCH) -o newlang5.newlang4 -i newlang4-5.diff newlang4.newlang4
@@ -109,14 +112,20 @@ newlang5.newlang4: newlang4.newlang4 newlang4-5.diff
 newlang5.asm: metaii.py newlang4.asm newlang5.newlang4
 	python3 metaii.py -p newlang4.asm newlang5.newlang4 > newlang5.asm
 
-newlang5.newlang5: newlang5.newlang4 newlang4-5.diff
-	$(PATCH) -o newlang5.newlang5 -i newlang4-5.diff newlang5.newlang4
+newlang5.newlang5: newlang5.newlang4 newlang5-5.diff
+	$(PATCH) -o newlang5.newlang5 -i newlang5-5.diff newlang5.newlang4
 
 newlang5.out: metaii.py newlang5.asm newlang5.newlang5
 	python3 metaii.py   -p newlang5.asm newlang5.newlang5 > newlang5.out
 
+# newlang5.out is not the same as newlang5.asm.  It uses the new op
+# codes.  It is, however, a metacompiler for itself, using the new VM.
 newlang5.outt: metaii.5.py newlang5.out newlang5.newlang5
 	python3 metaii.5.py -p newlang5.out newlang5.newlang5 > newlang5.outt
+	$(DIFF) newlang5.out newlang5.outt
+
+# newlang5py
+# Changing the output language to Python
 
 newlang5py.py.out: newlang5py.py newlang5py.newlang5
 	python3 newlang5py.py < newlang5py.newlang5 > newlang5py.py.out
@@ -132,4 +141,5 @@ newlang5asm.py: newlang5py.py newlang5.newlang5
 
 newlang5.asm.out: newlang5asm.py newlang5.newlang5
 	python3 newlang5asm.py < newlang5.newlang5 > newlang5.asm.out
+	$(DIFF) -w newlang5.out newlang5.asm.out
 
