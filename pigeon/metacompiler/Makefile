@@ -2,6 +2,8 @@
 DIFF = diff --report-identical-files
 PATCH = patch --quiet -V none
 
+# newlang
+
 # It seems I have already altered metaii.metaii to recognize '«' and '»'
 # in lieu of '.OUT(' and ')', so that metaii.asm and newlang.asm are not
 # identical!  It doesn't use them though. The compiler defined by
@@ -17,6 +19,8 @@ newlang.newlang: metaii.metaii sed_command
 newlang.out: metaii.py newlang.asm newlang.newlang
 	python3 metaii.py -p newlang.asm newlang.newlang  > newlang.out
 	$(DIFF) newlang.asm newlang.out
+
+# newlang0
 
 # To get from newlang.newlang to newlang0.newlang we alter the syntax to
 # recognize (but not yet use) a star instead of a dollar sign for the
@@ -40,6 +44,8 @@ newlang0.out: metaii.py newlang0.asm newlang0.newlang0
 	python3 metaii.py -p newlang0.asm newlang0.newlang0 > newlang0.out
 	$(DIFF) newlang0.asm newlang0.out
 
+# newlang1
+
 newlang1.newlang0: newlang0.newlang0 newlang0-1.diff
 	$(PATCH) -o newlang1.newlang0 -i newlang0-1.diff newlang0.newlang0
 
@@ -53,6 +59,8 @@ newlang1.out: newlang1.asm newlang1.newlang1
 	python3 metaii.py -p newlang1.asm newlang1.newlang1 > newlang1.out
 	$(DIFF) newlang1.asm newlang1.out
 
+# newlang2
+
 newlang2.newlang1: newlang1.newlang1 newlang1-2.diff
 	$(PATCH) -o newlang2.newlang1 -i newlang1-2.diff newlang1.newlang1
 
@@ -65,6 +73,20 @@ newlang2.newlang2: newlang2.newlang1 sed_command2
 newlang2.out: metaii.py newlang2.asm newlang2.newlang2
 	python3 metaii.py -p newlang2.asm newlang2.newlang2 > newlang2.out
 	$(DIFF) newlang2.asm newlang2.out
+
+# newlang3
+
+newlang3.newlang2: newlang2.newlang2 newlang2-3.diff
+	$(PATCH) -o newlang3.newlang2 -i newlang2-3.diff newlang2.newlang2
+
+newlang3.asm: metaii.py newlang2.out newlang3.newlang2
+	python3 metaii.py -p newlang2.out newlang3.newlang2 > newlang3.asm
+
+newlang3.newlang3: newlang3.newlang2 sed_command3
+	sed -f sed_command3 < newlang3.newlang2 > newlang3.newlang3
+
+newlang3.out: metaii.py newlang3.asm newlang3.newlang3
+	python3 metaii.py -p newlang3.asm newlang3.newlang3 > newlang3.out
 
 
 

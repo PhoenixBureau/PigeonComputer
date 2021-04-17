@@ -1,0 +1,8 @@
+27c27
+< ST = ● .LABEL ⊙ '=' EX1 ';' «'R'» ;
+---
+> ST = ● .LABEL ⊙ '→' EX1 '▪' «'R'» ;
+29c29
+< PROGRAM = '.SYNTAX' ● «'ADR ' ⊙» ★ ST '.END' «'END'» ;
+---
+> PROGRAM = '▶' ● «'ADR ' ⊙» ★ ST '◀' «'END'» ;
