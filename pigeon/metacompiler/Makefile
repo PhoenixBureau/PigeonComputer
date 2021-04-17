@@ -28,8 +28,8 @@ newlang0.newlang: newlang.newlang
 	touch newlang0.newlang
 
 # Generate a compiler that recognizes newlang0.
-newlang0.asm: metaii.py newlang.asm newlang0.newlang
-	python3 metaii.py -p newlang.asm newlang0.newlang > newlang0.asm
+newlang0.asm: metaii.py newlang.out newlang0.newlang
+	python3 metaii.py -p newlang.out newlang0.newlang > newlang0.asm
 
 # Replace $ with ★ in the grammar.
 newlang0.newlang0: newlang0.newlang
@@ -43,11 +43,15 @@ newlang0.out: metaii.py newlang0.asm newlang0.newlang0
 newlang1.newlang0: newlang0.newlang0 newlang0-1.diff
 	$(PATCH) -o newlang1.newlang0 -i newlang0-1.diff newlang0.newlang0
 
-newlang1.asm: metaii.py newlang0.asm newlang1.newlang0
-	python3 metaii.py -p newlang0.asm newlang1.newlang0 > newlang1.asm
+newlang1.asm: metaii.py newlang0.out newlang1.newlang0
+	python3 metaii.py -p newlang0.out newlang1.newlang0 > newlang1.asm
 
 newlang1.newlang1: sed_command1 newlang1.newlang0
 	sed -f sed_command1 < newlang1.newlang0 > newlang1.newlang1
+
+newlang1.out: newlang1.asm newlang1.newlang1
+	python3 metaii.py -p newlang1.asm newlang1.newlang1 > newlang1.out
+	$(DIFF) newlang1.asm newlang1.out
 
 newlang2.asm: metaii.py newlang1.asm newlang2.newlang1
 	python3 metaii.py -p newlang1.asm newlang2.newlang1 > newlang2.asm

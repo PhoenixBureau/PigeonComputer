@@ -29,3 +29,4 @@ ST = ● .LABEL * '=' EX1 ';' «'R'» ;
 PROGRAM = '.SYNTAX' ● «'ADR ' *» ★ ST '.END' «'END'» ;
 
 .END
+
