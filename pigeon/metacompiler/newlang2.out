@@ -93,7 +93,7 @@ L17
 	BE
 L18
 	BT L13
-	TST '.EMPTY'
+	TST '∅'
 	BF L19
 	CL 'SET'
 	OUT

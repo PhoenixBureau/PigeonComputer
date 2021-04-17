@@ -15,7 +15,7 @@ EX3 = ● «'CLL '*» |
       'ℕ' «'NUM'» |
       '≋' «'SR'» |
       '(' EX1 ')' |
-      '.EMPTY' «'SET'» |
+      '∅' «'SET'» |
       '★' .LABEL *1 EX3 «'BT ' *1» «'SET'» ;
 
 EX2 = (EX3 «'BF ' *1» | OUTPUT) ★ (EX3 «'BE'» | OUTPUT)
