@@ -53,11 +53,20 @@ newlang1.out: newlang1.asm newlang1.newlang1
 	python3 metaii.py -p newlang1.asm newlang1.newlang1 > newlang1.out
 	$(DIFF) newlang1.asm newlang1.out
 
-newlang2.asm: metaii.py newlang1.asm newlang2.newlang1
-	python3 metaii.py -p newlang1.asm newlang2.newlang1 > newlang2.asm
+newlang2.newlang1: newlang1.newlang1 newlang1-2.diff
+	$(PATCH) -o newlang2.newlang1 -i newlang1-2.diff newlang1.newlang1
+
+newlang2.asm: metaii.py newlang1.out newlang2.newlang1
+	python3 metaii.py -p newlang1.out newlang2.newlang1 > newlang2.asm
+
+newlang2.newlang2: newlang2.newlang1 sed_command2
+	sed -f sed_command2 < newlang2.newlang1 > newlang2.newlang2
 
 newlang2.out: metaii.py newlang2.asm newlang2.newlang2
 	python3 metaii.py -p newlang2.asm newlang2.newlang2 > newlang2.out
+	$(DIFF) newlang2.asm newlang2.out
+
+
 
 newlang5.out: metaii.py newlang5.asm newlang5.newlang5
 	python3 metaii.py   -p newlang5.asm newlang5.newlang5 > newlang5.out
