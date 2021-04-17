@@ -134,3 +134,6 @@ Files newlang5py.py and newlang5py.py.out are identical
 % python3 newlang5asm.py < newlang5.newlang5 > newlang5.asm.out
 % diff -sw newlang5.out newlang5.asm.out 
 Files newlang5.out and newlang5.asm.out are identical
+
+
+
