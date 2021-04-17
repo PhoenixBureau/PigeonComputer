@@ -39,8 +39,15 @@ newlang0.out: metaii.py newlang0.asm newlang0.newlang0
 	python3 metaii.py -p newlang0.asm newlang0.newlang0 > newlang0.out
 	$(DIFF) newlang0.asm newlang0.out
 
+newlang1.newlang0: newlang0.newlang0 newlang0-1.diff
+	patch -o newlang1.newlang0 -i newlang0-1.diff newlang0.newlang0
+
+
 newlang1.asm: metaii.py newlang0.asm newlang1.newlang0
 	python3 metaii.py -p newlang0.asm newlang1.newlang0 > newlang1.asm
+
+newlang1.newlang1: sed_command1 newlang1.newlang0
+	sed -f sed_command1 < newlang1.newlang0 > newlang1.newlang1
 
 newlang2.asm: metaii.py newlang1.asm newlang2.newlang1
 	python3 metaii.py -p newlang1.asm newlang2.newlang1 > newlang2.asm
