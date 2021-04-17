@@ -32,7 +32,7 @@ newlang0.asm: metaii.py newlang.asm newlang0.newlang
 
 # Replace $ with ★ in the grammar.
 newlang0.newlang0: newlang0.newlang
-	sed 's/\$/★/' < newlang0.newlang > newlang0.newlang0
+	sed 's/\$$/★/' < newlang0.newlang > newlang0.newlang0
 
 # Use the compiler is a metacompiler.
 newlang0.out: metaii.py newlang0.asm newlang0.newlang0
