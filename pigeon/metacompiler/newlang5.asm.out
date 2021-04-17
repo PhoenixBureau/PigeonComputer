@@ -1,0 +1,247 @@
+    ADR PROGRAM
+OUT1
+    TST '⊙'
+    BF L0
+    TB
+    CL 'CI'
+    NL
+L0
+    BT L0
+    SR
+    BF L0
+    TB
+    CL 'CL '
+    CI
+    NL
+L0
+    BT L0
+    TST '#'
+    BF L0
+    TB
+    CL 'GN'
+    NL
+L0
+    BT L0
+    TST '↵'
+    BF L0
+    TB
+    CL 'NL'
+    NL
+L0
+    BT L0
+    TST '⇤'
+    BF L0
+    TB
+    CL 'LB'
+    NL
+L0
+    BT L0
+    TST '⇥'
+    BF L0
+    TB
+    CL 'TB'
+    NL
+L0
+    BT L0
+    TST '↦'
+    BF L0
+    TB
+    CL 'LMI'
+    NL
+L0
+    BT L0
+    TST '↤'
+    BF L0
+    TB
+    CL 'LMD'
+    NL
+L0
+L0
+    R
+OUTPUT
+    TST '«'
+    BF L0
+L0
+    CLL OUT1
+    BT L0
+    SET
+    BE
+    TST '»'
+    BE
+L0
+L0
+    R
+EX3
+    ID
+    BF L0
+    TB
+    CL 'CLL '
+    CI
+    NL
+L0
+    BT L0
+    SR
+    BF L0
+    TB
+    CL 'TST '
+    CI
+    NL
+L0
+    BT L0
+    TST '●'
+    BF L0
+    TB
+    CL 'ID'
+    NL
+L0
+    BT L0
+    TST 'ℕ'
+    BF L0
+    TB
+    CL 'NUM'
+    NL
+L0
+    BT L0
+    TST '≋'
+    BF L0
+    TB
+    CL 'SR'
+    NL
+L0
+    BT L0
+    TST '('
+    BF L0
+    CLL EX1
+    BE
+    TST ')'
+    BE
+L0
+    BT L0
+    TST '∅'
+    BF L0
+    TB
+    CL 'SET'
+    NL
+L0
+    BT L0
+    TST '★'
+    BF L0
+    LB
+    CL 'L'
+    GN
+    NL
+    CLL EX3
+    BE
+    TB
+    CL 'BT L'
+    GN
+    NL
+    TB
+    CL 'SET'
+    NL
+L0
+L0
+    R
+EX2
+    CLL EX3
+    BF L0
+    TB
+    CL 'BF L'
+    GN
+    NL
+L0
+    BT L0
+    CLL OUTPUT
+    BF L0
+L0
+L0
+    BF L0
+L0
+    CLL EX3
+    BF L0
+    TB
+    CL 'BE'
+    NL
+L0
+    BT L0
+    CLL OUTPUT
+    BF L0
+L0
+L0
+    BT L0
+    SET
+    BE
+    LB
+    CL 'L'
+    GN
+    NL
+L0
+L0
+    R
+EX1
+    CLL EX2
+    BF L0
+L0
+    TST '|'
+    BF L0
+    TB
+    CL 'BT L'
+    GN
+    NL
+    CLL EX2
+    BE
+L0
+L0
+    BT L0
+    SET
+    BE
+    LB
+    CL 'L'
+    GN
+    NL
+L0
+L0
+    R
+ST
+    ID
+    BF L0
+    LB
+    CI
+    NL
+    TST '→'
+    BE
+    CLL EX1
+    BE
+    TST '▪'
+    BE
+    TB
+    CL 'R'
+    NL
+L0
+L0
+    R
+PROGRAM
+    TST '▶'
+    BF L0
+    ID
+    BE
+    LB
+    TB
+    CL 'ADR '
+    CI
+    NL
+L0
+    CLL ST
+    BT L0
+    SET
+    BE
+    TST '◀'
+    BE
+    TB
+    CL 'END'
+    NL
+L0
+L0
+    R
+    END
+
