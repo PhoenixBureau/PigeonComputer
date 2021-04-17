@@ -1,4 +1,4 @@
-
+.SUFFIXES :
 DIFF = diff --report-identical-files
 
 # It seems I have already altered metaii.metaii to recognize '«' and '»'
