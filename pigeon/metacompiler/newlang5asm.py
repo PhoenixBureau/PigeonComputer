@@ -178,7 +178,7 @@ class Compiler(MetaII):
                 self.LB()
                 self.CL('L')
                 if rlabel == 0:
-                    rlable = self.gnlabel
+                    rlabel = self.gnlabel
                     self.gnlabel += 1
                 self.CL(str(rlabel))
                 self.NL()
@@ -188,7 +188,7 @@ class Compiler(MetaII):
                 self.TB()
                 self.CL('BT L')
                 if rlabel == 0:
-                    rlable = self.gnlabel
+                    rlabel = self.gnlabel
                     self.gnlabel += 1
                 self.CL(str(rlabel))
                 self.NL()
@@ -208,7 +208,7 @@ class Compiler(MetaII):
             self.TB()
             self.CL('BF L')
             if rlabel == 0:
-                rlable = self.gnlabel
+                rlabel = self.gnlabel
                 self.gnlabel += 1
             self.CL(str(rlabel))
             self.NL()
@@ -243,7 +243,7 @@ class Compiler(MetaII):
             self.LB()
             self.CL('L')
             if rlabel == 0:
-                rlable = self.gnlabel
+                rlabel = self.gnlabel
                 self.gnlabel += 1
             self.CL(str(rlabel))
             self.NL()
@@ -263,7 +263,7 @@ class Compiler(MetaII):
                     self.TB()
                     self.CL('BT L')
                     if rlabel == 0:
-                        rlable = self.gnlabel
+                        rlabel = self.gnlabel
                         self.gnlabel += 1
                     self.CL(str(rlabel))
                     self.NL()
@@ -279,7 +279,7 @@ class Compiler(MetaII):
             self.LB()
             self.CL('L')
             if rlabel == 0:
-                rlable = self.gnlabel
+                rlabel = self.gnlabel
                 self.gnlabel += 1
             self.CL(str(rlabel))
             self.NL()
@@ -346,8 +346,7 @@ class Compiler(MetaII):
 if __name__ == "__main__":
     import sys
     c = Compiler()
-    #source = sys.stdin.read()
-    source = open('newlang5.newlang5', 'r').read()
+    source = sys.stdin.read()
     out = c.compile(source)
     print(out)
 

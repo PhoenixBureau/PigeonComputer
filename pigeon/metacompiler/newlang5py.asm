@@ -237,7 +237,7 @@ L34
     CL 'if rlabel == 0:'
     LMI
     NL
-    CL 'rlable = self.gnlabel'
+    CL 'rlabel = self.gnlabel'
     NL
     CL 'self.gnlabel += 1'
     LMD

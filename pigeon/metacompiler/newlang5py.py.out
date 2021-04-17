@@ -305,7 +305,7 @@ class Compiler(MetaII):
                 self.CL('if rlabel == 0:')
                 self.LMI()
                 self.NL()
-                self.CL('rlable = self.gnlabel')
+                self.CL('rlabel = self.gnlabel')
                 self.NL()
                 self.CL('self.gnlabel += 1')
                 self.LMD()
