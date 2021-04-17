@@ -8,9 +8,7 @@ PROGRAM
     CL 'from metaii_base import MetaII'
     NL
     NL
-    CL 'class '
-    CI
-    CL '_compiler(MetaII):'
+    CL 'class Compiler(MetaII):'
     NL
     LMI
     NL
@@ -34,6 +32,23 @@ L2
     BT L2
     SET
     BE
+    LMD
+    NL
+    NL
+    CL 'if __name__ == "__main__":'
+    LMI
+    NL
+    CL 'import sys'
+    NL
+    CL 'c = Compiler()'
+    NL
+    CL 'source = sys.stdin.read()'
+    NL
+    CL 'out = c.compile(source)'
+    NL
+    CL 'print(out)'
+    LMD
+    NL
     TST '◀'
     BE
 L1

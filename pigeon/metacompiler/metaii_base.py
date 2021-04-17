@@ -53,7 +53,6 @@ class MetaII(object):
     found, otherwise consume nothing (but leading whitespace) and reset
     switch.  Strips all leading whitespace.
     '''
-    string = string[1:-1]
     self._left_trim_input()
     self.switch = self.input.startswith(string)
     if self.switch:
@@ -129,7 +128,7 @@ class MetaII(object):
     '''
     Copy literal to output buffer.
     '''
-    self._out(string[1:-1])
+    self._out(string)
 
   def CI(self):
     '''

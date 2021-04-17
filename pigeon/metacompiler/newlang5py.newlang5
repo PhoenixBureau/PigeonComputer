@@ -2,13 +2,20 @@
 
 PROGRAM → '▶' ●
     «⇤'from metaii_base import MetaII'↵↵»
-    «'class '⊙'_compiler(MetaII):'↵↦↵»
+    «'class Compiler(MetaII):'↵↦↵»
     «'def compile(self, source):'↦↵»
         «'self.input = source'↵»
         «'self.reset()'↵»
         «'self.rule_'⊙'()'↵»
         «'return self.output.getvalue()'↤↵↵»
     ★ ST
+    «↤↵↵»
+    «'if __name__ == "__main__":'↦↵»
+        «'import sys'↵»
+        «'c = Compiler()'↵»
+        «'source = sys.stdin.read()'↵»
+        «'out = c.compile(source)'↵»
+        «'print(out)'↤↵»
     '◀' ▪
 
 ST → ● «'def rule_'⊙'(self):'↦↵»
