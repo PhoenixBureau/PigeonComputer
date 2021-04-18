@@ -1,7 +1,7 @@
 ▶ PROGRAM
 
 PROGRAM → '▶' ●
-    «⇤'from metaii_base import MetaII'↵↵
+    «⇤'from metaii_base import MetaII, ParseError'↵↵↵
     'class Compiler(MetaII):'↵↦↵
     'def compile(self, source):'↦↵
         'self.input = source'↵
@@ -9,7 +9,7 @@ PROGRAM → '▶' ●
         'self.rule_'⊙'()'↵
         'return self.output.getvalue()'↤↵↵»
     ★ ST
-    «↤↵↵
+    «↤↵
     'if __name__ == "__main__":'↦↵
         'import sys'↵
         'c = Compiler()'↵
@@ -22,13 +22,14 @@ ST → ● «'def rule_'⊙'(self):'↦↵
     'rname = "'⊙'"'↵
     'rlabel = 0'↵»
     '→' EX1 '▪'
-    «↤↵↵» ▪
+    «↤↵» ▪
 
 EX1 → EX2 ★ ('|' «'if not self.switch:'↦↵» EX2 «↤↵» ) ▪
 
 EX2 → (EX3 «'if self.switch:'↦↵» | OUTPUT «'if True:'↦↵» )
-       ★ (EX3 «'if not self.switch: self.runBEjsfn(rname)'↵↵» | OUTPUT)
-      «'pass'↵↤↵» ▪
+       ★ (EX3 «'if not self.switch:'↦↵
+                   'raise ParseError(rname)'↤↵↵» | OUTPUT)
+      «'pass'↤↵» ▪
 
 EX3 → ● «'self.rule_'⊙'()'↵» |
       ≋ «'self.TST('⊙')'↵» |

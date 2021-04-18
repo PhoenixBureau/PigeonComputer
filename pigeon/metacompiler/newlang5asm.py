@@ -1,4 +1,5 @@
-from metaii_base import MetaII
+from metaii_base import MetaII, ParseError
+
 
 class Compiler(MetaII):
 
@@ -18,7 +19,6 @@ class Compiler(MetaII):
             print(self.output_buffer.rstrip(), file=self.output)
             self.output_buffer = self._indent * self.indent
             pass
-
         if not self.switch:
             self.SR()
             if self.switch:
@@ -29,7 +29,6 @@ class Compiler(MetaII):
                 self.output_buffer = self._indent * self.indent
                 pass
 
-
         if not self.switch:
             self.TST('#')
             if self.switch:
@@ -38,7 +37,6 @@ class Compiler(MetaII):
                 print(self.output_buffer.rstrip(), file=self.output)
                 self.output_buffer = self._indent * self.indent
                 pass
-
 
         if not self.switch:
             self.TST('↵')
@@ -49,7 +47,6 @@ class Compiler(MetaII):
                 self.output_buffer = self._indent * self.indent
                 pass
 
-
         if not self.switch:
             self.TST('⇤')
             if self.switch:
@@ -58,7 +55,6 @@ class Compiler(MetaII):
                 print(self.output_buffer.rstrip(), file=self.output)
                 self.output_buffer = self._indent * self.indent
                 pass
-
 
         if not self.switch:
             self.TST('⇥')
@@ -69,7 +65,6 @@ class Compiler(MetaII):
                 self.output_buffer = self._indent * self.indent
                 pass
 
-
         if not self.switch:
             self.TST('↦')
             if self.switch:
@@ -79,7 +74,6 @@ class Compiler(MetaII):
                 self.output_buffer = self._indent * self.indent
                 pass
 
-
         if not self.switch:
             self.TST('↤')
             if self.switch:
@@ -88,8 +82,6 @@ class Compiler(MetaII):
                 print(self.output_buffer.rstrip(), file=self.output)
                 self.output_buffer = self._indent * self.indent
                 pass
-
-
 
 
     def rule_OUTPUT(self):
@@ -102,14 +94,14 @@ class Compiler(MetaII):
                 self.rule_OUT1()
 
             self.switch = True
-            if not self.switch: self.runBEjsfn(rname)
+            if not self.switch:
+                raise ParseError(rname)
 
             self.TST('»')
-            if not self.switch: self.runBEjsfn(rname)
+            if not self.switch:
+                raise ParseError(rname)
 
             pass
-
-
 
     def rule_EX3(self):
         rname = "EX3"
@@ -122,7 +114,6 @@ class Compiler(MetaII):
             print(self.output_buffer.rstrip(), file=self.output)
             self.output_buffer = self._indent * self.indent
             pass
-
         if not self.switch:
             self.SR()
             if self.switch:
@@ -133,7 +124,6 @@ class Compiler(MetaII):
                 self.output_buffer = self._indent * self.indent
                 pass
 
-
         if not self.switch:
             self.TST('●')
             if self.switch:
@@ -142,7 +132,6 @@ class Compiler(MetaII):
                 print(self.output_buffer.rstrip(), file=self.output)
                 self.output_buffer = self._indent * self.indent
                 pass
-
 
         if not self.switch:
             self.TST('ℕ')
@@ -153,7 +142,6 @@ class Compiler(MetaII):
                 self.output_buffer = self._indent * self.indent
                 pass
 
-
         if not self.switch:
             self.TST('≋')
             if self.switch:
@@ -163,18 +151,18 @@ class Compiler(MetaII):
                 self.output_buffer = self._indent * self.indent
                 pass
 
-
         if not self.switch:
             self.TST('(')
             if self.switch:
                 self.rule_EX1()
-                if not self.switch: self.runBEjsfn(rname)
+                if not self.switch:
+                    raise ParseError(rname)
 
                 self.TST(')')
-                if not self.switch: self.runBEjsfn(rname)
+                if not self.switch:
+                    raise ParseError(rname)
 
                 pass
-
 
         if not self.switch:
             self.TST('∅')
@@ -184,7 +172,6 @@ class Compiler(MetaII):
                 print(self.output_buffer.rstrip(), file=self.output)
                 self.output_buffer = self._indent * self.indent
                 pass
-
 
         if not self.switch:
             self.TST('★')
@@ -198,7 +185,8 @@ class Compiler(MetaII):
                 print(self.output_buffer.rstrip(), file=self.output)
                 self.output_buffer = self._indent * self.indent
                 self.rule_EX3()
-                if not self.switch: self.runBEjsfn(rname)
+                if not self.switch:
+                    raise ParseError(rname)
 
                 self.output_buffer += self._indent
                 self.output_buffer += 'BT L'
@@ -215,8 +203,6 @@ class Compiler(MetaII):
                 pass
 
 
-
-
     def rule_EX2(self):
         rname = "EX2"
         rlabel = 0
@@ -231,12 +217,10 @@ class Compiler(MetaII):
             print(self.output_buffer.rstrip(), file=self.output)
             self.output_buffer = self._indent * self.indent
             pass
-
         if not self.switch:
             self.rule_OUTPUT()
             if self.switch:
                 pass
-
 
         if self.switch:
             self.switch = True
@@ -248,16 +232,15 @@ class Compiler(MetaII):
                     print(self.output_buffer.rstrip(), file=self.output)
                     self.output_buffer = self._indent * self.indent
                     pass
-
                 if not self.switch:
                     self.rule_OUTPUT()
                     if self.switch:
                         pass
 
 
-
             self.switch = True
-            if not self.switch: self.runBEjsfn(rname)
+            if not self.switch:
+                raise ParseError(rname)
 
             self.output_buffer = ""
             self.output_buffer += 'L'
@@ -268,8 +251,6 @@ class Compiler(MetaII):
             print(self.output_buffer.rstrip(), file=self.output)
             self.output_buffer = self._indent * self.indent
             pass
-
-
 
     def rule_EX1(self):
         rname = "EX1"
@@ -289,13 +270,14 @@ class Compiler(MetaII):
                     print(self.output_buffer.rstrip(), file=self.output)
                     self.output_buffer = self._indent * self.indent
                     self.rule_EX2()
-                    if not self.switch: self.runBEjsfn(rname)
+                    if not self.switch:
+                        raise ParseError(rname)
 
                     pass
 
-
             self.switch = True
-            if not self.switch: self.runBEjsfn(rname)
+            if not self.switch:
+                raise ParseError(rname)
 
             self.output_buffer = ""
             self.output_buffer += 'L'
@@ -307,8 +289,6 @@ class Compiler(MetaII):
             self.output_buffer = self._indent * self.indent
             pass
 
-
-
     def rule_ST(self):
         rname = "ST"
         rlabel = 0
@@ -319,13 +299,16 @@ class Compiler(MetaII):
             print(self.output_buffer.rstrip(), file=self.output)
             self.output_buffer = self._indent * self.indent
             self.TST('→')
-            if not self.switch: self.runBEjsfn(rname)
+            if not self.switch:
+                raise ParseError(rname)
 
             self.rule_EX1()
-            if not self.switch: self.runBEjsfn(rname)
+            if not self.switch:
+                raise ParseError(rname)
 
             self.TST('▪')
-            if not self.switch: self.runBEjsfn(rname)
+            if not self.switch:
+                raise ParseError(rname)
 
             self.output_buffer += self._indent
             self.output_buffer += 'R'
@@ -333,15 +316,14 @@ class Compiler(MetaII):
             self.output_buffer = self._indent * self.indent
             pass
 
-
-
     def rule_PROGRAM(self):
         rname = "PROGRAM"
         rlabel = 0
         self.TST('▶')
         if self.switch:
             self.ID()
-            if not self.switch: self.runBEjsfn(rname)
+            if not self.switch:
+                raise ParseError(rname)
 
             self.output_buffer = ""
             self.output_buffer += self._indent
@@ -354,19 +336,18 @@ class Compiler(MetaII):
                 self.rule_ST()
 
             self.switch = True
-            if not self.switch: self.runBEjsfn(rname)
+            if not self.switch:
+                raise ParseError(rname)
 
             self.TST('◀')
-            if not self.switch: self.runBEjsfn(rname)
+            if not self.switch:
+                raise ParseError(rname)
 
             self.output_buffer += self._indent
             self.output_buffer += 'END'
             print(self.output_buffer.rstrip(), file=self.output)
             self.output_buffer = self._indent * self.indent
             pass
-
-
-
 
 
 if __name__ == "__main__":

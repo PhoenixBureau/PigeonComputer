@@ -5,7 +5,8 @@ PROGRAM
     ID
     BE
     LB
-    CL 'from metaii_base import MetaII'
+    CL 'from metaii_base import MetaII, ParseError'
+    NL
     NL
     NL
     CL 'class Compiler(MetaII):'
@@ -33,7 +34,6 @@ L2
     SET
     BE
     LMD
-    NL
     NL
     CL 'if __name__ == "__main__":'
     LMI
@@ -75,7 +75,6 @@ ST
     TST '▪'
     BE
     LMD
-    NL
     NL
 L4
 L5
@@ -120,7 +119,11 @@ L12
 L15
     CLL EX3
     BF L16
-    CL 'if not self.switch: self.runBEjsfn(rname)'
+    CL 'if not self.switch:'
+    LMI
+    NL
+    CL 'raise ParseError(rname)'
+    LMD
     NL
     NL
 L16
@@ -133,7 +136,6 @@ L17
     SET
     BE
     CL 'pass'
-    NL
     LMD
     NL
 L14

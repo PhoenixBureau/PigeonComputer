@@ -19,6 +19,9 @@
 from io import StringIO
 
 
+class ParseError(Exception): pass
+
+
 class MetaII(object):
 
   def reset(self):
@@ -28,10 +31,6 @@ class MetaII(object):
     self._indent = '    '
     self.indent = 0
     self.last = None
-
-  def runBEjsfn(self, rname):
-    print('error in', rname)
-    1/0
 
   # These are the "order codes" (assembly instructions) for the Meta II
   # metacompiler machine.
