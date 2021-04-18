@@ -118,55 +118,6 @@ class MetaII(object):
     else:
       self.switch = False
 
-  def SET(self):
-    '''
-    Set switch.
-    '''
-    self.switch = True
-
-  def CL(self, string):
-    '''
-    Copy literal to output buffer.
-    '''
-    self._out(string)
-
-  def CI(self):
-    '''
-    Copy ``last`` buffer contents to output buffer.
-    '''
-    self._out(self.last)
-
-  def LB(self):
-    '''
-    "Move to output column 1."
-    '''
-    self.output_buffer = ''
-
-  def TB(self):
-    '''
-    "Move to the next tab stop."
-    '''
-    self.output_buffer += self._indent
-
-  def LMI(self):
-    '''
-    "Increase the left margin, indenting block."
-    '''
-    self.indent += 1
-
-  def LMD(self):
-    '''
-    "Decrease the left margin, indenting block."
-    '''
-    self.indent -= 1
-
-  def NL(self):
-    '''
-    "Flush output buffer with ending newline and move to left margin."
-    '''
-    print(self.output_buffer.rstrip(), file=self.output)
-    self.output_buffer = self._indent * self.indent
-
   # Those are the order codes. The rest of these are support methods.
 
   def _left_trim_input(self):

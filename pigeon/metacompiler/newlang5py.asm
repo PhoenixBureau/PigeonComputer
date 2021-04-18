@@ -184,13 +184,13 @@ L26
     BT L21
     TST '∅'
     BF L27
-    CL 'self.SET()'
+    CL 'self.switch = True'
     NL
 L27
     BT L21
     TST '★'
     BF L28
-    CL 'self.SET()'
+    CL 'self.switch = True'
     NL
     CL 'while self.switch:'
     LMI
@@ -199,7 +199,7 @@ L27
     BE
     LMD
     NL
-    CL 'self.SET()'
+    CL 'self.switch = True'
     NL
 L28
 L21
@@ -220,15 +220,14 @@ L31
 OUT1
     TST '⊙'
     BF L32
-    CL 'self.CI()'
+    CL 'self.output_buffer += self.last'
     NL
 L32
     BT L33
     SR
     BF L34
-    CL 'self.CL('
+    CL 'self.output_buffer += '
     CI
-    CL ')'
     NL
 L34
     BT L33
@@ -242,37 +241,39 @@ L34
     CL 'self.gnlabel += 1'
     LMD
     NL
-    CL 'self.CL(str(rlabel))'
+    CL 'self.output_buffer += str(rlabel)'
     NL
 L35
     BT L33
     TST '↵'
     BF L36
-    CL 'self.NL()'
+    CL 'print(self.output_buffer.rstrip(), file=self.output)'
+    NL
+    CL 'self.output_buffer = self._indent * self.indent'
     NL
 L36
     BT L33
     TST '⇤'
     BF L37
-    CL 'self.LB()'
+    CL 'self.output_buffer = ""'
     NL
 L37
     BT L33
     TST '⇥'
     BF L38
-    CL 'self.TB()'
+    CL 'self.output_buffer += self._indent'
     NL
 L38
     BT L33
     TST '↦'
     BF L39
-    CL 'self.LMI()'
+    CL 'self.indent += 1'
     NL
 L39
     BT L33
     TST '↤'
     BF L40
-    CL 'self.LMD()'
+    CL 'self.indent -= 1'
     NL
 L40
 L33

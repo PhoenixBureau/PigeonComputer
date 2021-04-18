@@ -16,53 +16,71 @@ class Compiler(MetaII):
             self.ID()
             if not self.switch: self.runBEjsfn(rname)
 
-            self.LB()
-            self.CL('from metaii_base import MetaII')
-            self.NL()
-            self.NL()
-            self.CL('class Compiler(MetaII):')
-            self.NL()
-            self.LMI()
-            self.NL()
-            self.CL('def compile(self, source):')
-            self.LMI()
-            self.NL()
-            self.CL('self.input = source')
-            self.NL()
-            self.CL('self.reset()')
-            self.NL()
-            self.CL('self.rule_')
-            self.CI()
-            self.CL('()')
-            self.NL()
-            self.CL('return self.output.getvalue()')
-            self.LMD()
-            self.NL()
-            self.NL()
-            self.SET()
+            self.output_buffer = ""
+            self.output_buffer += 'from metaii_base import MetaII'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'class Compiler(MetaII):'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.indent += 1
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'def compile(self, source):'
+            self.indent += 1
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'self.input = source'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'self.reset()'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'self.rule_'
+            self.output_buffer += self.last
+            self.output_buffer += '()'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'return self.output.getvalue()'
+            self.indent -= 1
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.switch = True
             while self.switch:
                 self.rule_ST()
 
-            self.SET()
+            self.switch = True
             if not self.switch: self.runBEjsfn(rname)
 
-            self.LMD()
-            self.NL()
-            self.NL()
-            self.CL('if __name__ == "__main__":')
-            self.LMI()
-            self.NL()
-            self.CL('import sys')
-            self.NL()
-            self.CL('c = Compiler()')
-            self.NL()
-            self.CL('source = sys.stdin.read()')
-            self.NL()
-            self.CL('out = c.compile(source)')
-            self.NL()
-            self.CL('print(out)')
-            self.LMD()
-            self.NL()
+            self.indent -= 1
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'if __name__ == "__main__":'
+            self.indent += 1
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'import sys'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'c = Compiler()'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'source = sys.stdin.read()'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'out = c.compile(source)'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'print(out)'
+            self.indent -= 1
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
             self.TST('◀')
             if not self.switch: self.runBEjsfn(rname)
 
@@ -75,17 +93,20 @@ class Compiler(MetaII):
         rlabel = 0
         self.ID()
         if self.switch:
-            self.CL('def rule_')
-            self.CI()
-            self.CL('(self):')
-            self.LMI()
-            self.NL()
-            self.CL('rname = "')
-            self.CI()
-            self.CL('"')
-            self.NL()
-            self.CL('rlabel = 0')
-            self.NL()
+            self.output_buffer += 'def rule_'
+            self.output_buffer += self.last
+            self.output_buffer += '(self):'
+            self.indent += 1
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'rname = "'
+            self.output_buffer += self.last
+            self.output_buffer += '"'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.output_buffer += 'rlabel = 0'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
             self.TST('→')
             if not self.switch: self.runBEjsfn(rname)
 
@@ -95,9 +116,11 @@ class Compiler(MetaII):
             self.TST('▪')
             if not self.switch: self.runBEjsfn(rname)
 
-            self.LMD()
-            self.NL()
-            self.NL()
+            self.indent -= 1
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
             pass
 
 
@@ -107,22 +130,24 @@ class Compiler(MetaII):
         rlabel = 0
         self.rule_EX2()
         if self.switch:
-            self.SET()
+            self.switch = True
             while self.switch:
                 self.TST('|')
                 if self.switch:
-                    self.CL('if not self.switch:')
-                    self.LMI()
-                    self.NL()
+                    self.output_buffer += 'if not self.switch:'
+                    self.indent += 1
+                    print(self.output_buffer.rstrip(), file=self.output)
+                    self.output_buffer = self._indent * self.indent
                     self.rule_EX2()
                     if not self.switch: self.runBEjsfn(rname)
 
-                    self.LMD()
-                    self.NL()
+                    self.indent -= 1
+                    print(self.output_buffer.rstrip(), file=self.output)
+                    self.output_buffer = self._indent * self.indent
                     pass
 
 
-            self.SET()
+            self.switch = True
             if not self.switch: self.runBEjsfn(rname)
 
             pass
@@ -134,28 +159,32 @@ class Compiler(MetaII):
         rlabel = 0
         self.rule_EX3()
         if self.switch:
-            self.CL('if self.switch:')
-            self.LMI()
-            self.NL()
+            self.output_buffer += 'if self.switch:'
+            self.indent += 1
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
             pass
 
         if not self.switch:
             self.rule_OUTPUT()
             if self.switch:
-                self.CL('if True:')
-                self.LMI()
-                self.NL()
+                self.output_buffer += 'if True:'
+                self.indent += 1
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 
         if self.switch:
-            self.SET()
+            self.switch = True
             while self.switch:
                 self.rule_EX3()
                 if self.switch:
-                    self.CL('if not self.switch: self.runBEjsfn(rname)')
-                    self.NL()
-                    self.NL()
+                    self.output_buffer += 'if not self.switch: self.runBEjsfn(rname)'
+                    print(self.output_buffer.rstrip(), file=self.output)
+                    self.output_buffer = self._indent * self.indent
+                    print(self.output_buffer.rstrip(), file=self.output)
+                    self.output_buffer = self._indent * self.indent
                     pass
 
                 if not self.switch:
@@ -165,13 +194,15 @@ class Compiler(MetaII):
 
 
 
-            self.SET()
+            self.switch = True
             if not self.switch: self.runBEjsfn(rname)
 
-            self.CL('pass')
-            self.NL()
-            self.LMD()
-            self.NL()
+            self.output_buffer += 'pass'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
+            self.indent -= 1
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
             pass
 
 
@@ -181,43 +212,48 @@ class Compiler(MetaII):
         rlabel = 0
         self.ID()
         if self.switch:
-            self.CL('self.rule_')
-            self.CI()
-            self.CL('()')
-            self.NL()
+            self.output_buffer += 'self.rule_'
+            self.output_buffer += self.last
+            self.output_buffer += '()'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
             pass
 
         if not self.switch:
             self.SR()
             if self.switch:
-                self.CL('self.TST(')
-                self.CI()
-                self.CL(')')
-                self.NL()
+                self.output_buffer += 'self.TST('
+                self.output_buffer += self.last
+                self.output_buffer += ')'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 
         if not self.switch:
             self.TST('●')
             if self.switch:
-                self.CL('self.ID()')
-                self.NL()
+                self.output_buffer += 'self.ID()'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 
         if not self.switch:
             self.TST('ℕ')
             if self.switch:
-                self.CL('self.NUM()')
-                self.NL()
+                self.output_buffer += 'self.NUM()'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 
         if not self.switch:
             self.TST('≋')
             if self.switch:
-                self.CL('self.SR()')
-                self.NL()
+                self.output_buffer += 'self.SR()'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 
@@ -236,26 +272,31 @@ class Compiler(MetaII):
         if not self.switch:
             self.TST('∅')
             if self.switch:
-                self.CL('self.SET()')
-                self.NL()
+                self.output_buffer += 'self.switch = True'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 
         if not self.switch:
             self.TST('★')
             if self.switch:
-                self.CL('self.SET()')
-                self.NL()
-                self.CL('while self.switch:')
-                self.LMI()
-                self.NL()
+                self.output_buffer += 'self.switch = True'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
+                self.output_buffer += 'while self.switch:'
+                self.indent += 1
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 self.rule_EX3()
                 if not self.switch: self.runBEjsfn(rname)
 
-                self.LMD()
-                self.NL()
-                self.CL('self.SET()')
-                self.NL()
+                self.indent -= 1
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
+                self.output_buffer += 'self.switch = True'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 
@@ -266,11 +307,11 @@ class Compiler(MetaII):
         rlabel = 0
         self.TST('«')
         if self.switch:
-            self.SET()
+            self.switch = True
             while self.switch:
                 self.rule_OUT1()
 
-            self.SET()
+            self.switch = True
             if not self.switch: self.runBEjsfn(rname)
 
             self.TST('»')
@@ -285,73 +326,86 @@ class Compiler(MetaII):
         rlabel = 0
         self.TST('⊙')
         if self.switch:
-            self.CL('self.CI()')
-            self.NL()
+            self.output_buffer += 'self.output_buffer += self.last'
+            print(self.output_buffer.rstrip(), file=self.output)
+            self.output_buffer = self._indent * self.indent
             pass
 
         if not self.switch:
             self.SR()
             if self.switch:
-                self.CL('self.CL(')
-                self.CI()
-                self.CL(')')
-                self.NL()
+                self.output_buffer += 'self.output_buffer += '
+                self.output_buffer += self.last
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 
         if not self.switch:
             self.TST('#')
             if self.switch:
-                self.CL('if rlabel == 0:')
-                self.LMI()
-                self.NL()
-                self.CL('rlabel = self.gnlabel')
-                self.NL()
-                self.CL('self.gnlabel += 1')
-                self.LMD()
-                self.NL()
-                self.CL('self.CL(str(rlabel))')
-                self.NL()
+                self.output_buffer += 'if rlabel == 0:'
+                self.indent += 1
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
+                self.output_buffer += 'rlabel = self.gnlabel'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
+                self.output_buffer += 'self.gnlabel += 1'
+                self.indent -= 1
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
+                self.output_buffer += 'self.output_buffer += str(rlabel)'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 
         if not self.switch:
             self.TST('↵')
             if self.switch:
-                self.CL('self.NL()')
-                self.NL()
+                self.output_buffer += 'print(self.output_buffer.rstrip(), file=self.output)'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
+                self.output_buffer += 'self.output_buffer = self._indent * self.indent'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 
         if not self.switch:
             self.TST('⇤')
             if self.switch:
-                self.CL('self.LB()')
-                self.NL()
+                self.output_buffer += 'self.output_buffer = ""'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 
         if not self.switch:
             self.TST('⇥')
             if self.switch:
-                self.CL('self.TB()')
-                self.NL()
+                self.output_buffer += 'self.output_buffer += self._indent'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 
         if not self.switch:
             self.TST('↦')
             if self.switch:
-                self.CL('self.LMI()')
-                self.NL()
+                self.output_buffer += 'self.indent += 1'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 
         if not self.switch:
             self.TST('↤')
             if self.switch:
-                self.CL('self.LMD()')
-                self.NL()
+                self.output_buffer += 'self.indent -= 1'
+                print(self.output_buffer.rstrip(), file=self.output)
+                self.output_buffer = self._indent * self.indent
                 pass
 
 

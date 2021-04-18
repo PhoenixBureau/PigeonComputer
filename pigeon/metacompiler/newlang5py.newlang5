@@ -36,24 +36,25 @@ EX3 → ● «'self.rule_'⊙'()'↵» |
       'ℕ' «'self.NUM()'↵» |
       '≋' «'self.SR()'↵» |
       '(' EX1 ')' |
-      '∅' «'self.SET()'↵» |
-      '★' «'self.SET()'↵
+      '∅' «'self.switch = True'↵» |
+      '★' «'self.switch = True'↵
            'while self.switch:'↦↵»
           EX3
-          «↤↵'self.SET()'↵» ▪
+          «↤↵'self.switch = True'↵» ▪
 
 OUTPUT → '«' ★ OUT1 '»' ▪
 
-OUT1 → '⊙' «'self.CI()'↵» |
-        ≋  «'self.CL('⊙')'↵» |
+OUT1 → '⊙' «'self.output_buffer += self.last'↵» |
+        ≋  «'self.output_buffer += '⊙↵» |
        '#' «'if rlabel == 0:'↦↵
                'rlabel = self.gnlabel'↵
                'self.gnlabel += 1'↤↵
-            'self.CL(str(rlabel))'↵» |
-       '↵' «'self.NL()'↵» |
-       '⇤' «'self.LB()'↵» |
-       '⇥' «'self.TB()'↵» |
-       '↦' «'self.LMI()'↵» |
-       '↤' «'self.LMD()'↵» ▪
+            'self.output_buffer += str(rlabel)'↵» |
+       '↵' «'print(self.output_buffer.rstrip(), file=self.output)'↵
+            'self.output_buffer = self._indent * self.indent'↵» |
+       '⇤' «'self.output_buffer = ""'↵» |
+       '⇥' «'self.output_buffer += self._indent'↵» |
+       '↦' «'self.indent += 1'↵» |
+       '↤' «'self.indent -= 1'↵» ▪
 
 ◀
