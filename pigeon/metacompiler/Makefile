@@ -90,6 +90,7 @@ newlang3.out: metaii.py newlang3.asm newlang3.newlang3
 	$(DIFF) newlang3.asm newlang3.out
 
 # newlang4
+# (Note that newlang4.newlang3 and newlang4.newlang4 are identical.)
 
 newlang4.newlang3: newlang3.newlang3 newlang3-4.diff
 	$(PATCH) -o newlang4.newlang3 -i newlang3-4.diff newlang3.newlang3
@@ -102,7 +103,7 @@ newlang4.out: metaii.py newlang4.asm newlang4.newlang3
 	$(DIFF) newlang4.asm newlang4.out
 
 # newlang5
-# Here's where it gets a little squirrely, we are switching to a slightly
+# Here's where it gets a little squirrelly, we are switching to a slightly
 # different VM that allows for finer-grained control over output so that
 # we can have output languages that have block structure.
 
@@ -119,7 +120,7 @@ newlang5.out: metaii.py newlang5.asm newlang5.newlang5
 	python3 metaii.py   -p newlang5.asm newlang5.newlang5 > newlang5.out
 
 # newlang5.out is not the same as newlang5.asm.  It uses the new op
-# codes.  It is, however, a metacompiler for itself, using the new VM.
+# codes.  It is, however, a metacompiler using the new VM.
 newlang5.outt: metaii.5.py newlang5.out newlang5.newlang5
 	python3 metaii.5.py -p newlang5.out newlang5.newlang5 > newlang5.outt
 	$(DIFF) newlang5.out newlang5.outt
@@ -138,12 +139,11 @@ newlang5py.py.out: newlang5py.py newlang5py.newlang5
 	python3 newlang5py.py < newlang5py.newlang5 > newlang5py.py.out
 	$(DIFF) newlang5py.py newlang5py.py.out
 
-# It can compiler a Python implementation of a newlang5-to-asm compiler:
+# It can compile a Python implementation of a newlang5-to-asm compiler:
 newlang5asm.py: newlang5py.py newlang5.newlang5
 	python3 newlang5py.py < newlang5.newlang5 > newlang5asm.py
 
 # The Python compiler-to-asm regenerates the original asm.
-# ("Meta-cross-compiler"?)
 # Note the '-w' switch to tell diff to ignore differences in whitespace
 newlang5.asm.out: newlang5asm.py newlang5.newlang5
 	python3 newlang5asm.py < newlang5.newlang5 > newlang5.asm.out
