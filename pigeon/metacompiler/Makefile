@@ -2,6 +2,8 @@
 DIFF = diff --report-identical-files
 PATCH = patch --quiet -V none
 
+all: newlang5py.py.out newlang5.asm.out
+
 # newlang
 
 # It seems I have already altered metaii.metaii to recognize '«' and '»'
@@ -148,4 +150,5 @@ newlang5asm.py: newlang5py.py newlang5.newlang5
 newlang5.asm.out: newlang5asm.py newlang5.newlang5
 	python3 newlang5asm.py < newlang5.newlang5 > newlang5.asm.out
 	$(DIFF) -w newlang5.out newlang5.asm.out
+
 
