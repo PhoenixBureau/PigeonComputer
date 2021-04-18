@@ -25,20 +25,11 @@ class MetaII(object):
     self.reset()
 
   def reset(self):
-    self.program = []
-    self.labels = {}
-    self.pos = 0
-    self.outbuf = ""
-    self.margin = 0
-    self.gnlabel = 1
     self.switch = False
-    self.PC = 0
-    self.stack = [(False, -1), None, None]
     self.output = StringIO()
     self._indent = '    '
     self.indent = 0
     self.last = None
-    self.error = self.end = False
 
   def runBEjsfn(self, rname):
     print('error in', rname)
@@ -122,6 +113,3 @@ class MetaII(object):
 
   def _left_trim_input(self):
     self.input = self.input.lstrip()
-
-  def _out(self, s):
-    self.output_buffer += s
