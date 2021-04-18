@@ -17,8 +17,6 @@ PROGRAM
     NL
     CL 'self.input = source'
     NL
-    CL 'self.gnlabel = 1'
-    NL
     CL 'self.reset()'
     NL
     CL 'self.rule_'

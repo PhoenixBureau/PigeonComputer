@@ -4,7 +4,6 @@ class Compiler(MetaII):
 
     def compile(self, source):
         self.input = source
-        self.gnlabel = 1
         self.reset()
         self.rule_PROGRAM()
         return self.output.getvalue()

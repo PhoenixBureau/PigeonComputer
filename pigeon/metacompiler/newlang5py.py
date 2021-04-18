@@ -4,7 +4,6 @@ class Compiler(MetaII):
 
     def compile(self, source):
         self.input = source
-        self.gnlabel = 1
         self.reset()
         self.rule_PROGRAM()
         return self.output.getvalue()
@@ -34,9 +33,6 @@ class Compiler(MetaII):
             print(self.output_buffer.rstrip(), file=self.output)
             self.output_buffer = self._indent * self.indent
             self.output_buffer += 'self.input = source'
-            print(self.output_buffer.rstrip(), file=self.output)
-            self.output_buffer = self._indent * self.indent
-            self.output_buffer += 'self.gnlabel = 1'
             print(self.output_buffer.rstrip(), file=self.output)
             self.output_buffer = self._indent * self.indent
             self.output_buffer += 'self.reset()'

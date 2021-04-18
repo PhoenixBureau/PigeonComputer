@@ -21,12 +21,10 @@ from io import StringIO
 
 class MetaII(object):
 
-  def __init__(self):
-    self.reset()
-
   def reset(self):
     self.switch = False
     self.output = StringIO()
+    self.gnlabel = 1
     self._indent = '    '
     self.indent = 0
     self.last = None

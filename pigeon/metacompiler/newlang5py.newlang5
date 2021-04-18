@@ -5,7 +5,6 @@ PROGRAM → '▶' ●
     'class Compiler(MetaII):'↵↦↵
     'def compile(self, source):'↦↵
         'self.input = source'↵
-        'self.gnlabel = 1'↵
         'self.reset()'↵
         'self.rule_'⊙'()'↵
         'return self.output.getvalue()'↤↵↵»
