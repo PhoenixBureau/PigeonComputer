@@ -1,26 +1,26 @@
 ▶ PROGRAM
 
 PROGRAM → '▶' ●
-    «⇤'from metaii_base import MetaII'↵↵»
-    «'class Compiler(MetaII):'↵↦↵»
-    «'def compile(self, source):'↦↵»
-        «'self.input = source'↵»
-        «'self.reset()'↵»
-        «'self.rule_'⊙'()'↵»
-        «'return self.output.getvalue()'↤↵↵»
+    «⇤'from metaii_base import MetaII'↵↵
+    'class Compiler(MetaII):'↵↦↵
+    'def compile(self, source):'↦↵
+        'self.input = source'↵
+        'self.reset()'↵
+        'self.rule_'⊙'()'↵
+        'return self.output.getvalue()'↤↵↵»
     ★ ST
-    «↤↵↵»
-    «'if __name__ == "__main__":'↦↵»
-        «'import sys'↵»
-        «'c = Compiler()'↵»
-        «'source = sys.stdin.read()'↵»
-        «'out = c.compile(source)'↵»
-        «'print(out)'↤↵»
+    «↤↵↵
+    'if __name__ == "__main__":'↦↵
+        'import sys'↵
+        'c = Compiler()'↵
+        'source = sys.stdin.read()'↵
+        'out = c.compile(source)'↵
+        'print(out)'↤↵»
     '◀' ▪
 
-ST → ● «'def rule_'⊙'(self):'↦↵»
-    «'rname = "'⊙'"'↵»
-    «'rlabel = 0'↵»
+ST → ● «'def rule_'⊙'(self):'↦↵
+    'rname = "'⊙'"'↵
+    'rlabel = 0'↵»
     '→' EX1 '▪'
     «↤↵↵» ▪
 
@@ -28,8 +28,7 @@ EX1 → EX2 ★ ('|' «'if not self.switch:'↦↵» EX2 «↤↵» ) ▪
 
 EX2 → (EX3 «'if self.switch:'↦↵» | OUTPUT «'if True:'↦↵» )
        ★ (EX3 «'if not self.switch: self.runBEjsfn(rname)'↵↵» | OUTPUT)
-      «'pass'↵»
-      «↤↵» ▪
+      «'pass'↵↤↵» ▪
 
 EX3 → ● «'self.rule_'⊙'()'↵» |
       ≋ «'self.TST('⊙')'↵» |
@@ -38,20 +37,19 @@ EX3 → ● «'self.rule_'⊙'()'↵» |
       '≋' «'self.SR()'↵» |
       '(' EX1 ')' |
       '∅' «'self.SET()'↵» |
-      '★' «'self.SET()'↵»
-          «'while self.switch:'↦↵»
+      '★' «'self.SET()'↵
+           'while self.switch:'↦↵»
           EX3
-          «↤↵»
-          «'self.SET()'↵» ▪
+          «↤↵'self.SET()'↵» ▪
 
 OUTPUT → '«' ★ OUT1 '»' ▪
 
 OUT1 → '⊙' «'self.CI()'↵» |
         ≋  «'self.CL('⊙')'↵» |
-       '#' «'if rlabel == 0:'↦↵»
-               «'rlabel = self.gnlabel'↵»
-               «'self.gnlabel += 1'↤↵»
-           «'self.CL(str(rlabel))'↵» |
+       '#' «'if rlabel == 0:'↦↵
+               'rlabel = self.gnlabel'↵
+               'self.gnlabel += 1'↤↵
+            'self.CL(str(rlabel))'↵» |
        '↵' «'self.NL()'↵» |
        '⇤' «'self.LB()'↵» |
        '⇥' «'self.TB()'↵» |
