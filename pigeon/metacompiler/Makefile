@@ -6,7 +6,7 @@ all: newlang5.asm
 # newlang5.asm uses the new op codes.
 # It is a metacompiler using the new VM.
 newlang5.out: metaii.5.py newlang5.asm newlang5.newlang5
-	python3 metaii.5.py -p newlang5.asm newlang5.newlang5 > newlang5.out
+	./metaii.5.py -p newlang5.asm newlang5.newlang5 > newlang5.out
 	$(DIFF) newlang5.asm newlang5.out
 
 # The Python compiler-to-asm regenerates the original asm.
