@@ -1,210 +1,30 @@
     ADR PROGRAM
-OUT1
-    TST '⊙'
+PROGRAM
+    TST '▶'
     BF L1
+    ID
+    BE
+    LB
     TB
-    CL 'CI'
+    CL 'ADR '
+    CI
+    NL
+L2
+    CLL ST
+    BT L2
+    SET
+    BE
+    TST '◀'
+    BE
+    TB
+    CL 'END'
     NL
 L1
-    BT L2
-    SR
-    BF L3
-    TB
-    CL 'CL '
-    CI
-    NL
 L3
-    BT L2
-    TST '#'
-    BF L4
-    TB
-    CL 'GN'
-    NL
-L4
-    BT L2
-    TST '↵'
-    BF L5
-    TB
-    CL 'NL'
-    NL
-L5
-    BT L2
-    TST '⇤'
-    BF L6
-    TB
-    CL 'LB'
-    NL
-L6
-    BT L2
-    TST '⇥'
-    BF L7
-    TB
-    CL 'TB'
-    NL
-L7
-    BT L2
-    TST '↦'
-    BF L8
-    TB
-    CL 'LMI'
-    NL
-L8
-    BT L2
-    TST '↤'
-    BF L9
-    TB
-    CL 'LMD'
-    NL
-L9
-L2
-    R
-OUTPUT
-    TST '«'
-    BF L10
-L11
-    CLL OUT1
-    BT L11
-    SET
-    BE
-    TST '»'
-    BE
-L10
-L12
-    R
-EX3
-    ID
-    BF L13
-    TB
-    CL 'CLL '
-    CI
-    NL
-L13
-    BT L14
-    SR
-    BF L15
-    TB
-    CL 'TST '
-    CI
-    NL
-L15
-    BT L14
-    TST '●'
-    BF L16
-    TB
-    CL 'ID'
-    NL
-L16
-    BT L14
-    TST 'ℕ'
-    BF L17
-    TB
-    CL 'NUM'
-    NL
-L17
-    BT L14
-    TST '≋'
-    BF L18
-    TB
-    CL 'SR'
-    NL
-L18
-    BT L14
-    TST '('
-    BF L19
-    CLL EX1
-    BE
-    TST ')'
-    BE
-L19
-    BT L14
-    TST '∅'
-    BF L20
-    TB
-    CL 'SET'
-    NL
-L20
-    BT L14
-    TST '★'
-    BF L21
-    LB
-    CL 'L'
-    GN
-    NL
-    CLL EX3
-    BE
-    TB
-    CL 'BT L'
-    GN
-    NL
-    TB
-    CL 'SET'
-    NL
-L21
-L14
-    R
-EX2
-    CLL EX3
-    BF L22
-    TB
-    CL 'BF L'
-    GN
-    NL
-L22
-    BT L23
-    CLL OUTPUT
-    BF L24
-L24
-L23
-    BF L25
-L26
-    CLL EX3
-    BF L27
-    TB
-    CL 'BE'
-    NL
-L27
-    BT L28
-    CLL OUTPUT
-    BF L29
-L29
-L28
-    BT L26
-    SET
-    BE
-    LB
-    CL 'L'
-    GN
-    NL
-L25
-L30
-    R
-EX1
-    CLL EX2
-    BF L31
-L32
-    TST '|'
-    BF L33
-    TB
-    CL 'BT L'
-    GN
-    NL
-    CLL EX2
-    BE
-L33
-L34
-    BT L32
-    SET
-    BE
-    LB
-    CL 'L'
-    GN
-    NL
-L31
-L35
     R
 ST
     ID
-    BF L36
+    BF L4
     LB
     CI
     NL
@@ -217,31 +37,211 @@ ST
     TB
     CL 'R'
     NL
-L36
-L37
+L4
+L5
     R
-PROGRAM
-    TST '▶'
-    BF L38
-    ID
-    BE
-    LB
+EX1
+    CLL EX2
+    BF L6
+L7
+    TST '|'
+    BF L8
     TB
-    CL 'ADR '
-    CI
+    CL 'BT L'
+    GN
     NL
-L39
-    CLL ST
-    BT L39
+    CLL EX2
+    BE
+L8
+L9
+    BT L7
     SET
     BE
-    TST '◀'
+    LB
+    CL 'L'
+    GN
+    NL
+L6
+L10
+    R
+EX2
+    CLL EX3
+    BF L11
+    TB
+    CL 'BF L'
+    GN
+    NL
+L11
+    BT L12
+    CLL OUTPUT
+    BF L13
+L13
+L12
+    BF L14
+L15
+    CLL EX3
+    BF L16
+    TB
+    CL 'BE'
+    NL
+L16
+    BT L17
+    CLL OUTPUT
+    BF L18
+L18
+L17
+    BT L15
+    SET
+    BE
+    LB
+    CL 'L'
+    GN
+    NL
+L14
+L19
+    R
+EX3
+    ID
+    BF L20
+    TB
+    CL 'CLL '
+    CI
+    NL
+L20
+    BT L21
+    SR
+    BF L22
+    TB
+    CL 'TST '
+    CI
+    NL
+L22
+    BT L21
+    TST '●'
+    BF L23
+    TB
+    CL 'ID'
+    NL
+L23
+    BT L21
+    TST 'ℕ'
+    BF L24
+    TB
+    CL 'NUM'
+    NL
+L24
+    BT L21
+    TST '≋'
+    BF L25
+    TB
+    CL 'SR'
+    NL
+L25
+    BT L21
+    TST '('
+    BF L26
+    CLL EX1
+    BE
+    TST ')'
+    BE
+L26
+    BT L21
+    TST '∅'
+    BF L27
+    TB
+    CL 'SET'
+    NL
+L27
+    BT L21
+    TST '★'
+    BF L28
+    LB
+    CL 'L'
+    GN
+    NL
+    CLL EX3
     BE
     TB
-    CL 'END'
+    CL 'BT L'
+    GN
+    NL
+    TB
+    CL 'SET'
+    NL
+L28
+L21
+    R
+OUTPUT
+    TST '«'
+    BF L29
+L30
+    CLL OUT1
+    BT L30
+    SET
+    BE
+    TST '»'
+    BE
+L29
+L31
+    R
+OUT1
+    TST '⊙'
+    BF L32
+    TB
+    CL 'CI'
+    NL
+L32
+    BT L33
+    SR
+    BF L34
+    TB
+    CL 'CL '
+    CI
+    NL
+L34
+    BT L33
+    TST '#'
+    BF L35
+    TB
+    CL 'GN'
+    NL
+L35
+    BT L33
+    TST '↵'
+    BF L36
+    TB
+    CL 'NL'
+    NL
+L36
+    BT L33
+    TST '⇤'
+    BF L37
+    TB
+    CL 'LB'
+    NL
+L37
+    BT L33
+    TST '⇥'
+    BF L38
+    TB
+    CL 'TB'
     NL
 L38
+    BT L33
+    TST '↦'
+    BF L39
+    TB
+    CL 'LMI'
+    NL
+L39
+    BT L33
+    TST '↤'
+    BF L40
+    TB
+    CL 'LMD'
+    NL
 L40
+L33
     R
     END
 
