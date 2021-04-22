@@ -41,12 +41,15 @@ newlang0.asm: metaii.py newlang.out newlang0.newlang
 newlang0.newlang0: newlang0.newlang
 	sed 's/\$$/★/' < newlang0.newlang > newlang0.newlang0
 
-# Use the compiler is a metacompiler.
+# The compiler is a metacompiler.
 newlang0.out: metaii.py newlang0.asm newlang0.newlang0
 	python3 metaii.py -p newlang0.asm newlang0.newlang0 > newlang0.out
 	$(DIFF) newlang0.asm newlang0.out
 
 # newlang1
+
+# Now to have some fun with Unicode.  We replace ID with ●, NUM with ℕ,
+# and SR with ≋ (the wavy lines remind me of text.)
 
 newlang1.newlang0: newlang0.newlang0 newlang0-1.diff
 	$(PATCH) -o newlang1.newlang0 -i newlang0-1.diff newlang0.newlang0
@@ -63,6 +66,8 @@ newlang1.out: newlang1.asm newlang1.newlang1
 
 # newlang2
 
+# A few more symbols: ○¹, ○², ⊙, and ∅.
+
 newlang2.newlang1: newlang1.newlang1 newlang1-2.diff
 	$(PATCH) -o newlang2.newlang1 -i newlang1-2.diff newlang1.newlang1
 
@@ -77,6 +82,8 @@ newlang2.out: metaii.py newlang2.asm newlang2.newlang2
 	$(DIFF) newlang2.asm newlang2.out
 
 # newlang3
+
+# →, ▪ and ▶, ◀ for statements and the whole program,
 
 newlang3.newlang2: newlang2.newlang2 newlang2-3.diff
 	$(PATCH) -o newlang3.newlang2 -i newlang2-3.diff newlang2.newlang2
@@ -93,6 +100,11 @@ newlang3.out: metaii.py newlang3.asm newlang3.newlang3
 
 # newlang4
 # (Note that newlang4.newlang3 and newlang4.newlang4 are identical.)
+# Here we are adding some new primitive ops to support block structure
+# synax.  This let's you do things like emit Python or C code, rather
+# than just ASM.  We don't use the new syntax yet though, as that will
+# require updating the VM to implement the new block structure output
+# ops.
 
 newlang4.newlang3: newlang3.newlang3 newlang3-4.diff
 	$(PATCH) -o newlang4.newlang3 -i newlang3-4.diff newlang3.newlang3
