@@ -1,0 +1,61 @@
+▶ PROGRAM
+
+PROGRAM → '▶' ●
+    «⇤'from metaii_base import MetaII, ParseError'↵↵↵
+    'class Compiler(MetaII):'↵↦↵
+    'def compile(self, source):'↦↵
+        'self.input = source'↵
+        'self.reset()'↵
+        'self.rule_'⊙'()'↵
+        'return self.output.getvalue()'↤↵↵»
+    ★ ST
+    «↤↵
+    'if __name__ == "__main__":'↦↵
+        'import sys'↵
+        'c = Compiler()'↵
+        'source = sys.stdin.read()'↵
+        'out = c.compile(source)'↵
+        'print(out)'↤↵»
+    '◀' ▪
+
+ST → ● «'def rule_'⊙'(self):'↦↵
+    'rname = "'⊙'"'↵
+    'rlabel = 0'↵»
+    '→' EX1 '▪'
+    «↤↵» ▪
+
+EX1 → EX2 ★ ('|' «'if not self.switch:'↦↵» EX2 «↤↵» ) ▪
+
+EX2 → (EX3 «'if self.switch:'↦↵» | OUTPUT «'if True:'↦↵» )
+       ★ (EX3 «'if not self.switch:'↦↵
+                   'raise ParseError(rname)'↤↵↵» | OUTPUT)
+      «'pass'↤↵» ▪
+
+EX3 → ● «'self.rule_'⊙'()'↵» |
+      ≋ «'self.TST('⊙')'↵» |
+      '●' «'self.ID()'↵» |
+      'ℕ' «'self.NUM()'↵» |
+      '≋' «'self.SR()'↵» |
+      '(' EX1 ')' |
+      '∅' «'self.switch = True'↵» |
+      '★' «'self.switch = True'↵
+           'while self.switch:'↦↵»
+          EX3
+          «↤↵'self.switch = True'↵» ▪
+
+OUTPUT → '«' ★ OUT1 '»' ▪
+
+OUT1 → '⊙' «'self.output_buffer += self.last'↵» |
+        ≋  «'self.output_buffer += '⊙↵» |
+       '#' «'if rlabel == 0:'↦↵
+               'rlabel = self.gnlabel'↵
+               'self.gnlabel += 1'↤↵
+            'self.output_buffer += str(rlabel)'↵» |
+       '↵' «'print(self.output_buffer.rstrip(), file=self.output)'↵
+            'self.output_buffer = self._indent * self.indent'↵» |
+       '⇤' «'self.output_buffer = ""'↵» |
+       '⇥' «'self.output_buffer += self._indent'↵» |
+       '↦' «'self.indent += 1'↵» |
+       '↤' «'self.indent -= 1'↵» ▪
+
+◀
