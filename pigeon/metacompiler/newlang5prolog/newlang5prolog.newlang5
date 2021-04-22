@@ -1,0 +1,43 @@
+▶ PROGRAM
+
+PROGRAM → '▶' ●
+    «⇤'program(['↦↵'start('⊙'),'↵»
+    ★ ST
+    '◀' «'end]).'↵»
+    ▪
+
+ST → ● «'subroutine('⊙'),'↵» '→' EX1 '▪' «'return,'↵» ▪
+
+EX1 → EX2
+    ★ ('|' «'if_switch_goto(L'#'),'↵» EX2 )
+    «⇤'label(L'#'),'↵»
+    ▪
+
+EX2 → (EX3 «'if_not_switch_goto(L'#'),'↵» | OUTPUT)
+       ★ (EX3 «'or_die,'↵» | OUTPUT)
+      «⇤'label(L'#'),'↵» ▪
+
+EX3 → ● «'call('⊙'),'↵» |
+      ≋ «'match('⊙'),'↵» |
+      '●' «'match_identifier,'↵» |
+      'ℕ' «'match_number,'↵» |
+      '≋' «'match_string_literal,'↵» |
+      '(' EX1 ')' |
+      '∅' «'set_switch,'↵» |
+      '★' «⇤'label(L'#'),'↵»
+          EX3
+          «'if_switch_goto(L'#'),'↵»
+          «'set_switch,'↵» ▪
+
+OUTPUT → '«' ★ OUT1 '»' ▪
+
+OUT1 → '⊙' «'copy_last_match,'↵» |
+        ≋  «'copy_literal('⊙'),'↵» |
+       '#' «'generate_number,'↵» |
+       '↵' «'copy_newline,'↵» |
+       '⇤' «'reset_left_margin,'↵» |
+       '⇥' «'copy_tab,'↵» |
+       '↦' «'indent,'↵» |
+       '↤' «'dedent,'↵» ▪
+
+◀
