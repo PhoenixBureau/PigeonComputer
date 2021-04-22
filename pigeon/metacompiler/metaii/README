@@ -1,0 +1,8 @@
+This is the original META-II system, with the ASM, the grammar, and a VM
+written in Python.  The only changes are that the '|' char is used for
+alternation and the semi-colon (rather than '.,') is used to terminate
+statements.  You can regenerate the ASM file with e.g.:
+
+    ./metaii.py -p metaii.asm metaii.metaii > metaii.out
+
+
